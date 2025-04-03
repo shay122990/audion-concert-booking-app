@@ -1,5 +1,13 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc
+} from "firebase/firestore";
+import mockEvents from "@/data/mock-events";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
@@ -12,40 +20,51 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-
+// The addMockEvents function will check if there are existing title events, if so it will skip and add only newly added events in the mock-events file, this way there would be no duplicates 
 export const addMockEvents = async () => {
-    try {
-      const eventsRef = collection(db, "events");
-  
-      const mockEvents = [
-        {
-          title: "Summer Sound Festival",
-          date: "2025-08-10",
-          location: "Dubai Marina",
-          image: "https://images.unsplash.com/photo-1603350902363-3141f62b7dba?w=800",
-        },
-        {
-          title: "Indie Night Live",
-          date: "2025-09-02",
-          location: "The Arena, Dubai",
-          image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=800",
-        },
-        {
-          title: "EDM Bash 2025",
-          date: "2025-10-15",
-          location: "Palm Jumeirah",
-          image: "https://dancingastronaut.com/wp-content/uploads/2022/01/Five-hotel_411_21.02.2020.jpg",
-        },
-      ];
-  
-      for (const event of mockEvents) {
+  try {
+    const eventsRef = collection(db, "events");
+    const snapshot = await getDocs(eventsRef);
+
+    const existingTitles = snapshot.docs.map((doc) =>
+      doc.data().title.toLowerCase().trim()
+    );
+
+    let addedCount = 0;
+
+    for (const event of mockEvents) {
+      const titleKey = event.title.toLowerCase().trim();
+      if (!existingTitles.includes(titleKey)) {
         await addDoc(eventsRef, event);
         console.log(`✅ Added: ${event.title}`);
+        addedCount++;
+      } else {
+        console.log(`⚠️ Skipped duplicate: ${event.title}`);
       }
+    }
+
+    if (addedCount === 0) {
+      console.log("ℹ️ No new events added. All already exist.");
+    } else {
+      console.log(`🎉 ${addedCount} new events added to Firestore`);
+    }
+  } catch (error) {
+    console.error("❌ Error adding events:", error);
+  }
+};
+
+export const deleteAllEvents = async () => {
+    try {
+      const eventsRef = collection(db, "events");
+      const snapshot = await getDocs(eventsRef);
   
-      console.log("🎉 All mock events added to Firestore");
+      const deletions = snapshot.docs.map((docSnap) =>
+        deleteDoc(doc(eventsRef, docSnap.id))
+      );
+  
+      await Promise.all(deletions);
+      console.log("🗑️ All events deleted from Firestore.");
     } catch (error) {
-      console.error("❌ Error adding events:", error);
+      console.error("❌ Error deleting events:", error);
     }
   };
-  
