@@ -68,3 +68,14 @@ export const deleteAllEvents = async () => {
       console.error("❌ Error deleting events:", error);
     }
   };
+
+
+export const deleteEventById = async (id: string) => {
+  try {
+    await deleteDoc(doc(db, "events", id));
+    console.log(`🗑️ Deleted event with ID: ${id}`);
+  } catch (error) {
+    console.error("❌ Failed to delete event:", error);
+    throw error;
+  }
+};
