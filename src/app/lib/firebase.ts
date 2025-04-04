@@ -6,7 +6,8 @@ import {
   addDoc,
   deleteDoc,
   doc,
-  setDoc
+  setDoc,
+  updateDoc
 } from "firebase/firestore";
 import mockEvents from "@/data/mock-events";
 
@@ -92,6 +93,21 @@ export const deleteEventById = async (id: string) => {
     console.log(`🗑️ Deleted event with ID: ${id}`);
   } catch (error) {
     console.error("❌ Failed to delete event:", error);
+    throw error;
+  }
+};
+export const updateEventById = async (id: string, updatedData: Partial<{
+  title: string;
+  date: string;
+  location: string;
+  image: string;
+}>) => {
+  try {
+    const ref = doc(db, "events", id);
+    await updateDoc(ref, updatedData);
+    console.log(`✏️ Updated event: ${id}`);
+  } catch (error) {
+    console.error("❌ Error updating event:", error);
     throw error;
   }
 };
