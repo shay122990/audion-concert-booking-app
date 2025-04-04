@@ -5,7 +5,8 @@ import {
   getDocs,
   addDoc,
   deleteDoc,
-  doc
+  doc,
+  setDoc
 } from "firebase/firestore";
 import mockEvents from "@/data/mock-events";
 
@@ -50,6 +51,21 @@ export const addMockEvents = async () => {
     }
   } catch (error) {
     console.error("❌ Error adding events:", error);
+  }
+};
+export const addEvent = async (event: {
+  title: string;
+  date: string;
+  location: string;
+  image: string;
+}) => {
+  try {
+    const newRef = doc(collection(db, "events")); 
+    await setDoc(newRef, event);
+    console.log("✅ Added event:", event.title);
+  } catch (error) {
+    console.error("❌ Error adding event:", error);
+    throw error;
   }
 };
 
