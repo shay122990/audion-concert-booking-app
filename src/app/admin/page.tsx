@@ -10,6 +10,9 @@ import {
   addEvent,
   updateEventById,
 } from "@/app/lib/firebase";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 
 type Event = {
   id: string;
@@ -28,6 +31,17 @@ export default function AdminPage() {
     location: "",
     image: "",
   });
+  const { user, loading: authLoading } = useAuth();
+  const { isAdmin, loading: adminLoading } = useIsAdmin();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!authLoading && !adminLoading) {
+      if (!user || !isAdmin) {
+        router.push("/");
+      }
+    }
+  }, [user, isAdmin, authLoading, adminLoading, router]);
 
   const fetchEvents = async () => {
     const snapshot = await getDocs(collection(db, "events"));
@@ -72,8 +86,10 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    if (user && isAdmin) fetchEvents();
+  }, [user, isAdmin]);
+
+  if (authLoading || adminLoading || !user) return <p className="text-center py-12">Loading...</p>;
 
   return (
     <main className="min-h-screen px-6 py-24 max-w-3xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10">
@@ -99,7 +115,6 @@ export default function AdminPage() {
         </button>
       </div>
 
-      {/* Add New Event Form */}
       <section className="w-full mt-12">
         <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
         <form

@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { useIsAdmin } from "@/hooks/useIsAdmin"; 
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { user, signInWithGoogle, logout } = useAuth();
+  const { isAdmin } = useIsAdmin();
 
   const closeMenu = () => setIsOpen(false);
 
@@ -23,6 +27,14 @@ export default function Navbar() {
           </Link>
           <Link href="/#events" className="hover:text-purple-600">Browse</Link>
           <Link href="/about" className="hover:text-purple-600">About</Link>
+          {user && isAdmin && (
+            <Link href="/admin" className="hover:text-purple-600">Admin</Link>
+          )}
+          {!user ? (
+            <button onClick={signInWithGoogle} className="text-sm text-purple-600 hover:underline">Login</button>
+          ) : (
+            <button onClick={logout} className="text-sm text-gray-600 hover:text-purple-600">Logout</button>
+          )}
         </nav>
 
         <button
@@ -43,21 +55,21 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`fixed inset-0 z-50  transition-opacity duration-300 ${
+        className={`fixed inset-0 z-50 transition-opacity duration-300 ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={closeMenu}
       ></div>
 
       <aside
-        className={`fixed top-0 right-0 z-50 h-full w-3/4 max-w-xs  bg-black/60 shadow-lg transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 z-50 h-full w-3/4 max-w-xs bg-black/60 shadow-lg transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="p-6 h-dvh flex flex-col text-center gap-6 text-sm bg-black/60">
+        <div className="p-6 h-dvh flex flex-col text-center gap-6 text-sm bg-black/60 text-white">
           <button
             onClick={closeMenu}
-            className="self-end text-white hover:text-purple-600 dark:hover:text-white"
+            className="self-end hover:text-purple-600"
             aria-label="Close menu"
           >
             ✕
@@ -65,6 +77,16 @@ export default function Navbar() {
           <Link href="/" onClick={closeMenu} className="hover:text-purple-600">Home</Link>
           <Link href="/#events" onClick={closeMenu} className="hover:text-purple-600">Browse</Link>
           <Link href="/about" onClick={closeMenu} className="hover:text-purple-600">About</Link>
+          {user && isAdmin && (
+            <Link href="/admin" onClick={closeMenu} className="hover:text-purple-600">
+              Admin
+            </Link>
+          )}
+          {!user ? (
+            <button onClick={signInWithGoogle} className="text-sm text-purple-400">Login</button>
+          ) : (
+            <button onClick={logout} className="text-sm text-white hover:text-purple-400">Logout</button>
+          )}
         </div>
       </aside>
     </header>

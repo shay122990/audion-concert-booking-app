@@ -20,7 +20,7 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 // The addMockEvents function will check if there are existing title events, if so it will skip and add only newly added events in the mock-events file, this way there would be no duplicates 
 export const addMockEvents = async () => {
