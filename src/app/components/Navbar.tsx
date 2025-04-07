@@ -25,8 +25,7 @@ export default function Navbar() {
           <Link href="/" className={pathname === "/" ? "text-purple-600" : "hover:text-purple-600"}>
             Home
           </Link>
-          <Link href="/#events" className="hover:text-purple-600">Browse</Link>
-          <Link href="/about" className="hover:text-purple-600">About</Link>
+          <Link href="/browse" className="hover:text-purple-600">Browse</Link>
           {user && isAdmin && (
             <Link href="/admin" className="hover:text-purple-600">Admin</Link>
           )}
@@ -75,8 +74,7 @@ export default function Navbar() {
             ✕
           </button>
           <Link href="/" onClick={closeMenu} className="hover:text-purple-600">Home</Link>
-          <Link href="/#events" onClick={closeMenu} className="hover:text-purple-600">Browse</Link>
-          <Link href="/about" onClick={closeMenu} className="hover:text-purple-600">About</Link>
+          <Link href="/browse" onClick={closeMenu} className="hover:text-purple-600">Browse</Link>
           {user && isAdmin && (
             <Link href="/admin" onClick={closeMenu} className="hover:text-purple-600">
               Admin
