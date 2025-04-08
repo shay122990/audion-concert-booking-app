@@ -38,6 +38,8 @@ export default function AdminPage() {
     image: "",
     category: "EDM",
   });
+  const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "uploaded">("idle");
+
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useIsAdmin();
   const router = useRouter();
@@ -106,10 +108,19 @@ export default function AdminPage() {
 
       <div className="flex gap-4 flex-wrap justify-center">
         <button
-          onClick={addMockEvents}
-          className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+          onClick={async () => {
+            setUploadStatus("uploading");
+            await addMockEvents();
+            setUploadStatus("uploaded");
+            await fetchEvents();
+          }}
+          className={`px-6 py-3 rounded-lg transition text-white ${
+            uploadStatus === "uploaded"
+              ? "bg-green-600 hover:bg-green-700"
+              : "bg-purple-600 hover:bg-purple-700"
+          }`}
         >
-          Upload Events from File
+          {uploadStatus === "uploaded" ? "Uploaded" : "Upload Events from File"}
         </button>
         <button
           onClick={async () => {
