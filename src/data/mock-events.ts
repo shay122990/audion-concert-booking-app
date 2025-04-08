@@ -1,47 +1,353 @@
 const mockEvents = [
-    {
-      title: "Summer Sound Festival",
-      date: "2025-08-10",
-      location: "Dubai Marina",
-      image:
-        "https://images.unsplash.com/photo-1603350902363-3141f62b7dba?w=800&auto=format&fit=crop&q=60",
-    },
-    {
-      title: "Indie Night Live",
-      date: "2025-09-02",
-      location: "The Arena, Dubai",
-      image:
-        "https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=800&auto=format&fit=crop&q=60",
-    },
-    {
-      title: "EDM Bash 2025",
-      date: "2025-10-15",
-      location: "Palm Jumeirah",
-      image:
-        "https://dancingastronaut.com/wp-content/uploads/2022/01/Five-hotel_411_21.02.2020.jpg",
-    },
-    {
-      title: "Jazz Under the Stars",
-      date: "2025-11-05",
-      location: "Dubai Opera Garden",
-      image:
-        "https://images.unsplash.com/photo-1559752067-f30e5f277930?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTB8fGphenolMjBldmVudHN8ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      title: "Rock the Desert",
-      date: "2025-12-20",
-      location: "Al Qudra Desert Camp",
-      image:
-        "https://images.unsplash.com/photo-1527419105721-af1f23c86dec?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGVzZXJ0JTIwY2FtcHxlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      title: "Neon Nights Carnival",
-      date: "2026-01-18",
-      location: "Expo City Dubai",
-      image:
-        "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bmVvbiUyMHBhcnR5fGVufDB8fDB8fHww",
-    }      
-  ];
-  
-  export default mockEvents;
-  
+  // EDM
+  {
+    title: "EDM Bash 2025",
+    date: "2025-10-15",
+    location: "Palm Jumeirah",
+    image: "https://dancingastronaut.com/wp-content/uploads/2022/01/Five-hotel_411_21.02.2020.jpg",
+    category: "EDM",
+  },
+  {
+    title: "Neon Pulse Festival",
+    date: "2025-08-25",
+    location: "Dubai Arena",
+    image: "https://images.unsplash.com/photo-1518972559570-7cc1309f3229?w=800&auto=format&fit=crop&q=60",
+    category: "EDM",
+  },
+  {
+    title: "Trance City Nights",
+    date: "2025-09-18",
+    location: "Al Quoz Warehouse",
+    image: "https://images.unsplash.com/photo-1574847052651-02b57f7f5a4e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2FyZWhvdXNlJTIwcGFydHl8ZW58MHx8MHx8fDA%3D",
+    category: "EDM",
+  },
+  {
+    title: "Electric Groove",
+    date: "2025-11-22",
+    location: "Global Village",
+    image: "https://images.unsplash.com/photo-1670235528409-7029ebfd59ab?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z2xvYmFsJTIwdmlsbGFnZXxlbnwwfHwwfHx8MA%3D%3D",
+    category: "EDM",
+  },
+  {
+    title: "Bass Nation",
+    date: "2025-12-10",
+    location: "Jumeirah Beach",
+    image: "https://images.unsplash.com/photo-1609940539397-3fa778baf74a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YmFzcyUyMGNvbmNlcnR8ZW58MHx8MHx8fDA%3D",
+    category: "EDM",
+  },
+  {
+    title: "Midnight Drops",
+    date: "2026-01-14",
+    location: "Desert Club",
+    image: "https://images.unsplash.com/photo-1603350902363-3141f62b7dba?w=800&auto=format&fit=crop&q=60",
+    category: "EDM",
+  },
+
+  // Indie
+  {
+    title: "Indie Night Live",
+    date: "2025-09-02",
+    location: "The Arena, Dubai",
+    image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=800&auto=format&fit=crop&q=60",
+    category: "Indie",
+  },
+  {
+    title: "Cozy Indie Evenings",
+    date: "2025-10-12",
+    location: "Downtown Rooftop",
+    image: "https://images.unsplash.com/photo-1525186402429-b4ff38bedec6?w=800&auto=format&fit=crop&q=60",
+    category: "Indie",
+  },
+  {
+    title: "Indie Desert Chill",
+    date: "2025-11-05",
+    location: "Al Marmoom",
+    image: "https://images.unsplash.com/photo-1548944350-06c7375dfffb?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aW5kaWUlMjBjb25jZXJ0JTIwaW4lMjB0aGUlMjBkZXNlcnR8ZW58MHx8MHx8fDA%3D",
+    category: "Indie",
+  },
+  {
+    title: "Vinyl Vibes",
+    date: "2025-12-15",
+    location: "Barsha Hub",
+    image: "https://images.unsplash.com/photo-1621619054919-167f2fcf135c?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c291bCUyMGphbXxlbnwwfHwwfHx8MA%3D%3D",
+    category: "Indie",
+  },
+  {
+    title: "Alternative Echo",
+    date: "2026-01-05",
+    location: "Bluewaters",
+    image: "https://images.unsplash.com/photo-1597849457406-442b94770a95?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGluZGllJTIwY29uY2VydHxlbnwwfHwwfHx8MA%3D%3D",
+    category: "Indie",
+  },
+  {
+    title: "Indie Soul Jam",
+    date: "2026-02-09",
+    location: "La Mer Stage",
+    image: "https://images.unsplash.com/photo-1497032205916-ac775f0649ae?w=800&auto=format&fit=crop&q=60",
+    category: "Indie",
+  },
+
+  // Pop
+  {
+    title: "Pop Explosion",
+    date: "2025-08-12",
+    location: "Coca-Cola Arena",
+    image: "https://images.unsplash.com/photo-1653581364580-5a1074a1fa31?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29jYSUyMGNvbGElMjBhcmVuYXxlbnwwfHwwfHx8MA%3D%3D",
+    category: "Pop",
+  },
+  {
+    title: "Neon Pop Tour",
+    date: "2025-09-15",
+    location: "Mall of the Emirates Stage",
+    image: "https://images.unsplash.com/photo-1525286116112-b59af11adad1?w=800&auto=format&fit=crop&q=60",
+    category: "Pop",
+  },
+  {
+    title: "Summer Pop Hits",
+    date: "2025-10-01",
+    location: "City Walk",
+    image: "https://images.unsplash.com/photo-1718634353354-fa2fc07e3080?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBvcCUyMGNvbmNlcnQlMjBvdXRkb29yc3xlbnwwfHwwfHx8MA%3D%3D",
+    category: "Pop",
+  },
+  {
+    title: "Retro Pop Night",
+    date: "2025-11-20",
+    location: "Festival City",
+    image: "https://images.unsplash.com/photo-1600146698733-a339319d56e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBvcCUyMGNvbmNlcnR8ZW58MHx8MHx8fDA%3D",
+    category: "Pop",
+  },
+  {
+    title: "Future Pop Stars",
+    date: "2025-12-08",
+    location: "Dubai Parks",
+    image: "https://images.unsplash.com/photo-1731521581630-46864db40e18?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZ1dHVyZSUyMHBvcCUyMHN0YXJ8ZW58MHx8MHx8fDA%3D",
+    category: "Pop",
+  },
+  {
+    title: "Desert Pop Fever",
+    date: "2026-01-11",
+    location: "Desert Sound Dome",
+    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop&q=60",
+    category: "Pop",
+  },
+
+  // Rock
+  {
+    title: "Rock the Desert",
+    date: "2025-12-20",
+    location: "Al Qudra Desert Camp",
+    image: "https://images.unsplash.com/photo-1527419105721-af1f23c86dec?w=800&auto=format&fit=crop&q=60",
+    category: "Rock",
+  },
+  {
+    title: "Rock Revolution",
+    date: "2026-01-22",
+    location: "Motor City Arena",
+    image: "https://images.unsplash.com/photo-1518972559570-7cc1309f3229?w=800&auto=format&fit=crop&q=60",
+    category: "Rock",
+  },
+  {
+    title: "Guitar Gods",
+    date: "2026-02-10",
+    location: "Hard Rock Cafe",
+    image: "https://images.unsplash.com/photo-1566320239266-7a352f8c382a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGd1aXRhciUyMGdvZHN8ZW58MHx8MHx8fDA%3D",
+    category: "Rock",
+  },
+  {
+    title: "Metal Mayhem",
+    date: "2026-03-05",
+    location: "Dubai Media City",
+    image: "https://images.unsplash.com/photo-1506091403742-e3aa39518db5?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    category: "Rock",
+  },
+  {
+    title: "Alt Rock United",
+    date: "2026-03-30",
+    location: "Live Nation Stage",
+    image: "https://images.unsplash.com/photo-1600528777391-4e35bf973e44?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFsdGVybmF0aXZlJTIwcm9ja3xlbnwwfHwwfHx8MA%3D%3D",
+    category: "Rock",
+  },
+  {
+    title: "Legends of Rock",
+    date: "2026-04-18",
+    location: "City Amphitheatre",
+    image: "https://images.unsplash.com/photo-1651336450907-bf65259b87be?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bGVnZW5kcyUyMG9mJTIwcm9ja3xlbnwwfHwwfHx8MA%3D%3D",
+    category: "Rock",
+  },
+  //JAZZ
+  {
+    title: "Jazz Under the Stars",
+    date: "2025-11-05",
+    location: "Dubai Opera Garden",
+    image: "https://images.unsplash.com/photo-1559752067-f30e5f277930?w=800&auto=format&fit=crop&q=60",
+    category: "Jazz",
+  },
+  {
+    title: "Blue Note Dubai",
+    date: "2025-12-02",
+    location: "JBR Amphitheatre",
+    image: "https://images.unsplash.com/photo-1715015326993-c020872670b7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8amF6eiUyMG91dGRvb3JzfGVufDB8fDB8fHww",
+    category: "Jazz",
+  },
+  {
+    title: "Sax in the City",
+    date: "2026-01-19",
+    location: "Burj Park",
+    image: "https://images.unsplash.com/photo-1742500294033-0853fdf1ac06?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGphenolMjBvdXRkb29yc3xlbnwwfHwwfHx8MA%3D%3D",
+    category: "Jazz",
+  },
+  {
+    title: "Smooth Vibes Festival",
+    date: "2026-02-14",
+    location: "The Green Room",
+    image: "https://images.unsplash.com/photo-1738322817781-1a95ad2c4f54?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGphenolMjBmZXN0aXZhbHxlbnwwfHwwfHx8MA%3D%3D",
+    category: "Jazz",
+  },
+  {
+    title: "Jazz & Chill Sessions",
+    date: "2026-03-03",
+    location: "Boxpark",
+    image: "https://images.unsplash.com/photo-1730406919258-b031632e3de8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fGphenolMjBmZXN0aXZhbHxlbnwwfHwwfHx8MA%3D%3D",
+    category: "Jazz",
+  },
+  {
+    title: "Desert Jazz Collective",
+    date: "2026-04-05",
+    location: "Desert Pavilion",
+    image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=60",
+    category: "Jazz",
+  },
+  //CLASSICAL
+  {
+    title: "Beethoven by the Bay",
+    date: "2025-09-10",
+    location: "Dubai Opera",
+    image: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2xhc3NpY2FsJTIwbXVzaWN8ZW58MHx8MHx8fDA%3D",
+    category: "Classical",
+  },
+  {
+    title: "Mozart Magic",
+    date: "2025-10-01",
+    location: "Burj Park Stage",
+    image: "https://images.unsplash.com/photo-1513883049090-d0b7439799bf?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNsYXNzaWNhbCUyMG11c2ljfGVufDB8fDB8fHww",
+    category: "Classical",
+  },
+  {
+    title: "Strings in the Sky",
+    date: "2025-11-17",
+    location: "Sky Views Observatory",
+    image: "https://images.unsplash.com/photo-1507739599340-3f6f8f347bfe?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b2JzZXJ2YXRvcnklMjBjb25jZXJ0fGVufDB8fDB8fHww",
+    category: "Classical",
+  },
+  {
+    title: "Opera in the Garden",
+    date: "2025-12-09",
+    location: "Safa Park",
+    image: "https://images.unsplash.com/photo-1602080338149-55253d24c68a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8b3BlcmElMjBnYXJkZW58ZW58MHx8MHx8fDA%3D",
+    category: "Classical",
+  },
+  {
+    title: "Baroque Nights",
+    date: "2026-01-21",
+    location: "Dubai Creek Club",
+    image: "https://images.unsplash.com/photo-1731470093563-35cb5710354d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmFyb3F1ZSUyMGNvbmNlcnR8ZW58MHx8MHx8fDA%3D",
+    category: "Classical",
+  },
+  {
+    title: "Desert Philharmonic",
+    date: "2026-02-15",
+    location: "Desert Dome",
+    image: "https://images.unsplash.com/photo-1729891404858-c5895a3a48ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNsYXNzaWNhbCUyMGNvbmNlcnQlMjBvdXRkb29yfGVufDB8fDB8fHww",
+    category: "Classical",
+  },
+  // Festivals
+  {
+    title: "Summer Sound Festival",
+    date: "2025-08-10",
+    location: "Dubai Marina",
+    image: "https://images.unsplash.com/photo-1603350902363-3141f62b7dba?w=800&auto=format&fit=crop&q=60",
+    category: "Festivals",
+  },
+  {
+    title: "Neon Nights Carnival",
+    date: "2026-01-18",
+    location: "Expo City Dubai",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&auto=format&fit=crop&q=60",
+    category: "Festivals",
+  },
+  {
+    title: "Winter Wonderland Bash",
+    date: "2025-12-25",
+    location: "City Walk",
+    image: "https://images.unsplash.com/photo-1547829200-430afaf1fb88?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fHdpbnRlciUyMHdvbmRlcmxhbmQlMjBmZXN0aXZhbHxlbnwwfHwwfHx8MA%3D%3D",
+    category: "Festivals",
+  },
+  {
+    title: "Glow in the Dark Fest",
+    date: "2026-02-20",
+    location: "Global Village",
+    image: "https://images.unsplash.com/photo-1740589960354-6bef7ab97bf7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z2xvdyUyMGluJTIwdGVoJTIwZGFyayUyMGZlc3RpdmFsfGVufDB8fDB8fHww",
+    category: "Festivals",
+  },
+  {
+    title: "Beach Beats",
+    date: "2025-10-28",
+    location: "JBR Beach",
+    image: "https://images.unsplash.com/photo-1704703336571-4c47c4aa73fe?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzh8fGJlYWNoJTIwZmVzdGl2YWx8ZW58MHx8MHx8fDA%3D",
+    category: "Festivals",
+  },
+  {
+    title: "Desert Fest Dubai",
+    date: "2026-03-10",
+    location: "Al Marmoom Oasis",
+    image: "https://images.unsplash.com/photo-1724415057322-12c98a7d4627?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGRlc2VydCUyMGZlc3RpdmFsfGVufDB8fDB8fHww",
+    category: "Festivals",
+  },
+
+  // R&B
+  {
+    title: "Soulful Nights",
+    date: "2025-09-22",
+    location: "Bluewaters Stage",
+    image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2x1YnxlbnwwfHwwfHx8MA%3D%3D",
+    category: "R&B",
+  },
+  {
+    title: "R&B Flow",
+    date: "2025-10-10",
+    location: "The Vibe Lounge",
+    image: "https://images.unsplash.com/photo-1597602669912-b775917b3736?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2x1YiUyMGhpcCUyMGhvcHxlbnwwfHwwfHx8MA%3D%3D",
+    category: "R&B",
+  },
+  {
+    title: "Groove & Soul",
+    date: "2025-11-11",
+    location: "Zabeel House",
+    image: "https://images.unsplash.com/photo-1723210730375-55395e0604ba?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNsdWIlMjBoaXAlMjBob3B8ZW58MHx8MHx8fDA%3D",
+    category: "R&B",
+  },
+  {
+    title: "Slow Jam Sessions",
+    date: "2025-12-05",
+    location: "JLT Park",
+    image: "https://images.unsplash.com/photo-1735822411225-f3224b8a397b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzh8fGNsdWIlMjBoaXAlMjBob3B8ZW58MHx8MHx8fDA%3D",
+    category: "R&B",
+  },
+  {
+    title: "RnB Revival",
+    date: "2026-01-15",
+    location: "Boxpark Stage",
+    image: "https://images.unsplash.com/photo-1547661198-888c249734e7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm5iJTIwY29uY2VydHxlbnwwfHwwfHx8MA%3D%3D",
+    category: "R&B",
+  },
+  {
+    title: "Golden Soul Show",
+    date: "2026-02-28",
+    location: "Dubai Design District",
+    image: "https://images.unsplash.com/photo-1513104487127-813ea879b8da?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b2xkJTIwaGlwJTIwaG9wfGVufDB8fDB8fHww",
+    category: "R&B",
+  }
+
+];
+
+export default mockEvents;

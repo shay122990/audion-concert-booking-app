@@ -59,16 +59,18 @@ export const addEvent = async (event: {
   date: string;
   location: string;
   image: string;
+  category: string;
 }) => {
   try {
-    const newRef = doc(collection(db, "events")); 
-    await setDoc(newRef, event);
+    const newRef = doc(collection(db, "events"));
+    await setDoc(newRef, event); 
     console.log("✅ Added event:", event.title);
   } catch (error) {
     console.error("❌ Error adding event:", error);
     throw error;
   }
 };
+
 
 export const deleteAllEvents = async () => {
     try {
@@ -96,12 +98,16 @@ export const deleteEventById = async (id: string) => {
     throw error;
   }
 };
-export const updateEventById = async (id: string, updatedData: Partial<{
-  title: string;
-  date: string;
-  location: string;
-  image: string;
-}>) => {
+export const updateEventById = async (
+  id: string,
+  updatedData: Partial<{
+    title: string;
+    date: string;
+    location: string;
+    image: string;
+    category: string; 
+  }>
+) => {
   try {
     const ref = doc(db, "events", id);
     await updateDoc(ref, updatedData);
