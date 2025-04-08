@@ -5,21 +5,6 @@ import { getDocs, collection } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import EventCard from "@/app/components/EventCard";
 
-const CATEGORIES = [
-  "All",
-  "EDM",
-  "Indie",
-  "Pop",
-  "Rock",
-  "Jazz",
-  "Classical",
-  "R&B",
-  "Local Events",
-  "Festivals",
-  "Underground",
-  "Other",
-];
-
 interface Event {
   id: string;
   title: string;
@@ -32,36 +17,20 @@ interface Event {
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       const snapshot = await getDocs(collection(db, "events"));
-      const data: Event[] = snapshot.docs.map((doc) => {
-        const event = doc.data();
+      const data: Event[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Event, "id">),
+      }));
 
-        const lowerTitle = event.title.toLowerCase();
-        let category = "Other";
-        if (lowerTitle.includes("edm")) category = "EDM";
-        else if (lowerTitle.includes("indie")) category = "Indie";
-        else if (lowerTitle.includes("rock")) category = "Rock";
-        else if (lowerTitle.includes("pop")) category = "Pop";
-        else if (lowerTitle.includes("jazz")) category = "Jazz";
-        else if (lowerTitle.includes("classical")) category = "Classical";
-        else if (lowerTitle.includes("r&b") || lowerTitle.includes("rnb")) category = "R&B";
-        else if (lowerTitle.includes("local")) category = "Local Events";
-        else if (lowerTitle.includes("festival")) category = "Festivals";
-        else if (lowerTitle.includes("underground")) category = "Underground";
-
-        return {
-          id: doc.id,
-          title: event.title,
-          date: event.date,
-          location: event.location,
-          image: event.image,
-          category,
-        };
-      });
       setEvents(data);
+
+      const uniqueCategories = Array.from(new Set(data.map((event) => event.category))).sort();
+      setCategories(["All", ...uniqueCategories]);
     };
 
     fetchEvents();
@@ -71,7 +40,7 @@ export default function Home() {
     setActiveCategory(category === activeCategory ? "All" : category);
   };
 
-  const groupedEvents = CATEGORIES.reduce((acc: Record<string, Event[]>, category) => {
+  const groupedEvents = categories.reduce((acc: Record<string, Event[]>, category) => {
     acc[category] = category === "All"
       ? events
       : events.filter((event) => event.category === category);
@@ -86,7 +55,7 @@ export default function Home() {
       </section>
 
       <div className="flex flex-wrap justify-center gap-2 mb-8">
-        {CATEGORIES.map((category) => (
+        {categories.map((category) => (
           <button
             key={category}
             onClick={() => handleCategoryClick(category)}
@@ -101,7 +70,7 @@ export default function Home() {
         ))}
       </div>
 
-      {(activeCategory === "All" ? CATEGORIES.slice(1) : [activeCategory]).map((category) => (
+      {(activeCategory === "All" ? categories.slice(1) : [activeCategory]).map((category) => (
         groupedEvents[category] && groupedEvents[category].length > 0 && (
           <section key={category} className="mb-12">
             <h2 className="text-2xl font-semibold mb-4">{category}</h2>
@@ -115,4 +84,4 @@ export default function Home() {
       ))}
     </main>
   );
-}
+} 
