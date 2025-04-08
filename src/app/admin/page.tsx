@@ -14,12 +14,18 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 
+const CATEGORIES = [
+  "EDM", "Indie", "Pop", "Rock", "Jazz", "Classical",
+  "R&B", "Local Events", "Festivals", "Underground", "Other"
+];
+
 type Event = {
   id: string;
   title: string;
   date: string;
   location: string;
   image?: string;
+  category: string;
 };
 
 export default function AdminPage() {
@@ -30,6 +36,7 @@ export default function AdminPage() {
     date: "",
     location: "",
     image: "",
+    category: "EDM",
   });
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useIsAdmin();
@@ -66,6 +73,7 @@ export default function AdminPage() {
       date: event.date,
       location: event.location,
       image: event.image ?? "",
+      category: event.category,
     });
   };
 
@@ -78,6 +86,7 @@ export default function AdminPage() {
       date: editFormData.date || original.date,
       location: editFormData.location || original.location,
       image: editFormData.image || original.image,
+      category: editFormData.category || original.category,
     };
 
     await updateEventById(id, updated);
@@ -128,6 +137,7 @@ export default function AdminPage() {
               date: formData.get("date") as string,
               location: formData.get("location") as string,
               image: formData.get("image") as string,
+              category: formData.get("category") as string,
             };
 
             try {
@@ -146,6 +156,11 @@ export default function AdminPage() {
           <input name="date" type="date" required className="px-4 py-2 rounded border" />
           <input name="location" placeholder="Location" required className="px-4 py-2 rounded border" />
           <input name="image" placeholder="Image URL" required className="px-4 py-2 rounded border" />
+          <select name="category" defaultValue={CATEGORIES[0]} required className="px-4 py-2 rounded border">
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
           <button
             type="submit"
             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
@@ -201,6 +216,15 @@ export default function AdminPage() {
                       className="px-2 py-1 border rounded"
                       placeholder="Image URL"
                     />
+                    <select
+                      value={editFormData.category}
+                      onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
+                      className="px-2 py-1 border rounded"
+                    >
+                      {CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
                     <div className="flex gap-2 mt-2">
                       <button type="submit" className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">
                         Save
@@ -221,6 +245,7 @@ export default function AdminPage() {
                       <p className="text-sm text-gray-500">
                         {event.date} • {event.location}
                       </p>
+                      <p className="text-xs text-purple-600 font-medium mt-1">Category: {event.category}</p>
                     </div>
                     <div className="flex gap-2 justify-end sm:w-auto">
                       <button
