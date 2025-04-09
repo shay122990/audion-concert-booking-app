@@ -23,7 +23,7 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 // The addMockEvents function will check if there are existing title events, if so it will skip and add only newly added events in the mock-events file, this way there would be no duplicates 
-export const addMockEvents = async () => {
+export const addMockEvents = async (): Promise<"uploaded" | "already-exists" | "error"> => {
   try {
     const eventsRef = collection(db, "events");
     const snapshot = await getDocs(eventsRef);
@@ -38,22 +38,22 @@ export const addMockEvents = async () => {
       const titleKey = event.title.toLowerCase().trim();
       if (!existingTitles.includes(titleKey)) {
         await addDoc(eventsRef, event);
-        console.log(`✅ Added: ${event.title}`);
         addedCount++;
-      } else {
-        console.log(`⚠️ Skipped duplicate: ${event.title}`);
       }
     }
 
     if (addedCount === 0) {
-      console.log("ℹ️ No new events added. All already exist.");
-    } else {
-      console.log(`🎉 ${addedCount} new events added to Firestore`);
+      return "already-exists";
     }
+
+    return "uploaded";
   } catch (error) {
     console.error("❌ Error adding events:", error);
+    return "error";
   }
 };
+
+
 export const addEvent = async (event: {
   title: string;
   date: string;
