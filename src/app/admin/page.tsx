@@ -38,7 +38,7 @@ export default function AdminPage() {
     image: "",
     category: "EDM",
   });
-  const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "uploaded">("idle");
+  const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "uploaded" | "exists" | "error">("idle");
 
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useIsAdmin();
@@ -110,17 +110,36 @@ export default function AdminPage() {
         <button
           onClick={async () => {
             setUploadStatus("uploading");
-            await addMockEvents();
-            setUploadStatus("uploaded");
+            const result = await addMockEvents();
             await fetchEvents();
+
+            if (result === "uploaded") {
+              setUploadStatus("uploaded");
+            } else if (result === "already-exists") {
+              setUploadStatus("exists");
+            } else {
+              setUploadStatus("error");
+            }
           }}
           className={`px-6 py-3 rounded-lg transition text-white ${
             uploadStatus === "uploaded"
               ? "bg-green-600 hover:bg-green-700"
+              : uploadStatus === "exists"
+              ? "bg-gray-500"
+              : uploadStatus === "error"
+              ? "bg-red-600"
               : "bg-purple-600 hover:bg-purple-700"
           }`}
         >
-          {uploadStatus === "uploaded" ? "Uploaded" : "Upload Events from File"}
+          {uploadStatus === "uploading"
+            ? "Uploading..."
+            : uploadStatus === "uploaded"
+            ? "Uploaded"
+            : uploadStatus === "exists"
+            ? "✔ Already Exists"
+            : uploadStatus === "error"
+            ? "❌ Error"
+            : "Upload Events from File"}
         </button>
         <button
           onClick={async () => {
