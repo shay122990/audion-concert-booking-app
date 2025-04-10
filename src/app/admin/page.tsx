@@ -23,9 +23,12 @@ type Event = {
   id: string;
   title: string;
   date: string;
+  time: string;
   location: string;
   image?: string;
   category: string;
+  description: string;
+  lineup: string[];
 };
 
 export default function AdminPage() {
@@ -34,11 +37,16 @@ export default function AdminPage() {
   const [editFormData, setEditFormData] = useState({
     title: "",
     date: "",
+    time: "",
     location: "",
     image: "",
     category: "EDM",
+    description: "",
+    lineup: "",
   });
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "uploaded" | "exists" | "error">("idle");
+  const [deleteStatus, setDeleteStatus] = useState<"idle" | "deleting" | "deleted" | "error">("idle");
+  const RESET_DELAY = 3000; 
 
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useIsAdmin();
@@ -54,10 +62,14 @@ export default function AdminPage() {
 
   const fetchEvents = async () => {
     const snapshot = await getDocs(collection(db, "events"));
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as Omit<Event, "id">),
-    }));
+    const data = snapshot.docs.map((doc) => {
+      const eventData = doc.data() as Omit<Event, "id">;
+      return {
+        id: doc.id,
+        ...eventData,
+        lineup: eventData.lineup ?? [],
+      };
+    });
     setEvents(data);
   };
 
@@ -73,9 +85,12 @@ export default function AdminPage() {
     setEditFormData({
       title: event.title,
       date: event.date,
+      time: event.time,
       location: event.location,
       image: event.image ?? "",
       category: event.category,
+      description: event.description,
+      lineup: event.lineup?.join(", ") ?? "",
     });
   };
 
@@ -86,9 +101,14 @@ export default function AdminPage() {
     const updated = {
       title: editFormData.title || original.title,
       date: editFormData.date || original.date,
+      time: editFormData.time || original.time,
       location: editFormData.location || original.location,
       image: editFormData.image || original.image,
       category: editFormData.category || original.category,
+      description: editFormData.description || original.description,
+      lineup: editFormData.lineup
+        ? editFormData.lineup.split(",").map((s) => s.trim())
+        : original.lineup,
     };
 
     await updateEventById(id, updated);
@@ -115,8 +135,10 @@ export default function AdminPage() {
 
             if (result === "uploaded") {
               setUploadStatus("uploaded");
+              setTimeout(() => setUploadStatus("idle"), RESET_DELAY);
             } else if (result === "already-exists") {
               setUploadStatus("exists");
+              setTimeout(() => setUploadStatus("idle"), RESET_DELAY);
             } else {
               setUploadStatus("error");
             }
@@ -134,26 +156,49 @@ export default function AdminPage() {
           {uploadStatus === "uploading"
             ? "Uploading..."
             : uploadStatus === "uploaded"
-            ? "Uploaded"
+            ? "✅ Uploaded"
             : uploadStatus === "exists"
             ? "✔ Already Exists"
             : uploadStatus === "error"
-            ? "❌ Error"
+            ? "❌ Upload Failed. Try again or contact dev"
             : "Upload Events from File"}
         </button>
+
+        {/* Delete Button */}
         <button
           onClick={async () => {
             const confirm = window.confirm("Delete ALL events?");
             if (!confirm) return;
-            await deleteAllEvents();
-            await fetchEvents();
+
+            try {
+              setDeleteStatus("deleting");
+              await deleteAllEvents();
+              await fetchEvents();
+              setDeleteStatus("deleted");
+              setTimeout(() => setDeleteStatus("idle"), RESET_DELAY);
+            } catch (err) {
+              console.error("❌ Error deleting all events:", err);
+              setDeleteStatus("error");
+            }
           }}
-          className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+          className={`px-6 py-3 rounded-lg transition text-white ${
+            deleteStatus === "deleted"
+              ? "bg-green-600 hover:bg-green-700"
+              : deleteStatus === "error"
+              ? "bg-red-600"
+              : "bg-red-600 hover:bg-red-700"
+          }`}
         >
-          Delete All Events
+          {deleteStatus === "deleting"
+            ? "Deleting..."
+            : deleteStatus === "deleted"
+            ? "✅ All Deleted"
+            : deleteStatus === "error"
+            ? "❌ Delete Failed. Try again or contact dev"
+            : "Delete All Events"}
         </button>
       </div>
-
+      
       <section className="w-full mt-12">
         <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
         <form
@@ -165,9 +210,12 @@ export default function AdminPage() {
             const newEvent = {
               title: formData.get("title") as string,
               date: formData.get("date") as string,
+              time: formData.get("time") as string,
               location: formData.get("location") as string,
               image: formData.get("image") as string,
               category: formData.get("category") as string,
+              description: formData.get("description") as string,
+              lineup: (formData.get("lineup") as string).split(",").map((s) => s.trim()),
             };
 
             try {
@@ -184,6 +232,7 @@ export default function AdminPage() {
         >
           <input name="title" placeholder="Title" required className="px-4 py-2 rounded border" />
           <input name="date" type="date" required className="px-4 py-2 rounded border" />
+          <input name="time" placeholder="Time (e.g. 19:00)" required className="px-4 py-2 rounded border" />
           <input name="location" placeholder="Location" required className="px-4 py-2 rounded border" />
           <input name="image" placeholder="Image URL" required className="px-4 py-2 rounded border" />
           <select name="category" defaultValue={CATEGORIES[0]} required className="px-4 py-2 rounded border">
@@ -191,6 +240,8 @@ export default function AdminPage() {
               <option key={cat} value={cat}>{cat}</option>
             ))}
           </select>
+          <textarea name="description" placeholder="Description" required className="px-4 py-2 rounded border" />
+          <input name="lineup" placeholder="Lineup (comma-separated)" required className="px-4 py-2 rounded border" />
           <button
             type="submit"
             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
@@ -233,6 +284,12 @@ export default function AdminPage() {
                       className="px-2 py-1 border rounded"
                     />
                     <input
+                      type="time"
+                      value={editFormData.time}
+                      onChange={(e) => setEditFormData({ ...editFormData, time: e.target.value })}
+                      className="px-2 py-1 border rounded"
+                    />
+                    <input
                       type="text"
                       value={editFormData.location}
                       onChange={(e) => setEditFormData({ ...editFormData, location: e.target.value })}
@@ -255,6 +312,19 @@ export default function AdminPage() {
                         <option key={cat} value={cat}>{cat}</option>
                       ))}
                     </select>
+                    <textarea
+                      value={editFormData.description}
+                      onChange={(e) => setEditFormData({ ...editFormData, description: e.target.value })}
+                      className="px-2 py-1 border rounded"
+                      placeholder="Description"
+                    />
+                    <input
+                      type="text"
+                      value={editFormData.lineup}
+                      onChange={(e) => setEditFormData({ ...editFormData, lineup: e.target.value })}
+                      className="px-2 py-1 border rounded"
+                      placeholder="Lineup (comma-separated)"
+                    />
                     <div className="flex gap-2 mt-2">
                       <button type="submit" className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">
                         Save
@@ -262,7 +332,7 @@ export default function AdminPage() {
                       <button
                         type="button"
                         onClick={() => setEditingEventId(null)}
-                        className=" text-white px-4 py-1 rounded hover:bg-gray-500"
+                        className="text-white px-4 py-1 rounded hover:bg-gray-500"
                       >
                         Cancel
                       </button>
@@ -273,7 +343,11 @@ export default function AdminPage() {
                     <div className="text-left w-full">
                       <p className="font-semibold">{event.title}</p>
                       <p className="text-sm text-gray-500">
-                        {event.date} • {event.location}
+                        {event.date} at {event.time} • {event.location}
+                      </p>
+                      <p className="text-xs text-gray-600 italic mt-1">{event.description}</p>
+                      <p className="text-xs text-purple-600 font-medium mt-1">
+                        Lineup: {event.lineup?.join(", ") || "No lineup provided"}
                       </p>
                       <p className="text-xs text-purple-600 font-medium mt-1">Category: {event.category}</p>
                     </div>

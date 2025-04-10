@@ -53,13 +53,15 @@ export const addMockEvents = async (): Promise<"uploaded" | "already-exists" | "
   }
 };
 
-
 export const addEvent = async (event: {
   title: string;
   date: string;
+  time: string;
   location: string;
   image: string;
   category: string;
+  description: string;
+  lineup: string[];
 }) => {
   try {
     const newRef = doc(collection(db, "events"));
@@ -70,7 +72,6 @@ export const addEvent = async (event: {
     throw error;
   }
 };
-
 
 export const deleteAllEvents = async () => {
     try {
@@ -103,9 +104,12 @@ export const updateEventById = async (
   updatedData: Partial<{
     title: string;
     date: string;
+    time:string;
     location: string;
     image: string;
     category: string; 
+    description:string;
+    lineup:string[];
   }>
 ) => {
   try {
