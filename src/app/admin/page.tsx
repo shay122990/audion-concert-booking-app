@@ -251,8 +251,8 @@ export default function AdminPage() {
         </form>
       </section>
 
-      <section className="w-full mt-12">
-        <h2 className="text-xl font-semibold mb-4">Current Events</h2>
+      <section className="w-full mt-12 max-h-[600px] overflow-y-auto pr-2">
+        <h2 className="text-xl font-semibold mb-4 sticky top-0 bg-white dark:bg-black z-10">Current Events</h2>
         <ul className="space-y-4">
           {events.length === 0 ? (
             <p className="text-gray-500">No events found.</p>
