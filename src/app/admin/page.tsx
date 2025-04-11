@@ -14,24 +14,13 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import EventSearchBar from "@/app/components/EventSearchBar";
+import { Event } from "@/app/types/event";
 
 
 const CATEGORIES = [
   "EDM", "Indie", "Pop", "Rock", "Jazz", "Classical",
   "R&B", "Local Events", "Festivals", "Underground", "Other"
 ];
-
-type Event = {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  image?: string;
-  category: string;
-  description: string;
-  lineup: string[];
-};
 
 export default function AdminPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -70,12 +59,18 @@ export default function AdminPage() {
 
   const fetchEvents = async () => {
     const snapshot = await getDocs(collection(db, "events"));
-    const data = snapshot.docs.map((doc) => {
-      const eventData = doc.data() as Omit<Event, "id">;
+    const data: Event[] = snapshot.docs.map((doc) => {
+      const rawData = doc.data() as Partial<Event>;
       return {
         id: doc.id,
-        ...eventData,
-        lineup: eventData.lineup ?? [],
+        title: rawData.title || "",
+        date: rawData.date || "",
+        time: rawData.time || "",
+        location: rawData.location || "",
+        image: rawData.image || "",
+        category: rawData.category || "",
+        description: rawData.description || "",
+        lineup: Array.isArray(rawData.lineup) ? rawData.lineup : [],
       };
     });
     setEvents(data);

@@ -6,24 +6,13 @@ import { notFound, useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-
-type EventData = {
-  id: string;
-  title: string;
-  date: string; // or consider: dates: string[]
-  time?: string; // optional
-  location: string;
-  image: string;
-  category: string;
-  description?: string;// to be added 
-  lineup?: string[];//to be added in the future
-};
+import { Event } from "@/app/types/event";
 
 
 export default function EventDetailsPage() {
   const { id } = useParams(); 
   const router = useRouter();
-  const [event, setEvent] = useState<EventData | null>(null);
+  const [event, setEvent] = useState<Event | null>(null);
 
   const [selectedDate, setSelectedDate] = useState("");
 
@@ -40,7 +29,7 @@ export default function EventDetailsPage() {
       }
 
       const data = eventSnap.data();
-      setEvent(data as EventData);
+      setEvent(data as Event);
       setSelectedDate(data.date);
     };
 

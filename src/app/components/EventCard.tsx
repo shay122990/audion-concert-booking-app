@@ -1,14 +1,7 @@
-// src/app/components/EventCard.tsx
 import Image from "next/image";
 import Link from "next/link";
+import { Event } from "@/app/types/event";
 
-type Event = {
-  id: string;
-  title: string;
-  date: string;
-  location: string;
-  image: string;
-};
 
 type Props = {
   event: Event;

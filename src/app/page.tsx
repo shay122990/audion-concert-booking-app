@@ -4,48 +4,56 @@ import { useEffect, useState } from "react";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import EventCard from "@/app/components/EventCard";
+import EventSearchBar from "./components/EventSearchBar";
+import { Event } from "@/app/types/event";
 
-interface Event {
-  id: string;
-  title: string;
-  date: string;
-  location: string;
-  image: string;
-  category: string;
-}
 
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [categories, setCategories] = useState<string[]>([]);
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
+
 
   useEffect(() => {
     const fetchEvents = async () => {
       const snapshot = await getDocs(collection(db, "events"));
-      const data: Event[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as Omit<Event, "id">),
-      }));
-
+      const data: Event[] = snapshot.docs.map((doc) => {
+        const rawData = doc.data() as Partial<Event>;
+        return {
+          id: doc.id,
+          title: rawData.title || "",
+          date: rawData.date || "",
+          time: rawData.time || "",
+          location: rawData.location || "",
+          image: rawData.image || "",
+          category: rawData.category || "",
+          description: rawData.description || "",
+          lineup: Array.isArray(rawData.lineup) ? rawData.lineup : [],
+        };
+      });
+  
       setEvents(data);
-
+      setFilteredEvents(data);
+  
       const uniqueCategories = Array.from(new Set(data.map((event) => event.category))).sort();
       setCategories(["All", ...uniqueCategories]);
     };
-
+  
     fetchEvents();
   }, []);
-
+  
   const handleCategoryClick = (category: string) => {
     setActiveCategory(category === activeCategory ? "All" : category);
   };
 
   const groupedEvents = categories.reduce((acc: Record<string, Event[]>, category) => {
     acc[category] = category === "All"
-      ? events
-      : events.filter((event) => event.category === category);
+      ? filteredEvents
+      : filteredEvents.filter((event) => event.category === category);
     return acc;
   }, {});
+  
 
   return (
     <main className="px-6 py-12 max-w-7xl mx-auto">
@@ -69,7 +77,11 @@ export default function Home() {
           </button>
         ))}
       </div>
-
+      <EventSearchBar<Event>
+        data={events}
+        onFilter={setFilteredEvents}
+        keysToSearch={["title", "location", "category", "description", "lineup"]}
+      />
       {(activeCategory === "All" ? categories.slice(1) : [activeCategory]).map((category) => (
         groupedEvents[category] && groupedEvents[category].length > 0 && (
           <section key={category} className="mb-12">

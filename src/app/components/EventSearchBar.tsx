@@ -6,12 +6,13 @@ type EventItem = {
   [key: string]: string | string[] | undefined;
 };
 
-type EventSearchBarProps<T extends EventItem> = {
+type EventSearchBarProps<T> = {
   data: T[];
   onFilter: (results: T[]) => void;
   keysToSearch: (keyof T)[];
   placeholder?: string;
 };
+
 
 export default function EventSearchBar<T extends EventItem>({
   data,
