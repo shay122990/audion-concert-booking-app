@@ -17,7 +17,7 @@ export default function EventSearchBar<T extends EventItem>({
   data,
   onFilter,
   keysToSearch,
-  placeholder = "Search event...",
+  placeholder = "Search event by title, location, category, description or lineup",
 }: EventSearchBarProps<T>) {
   const [searchTerm, setSearchTerm] = useState("");
 

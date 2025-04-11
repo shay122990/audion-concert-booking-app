@@ -13,6 +13,8 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
+import EventSearchBar from "@/app/components/EventSearchBar";
+
 
 const CATEGORIES = [
   "EDM", "Indie", "Pop", "Rock", "Jazz", "Classical",
@@ -44,6 +46,8 @@ export default function AdminPage() {
     description: "",
     lineup: "",
   });
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
+
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "uploaded" | "exists" | "error">("idle");
   const [deleteStatus, setDeleteStatus] = useState<"idle" | "deleting" | "deleted" | "error">("idle");
   const RESET_DELAY = 3000; 
@@ -59,6 +63,10 @@ export default function AdminPage() {
       }
     }
   }, [user, isAdmin, authLoading, adminLoading, router]);
+
+  useEffect(() => {
+    setFilteredEvents(events);
+  }, [events]);
 
   const fetchEvents = async () => {
     const snapshot = await getDocs(collection(db, "events"));
@@ -125,7 +133,7 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen px-6 py-24 max-w-3xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10">
       <h1 className="text-3xl font-bold text-purple-600">Audion Admin</h1>
-
+      {/* add all events from file or delete all events */}
       <div className="flex gap-4 flex-wrap justify-center">
         <button
           onClick={async () => {
@@ -164,7 +172,6 @@ export default function AdminPage() {
             : "Upload Events from File"}
         </button>
 
-        {/* Delete Button */}
         <button
           onClick={async () => {
             const confirm = window.confirm("Delete ALL events?");
@@ -198,7 +205,7 @@ export default function AdminPage() {
             : "Delete All Events"}
         </button>
       </div>
-      
+      {/* add new event */}
       <section className="w-full mt-12">
         <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
         <form
@@ -251,13 +258,20 @@ export default function AdminPage() {
         </form>
       </section>
 
+      {/* current events  */}
+
       <section className="w-full mt-12 max-h-[600px] overflow-y-auto pr-2">
         <h2 className="text-xl font-semibold mb-4 sticky top-0 bg-white dark:bg-black z-10">Current Events</h2>
+        <EventSearchBar
+          data={events}
+          onFilter={setFilteredEvents}
+          keysToSearch={["title", "location", "category", "description", "lineup"]}
+        />
         <ul className="space-y-4">
-          {events.length === 0 ? (
+          {filteredEvents.length === 0 ? (
             <p className="text-gray-500">No events found.</p>
           ) : (
-            events.map((event) => (
+            filteredEvents.map((event) => (
               <li
                 key={event.id}
                 className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg shadow gap-4 border"
