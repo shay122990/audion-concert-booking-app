@@ -55,25 +55,27 @@ export default function EventDetailsPage() {
       </div>
 
       <h1 className="text-3xl font-bold mb-2">{event.title}</h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-4">
-        📍 {event.location} • 📅 {format(new Date(event.date), "MMMM d, yyyy")}
-      </p>
+        <p className="text-gray-600 dark:text-gray-400 mb-2">
+          📍 {event.location} • 📅 {format(new Date(event.date), "MMMM d, yyyy")}
+        </p>
+        <p className="text-gray-600 dark:text-gray-400 mb-2">
+          ⏰ {event.time}
+        </p>
 
-      <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-        Get ready for an unforgettable experience at <strong>{event.title}</strong>! Reserve your
-        spot now before tickets sell out.
-      </p>
+        <p className="text-md text-gray-800 dark:text-gray-300 mb-6">
+          {event.description}
+        </p>
 
-      <div className="mb-6">
-        <label className="block text-sm font-medium mb-1">Select a date:</label>
-        <input
-          type="date"
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-          className="px-4 py-2 rounded border w-full max-w-xs"
-        />
-      </div>
-
+        {event.lineup?.length > 0 && (
+          <div className="mb-6">
+            <h3 className="font-semibold mb-2 text-lg text-purple-600">Lineup</h3>
+            <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+              {event.lineup.map((artist, index) => (
+                <li key={index}>{artist}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       <button
         onClick={handleBooking}
         disabled={!selectedDate}
