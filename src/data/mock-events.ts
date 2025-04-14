@@ -130,7 +130,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1653581364580-5a1074a1fa31?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29jYSUyMGNvbGElMjBhcmVuYXxlbnwwfHwwfHx8MA%3D%3D",
     category: "Pop",
     description: "A high-energy pop concert featuring the biggest chart-toppers and electrifying performances. Get ready to dance the night away!",
-    lineUp: ["Ava Monroe", "The City Lights", "Luna Ray"]
+    lineup: ["Ava Monroe", "The City Lights", "Luna Ray"]
   },
   {
     title: "Neon Pop Tour",
@@ -140,7 +140,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1525286116112-b59af11adad1?w=800&auto=format&fit=crop&q=60",
     category: "Pop",
     description: "A dazzling neon-themed tour bringing vibrant visuals and unforgettable pop anthems to life in the heart of the city.",
-    lineUp: ["Nova Bloom", "Electric Hearts", "DJ Kalei"]
+    lineup: ["Nova Bloom", "Electric Hearts", "DJ Kalei"]
   },
   {
     title: "Summer Pop Hits",
@@ -150,7 +150,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1718634353354-fa2fc07e3080?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBvcCUyMGNvbmNlcnQlMjBvdXRkb29yc3xlbnwwfHwwfHx8MA%3D%3D",
     category: "Pop",
     description: "Celebrate the end of summer with chart-topping pop hits and a vibrant crowd under the stars.",
-    lineUp: ["Skyler June", "The Poptones", "Melody Lane"]
+    lineup: ["Skyler June", "The Poptones", "Melody Lane"]
   },
   {
     title: "Retro Pop Night",
@@ -160,7 +160,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1600146698733-a339319d56e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBvcCUyMGNvbmNlcnR8ZW58MHx8MHx8fDA%3D",
     category: "Pop",
     description: "Take a trip down memory lane with a nostalgic night of retro pop favorites and 80s vibes.",
-    lineUp: ["Flashback", "Glitter Echo", "Cassette Crush"]
+    lineup: ["Flashback", "Glitter Echo", "Cassette Crush"]
   },
   {
     title: "Future Pop Stars",
@@ -170,7 +170,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1731521581630-46864db40e18?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZ1dHVyZSUyMHBvcCUyMHN0YXJ8ZW58MHx8MHx8fDA%3D",
     category: "Pop",
     description: "Discover tomorrow's pop legends at this showcase of rising stars, packed with energy and fresh talent.",
-    lineUp: ["Echo Nova", "Sierra Sparks", "The Future Beat"]
+    lineup: ["Echo Nova", "Sierra Sparks", "The Future Beat"]
   },
   {
     title: "Desert Pop Fever",
@@ -180,7 +180,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop&q=60",
     category: "Pop",
     description: "An open-air desert concert like no other—feel the heat with pop bangers and a wild crowd under the stars.",
-    lineUp: ["Phoenix Pulse", "Starlit Crew", "Amber Waves"]
+    lineup: ["Phoenix Pulse", "Starlit Crew", "Amber Waves"]
   },
   // Rock
   {
@@ -191,7 +191,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1527419105721-af1f23c86dec?w=800&auto=format&fit=crop&q=60",
     category: "Rock",
     description: "Feel the raw energy of rock echo across the dunes with a night of gritty performances and roaring guitars in the heart of the desert.",
-    lineUp: ["The Sandstorm", "Desert Roar", "Black Ember"]
+    lineup: ["The Sandstorm", "Desert Roar", "Black Ember"]
   },
   {
     title: "Rock Revolution",
@@ -201,7 +201,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1518972559570-7cc1309f3229?w=800&auto=format&fit=crop&q=60",
     category: "Rock",
     description: "Unleash your inner rebel at this full-throttle rock fest showcasing the boldest new acts and iconic rockers.",
-    lineUp: ["Static Echo", "Riot Theory", "Ashfall"]
+    lineup: ["Static Echo", "Riot Theory", "Ashfall"]
   },
   {
     title: "Guitar Gods",
@@ -211,7 +211,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1566320239266-7a352f8c382a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGd1aXRhciUyMGdvZHN8ZW58MHx8MHx8fDA%3D",
     category: "Rock",
     description: "A night for the legends—witness guitar virtuosos light up the stage with jaw-dropping solos and heavy riffs.",
-    lineUp: ["Axel Storm", "The Licks", "Neon Revolver"]
+    lineup: ["Axel Storm", "The Licks", "Neon Revolver"]
   },
   {
     title: "Metal Mayhem",
@@ -221,7 +221,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1506091403742-e3aa39518db5?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     category: "Rock",
     description: "Brace yourself for a night of headbanging, shredding, and pure metal madness at this epic gathering of heavy-hitters.",
-    lineUp: ["Iron Clad", "Crimson Surge", "Skulltone"]
+    lineup: ["Iron Clad", "Crimson Surge", "Skulltone"]
   },
   {
     title: "Alt Rock United",
@@ -231,7 +231,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1600528777391-4e35bf973e44?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFsdGVybmF0aXZlJTIwcm9ja3xlbnwwfHwwfHx8MA%3D%3D",
     category: "Rock",
     description: "Alternative vibes collide with indie edge in this genre-bending rock showcase packed with unique sounds and heartfelt lyrics.",
-    lineUp: ["Echo Drift", "Velvet Sun", "The North Ends"]
+    lineup: ["Echo Drift", "Velvet Sun", "The North Ends"]
   },
   {
     title: "Legends of Rock",
@@ -241,7 +241,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1651336450907-bf65259b87be?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bGVnZW5kcyUyMG9mJTIwcm9ja3xlbnwwfHwwfHx8MA%3D%3D",
     category: "Rock",
     description: "A tribute to the legends who defined rock 'n' roll—relive the classics and rock anthems that shaped generations.",
-    lineUp: ["The Thunder Lords", "Crimson Strings", "Viper Road"]
+    lineup: ["The Thunder Lords", "Crimson Strings", "Viper Road"]
   },
   //JAZZ
   {
@@ -252,7 +252,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1559752067-f30e5f277930?w=800&auto=format&fit=crop&q=60",
     category: "Jazz",
     description: "Enjoy a magical night of smooth melodies and soulful rhythms under the open sky at Dubai’s most elegant garden venue.",
-    lineUp: ["Leila Sade Trio", "Midnight Groove", "Emirates Jazz Ensemble"]
+    lineup: ["Leila Sade Trio", "Midnight Groove", "Emirates Jazz Ensemble"]
   },
   {
     title: "Blue Note Dubai",
@@ -262,7 +262,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1715015326993-c020872670b7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8amF6eiUyMG91dGRvb3JzfGVufDB8fDB8fHww",
     category: "Jazz",
     description: "An intimate evening of world-class jazz, featuring classic standards and contemporary interpretations in a beautiful beachfront setting.",
-    lineUp: ["Blue Note Quartet", "Hassan Keys", "The Jazztet"]
+    lineup: ["Blue Note Quartet", "Hassan Keys", "The Jazztet"]
   },
   {
     title: "Sax in the City",
@@ -272,7 +272,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1742500294033-0853fdf1ac06?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGphenolMjBvdXRkb29yc3xlbnwwfHwwfHx8MA%3D%3D",
     category: "Jazz",
     description: "Let the smooth sounds of saxophones set the mood in this cityscape jazz celebration featuring soulful solos and rich harmonies.",
-    lineUp: ["Sax Appeal", "Noura Jazz", "Ali & The Notes"]
+    lineup: ["Sax Appeal", "Noura Jazz", "Ali & The Notes"]
   },
   {
     title: "Smooth Vibes Festival",
@@ -282,7 +282,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1738322817781-1a95ad2c4f54?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGphenolMjBmZXN0aXZhbHxlbnwwfHwwfHx8MA%3D%3D",
     category: "Jazz",
     description: "Celebrate love and music with soothing jazz, lounge vibes, and candlelit ambiance on a special Valentine’s evening.",
-    lineUp: ["Velvet Vibe Collective", "Jazz & Roses", "Mona Elise"]
+    lineup: ["Velvet Vibe Collective", "Jazz & Roses", "Mona Elise"]
   },
   {
     title: "Jazz & Chill Sessions",
@@ -292,7 +292,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1730406919258-b031632e3de8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fGphenolMjBmZXN0aXZhbHxlbnwwfHwwfHx8MA%3D%3D",
     category: "Jazz",
     description: "A laid-back evening for jazz lovers looking to unwind with mellow grooves and local talent in a chill urban spot.",
-    lineUp: ["Chill Keys", "Bass & Brushes", "Jasmine Flow"]
+    lineup: ["Chill Keys", "Bass & Brushes", "Jasmine Flow"]
   },
   {
     title: "Desert Jazz Collective",
@@ -302,7 +302,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=60",
     category: "Jazz",
     description: "An immersive jazz experience blending nature and music, where smooth sounds echo across the tranquil desert night.",
-    lineUp: ["Nomad Jazz Co.", "The Sandtones", "Zayna Sax"]
+    lineup: ["Nomad Jazz Co.", "The Sandtones", "Zayna Sax"]
   },
   //CLASSICAL
   {
@@ -313,7 +313,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2xhc3NpY2FsJTIwbXVzaWN8ZW58MHx8MHx8fDA%3D",
     category: "Classical",
     description: "Experience the brilliance of Beethoven’s symphonies in a breathtaking performance by the bay’s finest orchestra.",
-    lineUp: ["Dubai Symphony Orchestra", "Maestro Albrecht", "The Chamber Virtuosi"]
+    lineup: ["Dubai Symphony Orchestra", "Maestro Albrecht", "The Chamber Virtuosi"]
   },
   {
     title: "Mozart Magic",
@@ -323,7 +323,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1513883049090-d0b7439799bf?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNsYXNzaWNhbCUyMG11c2ljfGVufDB8fDB8fHww",
     category: "Classical",
     description: "A whimsical evening of Mozart's greatest works performed in the open air against the city skyline.",
-    lineUp: ["Amira Ensemble", "Viola Nova", "City Strings Quartet"]
+    lineup: ["Amira Ensemble", "Viola Nova", "City Strings Quartet"]
   },
   {
     title: "Strings in the Sky",
@@ -333,7 +333,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1507739599340-3f6f8f347bfe?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b2JzZXJ2YXRvcnklMjBjb25jZXJ0fGVufDB8fDB8fHww",
     category: "Classical",
     description: "Let classical strings soar above the city as you enjoy a concert in the clouds at Sky Views Observatory.",
-    lineUp: ["The Sky Quartet", "Harper Duo", "Elyssa Tan"]
+    lineup: ["The Sky Quartet", "Harper Duo", "Elyssa Tan"]
   },
   {
     title: "Opera in the Garden",
@@ -343,7 +343,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1602080338149-55253d24c68a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8b3BlcmElMjBnYXJkZW58ZW58MHx8MHx8fDA%3D",
     category: "Classical",
     description: "An enchanting evening of opera arias and classical duets performed in the lush beauty of Safa Park.",
-    lineUp: ["Dubai Opera Ensemble", "Soprano Leila Haddad", "Baritone Marco Venti"]
+    lineup: ["Dubai Opera Ensemble", "Soprano Leila Haddad", "Baritone Marco Venti"]
   },
   {
     title: "Baroque Nights",
@@ -353,7 +353,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1731470093563-35cb5710354d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmFyb3F1ZSUyMGNvbmNlcnR8ZW58MHx8MHx8fDA%3D",
     category: "Classical",
     description: "Step into the elegance of the Baroque era with candlelit ambiance and ornate compositions by Vivaldi, Handel, and more.",
-    lineUp: ["Baroque Ensemble Dubai", "The Regal Winds", "Violinist Tomas Ré"]
+    lineup: ["Baroque Ensemble Dubai", "The Regal Winds", "Violinist Tomas Ré"]
   },
   {
     title: "Desert Philharmonic",
@@ -363,7 +363,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1729891404858-c5895a3a48ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNsYXNzaWNhbCUyMGNvbmNlcnQlMjBvdXRkb29yfGVufDB8fDB8fHww",
     category: "Classical",
     description: "Where sand meets symphony—immerse yourself in classical masterpieces beneath the stars in a serene desert setting.",
-    lineUp: ["Desert Philharmonic", "Conductor Yasmin El Rayes", "Oasis Strings"]
+    lineup: ["Desert Philharmonic", "Conductor Yasmin El Rayes", "Oasis Strings"]
   },
   // Festivals
   {
@@ -374,7 +374,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1603350902363-3141f62b7dba?w=800&auto=format&fit=crop&q=60",
     category: "Festivals",
     description: "Kick off the summer in style with an all-day celebration of music, food, and sun by the water at Dubai Marina.",
-    lineUp: ["DJ Solara", "The Waves", "Tropic Beats", "Urban Daze"]
+    lineup: ["DJ Solara", "The Waves", "Tropic Beats", "Urban Daze"]
   },
   {
     title: "Neon Nights Carnival",
@@ -384,7 +384,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&auto=format&fit=crop&q=60",
     category: "Festivals",
     description: "A glowing spectacle of lights, music, and color featuring carnival games, live DJs, and dance acts under the stars.",
-    lineUp: ["Electro Bloom", "Glow Troop", "DJ Mirage", "Kaleido Crew"]
+    lineup: ["Electro Bloom", "Glow Troop", "DJ Mirage", "Kaleido Crew"]
   },
   {
     title: "Winter Wonderland Bash",
@@ -394,7 +394,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1547829200-430afaf1fb88?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fHdpbnRlciUyMHdvbmRlcmxhbmQlMjBmZXN0aXZhbHxlbnwwfHwwfHx8MA%3D%3D",
     category: "Festivals",
     description: "Celebrate Christmas in a magical setting with festive performances, holiday treats, and snow-themed surprises for all ages.",
-    lineUp: ["Snow Jam Band", "The Carol Collective", "DJ North Pole", "Frosty Beats"]
+    lineup: ["Snow Jam Band", "The Carol Collective", "DJ North Pole", "Frosty Beats"]
   },
   {
     title: "Glow in the Dark Fest",
@@ -404,7 +404,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1740589960354-6bef7ab97bf7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z2xvdyUyMGluJTIwdGVoJTIwZGFyayUyMGZlc3RpdmFsfGVufDB8fDB8fHww",
     category: "Festivals",
     description: "Step into a world of glowing lights, neon art, and electrifying sets at this immersive nighttime celebration.",
-    lineUp: ["Neon Pulse", "Lightwave Project", "DJ Glo-Fi", "The Fluoro DJs"]
+    lineup: ["Neon Pulse", "Lightwave Project", "DJ Glo-Fi", "The Fluoro DJs"]
   },
   {
     title: "Beach Beats",
@@ -414,7 +414,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1704703336571-4c47c4aa73fe?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzh8fGJlYWNoJTIwZmVzdGl2YWx8ZW58MHx8MHx8fDA%3D",
     category: "Festivals",
     description: "Sandy toes and good vibes await at this beachside fest featuring tropical house, live sets, and sunset sessions.",
-    lineUp: ["DJ Breeze", "Ocean Flow", "Sandstorm Sound", "Wave Riders"]
+    lineup: ["DJ Breeze", "Ocean Flow", "Sandstorm Sound", "Wave Riders"]
   },
   {
     title: "Desert Fest Dubai",
@@ -424,7 +424,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1724415057322-12c98a7d4627?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGRlc2VydCUyMGZlc3RpdmFsfGVufDB8fDB8fHww",
     category: "Festivals",
     description: "Unite under the desert sky with music, art, food, and fire shows at this unique oasis festival experience.",
-    lineUp: ["Sahara Sound", "Nomad Vibes", "DJ Mirage", "Desert Drifters"]
+    lineup: ["Sahara Sound", "Nomad Vibes", "DJ Mirage", "Desert Drifters"]
   },
   // R&B
   {
@@ -435,7 +435,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2x1YnxlbnwwfHwwfHx8MA%3D%3D",
     category: "R&B",
     description: "A dreamy evening filled with smooth R&B ballads and soul-soothing vocals under the stars at Bluewaters.",
-    lineUp: ["Aaliyah Rose", "Vibe Theory", "The Midnight Notes"]
+    lineup: ["Aaliyah Rose", "Vibe Theory", "The Midnight Notes"]
   },
   {
     title: "R&B Flow",
@@ -445,7 +445,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1597602669912-b775917b3736?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2x1YiUyMGhpcCUyMGhvcHxlbnwwfHwwfHx8MA%3D%3D",
     category: "R&B",
     description: "Get in the groove at this intimate lounge event featuring sultry R&B hits, soulful duets, and live band vibes.",
-    lineUp: ["Keira Blaze", "Flowline", "Jayce Harmony"]
+    lineup: ["Keira Blaze", "Flowline", "Jayce Harmony"]
   },
   {
     title: "Groove & Soul",
@@ -455,7 +455,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1723210730375-55395e0604ba?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNsdWIlMjBoaXAlMjBob3B8ZW58MHx8MHx8fDA%3D",
     category: "R&B",
     description: "A fusion of rhythm and soul, this cozy night blends vintage R&B classics with new-school grooves.",
-    lineUp: ["Groove Nation", "Siena Soul", "Rico Velvet"]
+    lineup: ["Groove Nation", "Siena Soul", "Rico Velvet"]
   },
   {
     title: "Slow Jam Sessions",
@@ -465,7 +465,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1735822411225-f3224b8a397b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzh8fGNsdWIlMjBoaXAlMjBob3B8ZW58MHx8MHx8fDA%3D",
     category: "R&B",
     description: "Kick back for an evening of chilled-out slow jams, cozy park vibes, and acoustic soul performances.",
-    lineUp: ["The Low Keys", "Zara Amour", "Soulstice"]
+    lineup: ["The Low Keys", "Zara Amour", "Soulstice"]
   },
   {
     title: "RnB Revival",
@@ -475,7 +475,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1547661198-888c249734e7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm5iJTIwY29uY2VydHxlbnwwfHwwfHx8MA%3D%3D",
     category: "R&B",
     description: "Old-school meets new-school in this soulful throwback night celebrating the golden era of R&B.",
-    lineUp: ["The Revival Set", "Monique Elise", "90s Harmony"]
+    lineup: ["The Revival Set", "Monique Elise", "90s Harmony"]
   },
   {
     title: "Golden Soul Show",
@@ -485,7 +485,7 @@ const mockEvents = [
     image: "https://images.unsplash.com/photo-1513104487127-813ea879b8da?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b2xkJTIwaGlwJTIwaG9wfGVufDB8fDB8fHww",
     category: "R&B",
     description: "Celebrate soul and R&B legends with golden-era hits, elegant vocals, and jazzy instrumentation in a stunning setting.",
-    lineUp: ["Soul Remedy", "Velvet Gold", "DJ Smooth-T"]
+    lineup: ["Soul Remedy", "Velvet Gold", "DJ Smooth-T"]
   }  
 ];
 
