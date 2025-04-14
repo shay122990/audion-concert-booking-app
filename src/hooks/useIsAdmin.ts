@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 
 export function useIsAdmin() {
   const { user } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState<boolean | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

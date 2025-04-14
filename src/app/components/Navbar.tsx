@@ -4,15 +4,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { useIsAdmin } from "@/hooks/useIsAdmin"; 
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const { user, signInWithGoogle, logout } = useAuth();
-  const { isAdmin } = useIsAdmin();
+  const { user, signInWithGoogle, logout, loading: authLoading } = useAuth();
+  const { isAdmin, loading: adminLoading } = useIsAdmin();
 
   const closeMenu = () => setIsOpen(false);
+
+  if (authLoading || adminLoading) return null;
 
   return (
     <header className="w-full px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-black/60 backdrop-blur">
@@ -25,10 +27,15 @@ export default function Navbar() {
           <Link href="/" className={pathname === "/" ? "text-purple-600" : "hover:text-purple-600"}>
             Home
           </Link>
-          <Link href="/browse" className="hover:text-purple-600">Browse</Link>
-          {user && isAdmin && (
-            <Link href="/admin" className="hover:text-purple-600">Admin</Link>
+
+          {user && (
+            isAdmin ? (
+              <Link href="/admin" className="hover:text-purple-600">Admin</Link>
+            ) : (
+              <Link href="/profile" className="hover:text-purple-600">Profile</Link>
+            )
           )}
+
           {!user ? (
             <button onClick={signInWithGoogle} className="text-sm text-purple-600 hover:underline">Login</button>
           ) : (
@@ -41,45 +48,32 @@ export default function Navbar() {
           onClick={() => setIsOpen(true)}
           aria-label="Open menu"
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       </div>
 
       <div
-        className={`fixed inset-0 z-50 transition-opacity duration-300 ${
-          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
+        className={`fixed inset-0 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
         onClick={closeMenu}
-      ></div>
+      />
 
       <aside
-        className={`fixed top-0 right-0 z-50 h-full w-3/4 max-w-xs bg-black/60 shadow-lg transform transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 z-50 h-full w-3/4 max-w-xs bg-black/60 shadow-lg transform transition-transform duration-300 ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="p-6 h-dvh flex flex-col text-center gap-6 text-sm bg-black/60 text-white">
-          <button
-            onClick={closeMenu}
-            className="self-end hover:text-purple-600"
-            aria-label="Close menu"
-          >
-            ✕
-          </button>
+          <button onClick={closeMenu} className="self-end hover:text-purple-600" aria-label="Close menu">✕</button>
           <Link href="/" onClick={closeMenu} className="hover:text-purple-600">Home</Link>
-          <Link href="/browse" onClick={closeMenu} className="hover:text-purple-600">Browse</Link>
-          {user && isAdmin && (
-            <Link href="/admin" onClick={closeMenu} className="hover:text-purple-600">
-              Admin
-            </Link>
+
+          {user && (
+            isAdmin ? (
+              <Link href="/admin" onClick={closeMenu} className="hover:text-purple-600">Admin</Link>
+            ) : (
+              <Link href="/profile" onClick={closeMenu} className="hover:text-purple-600">Profile</Link>
+            )
           )}
+
           {!user ? (
             <button onClick={signInWithGoogle} className="text-sm text-purple-400">Login</button>
           ) : (
