@@ -4,17 +4,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { useUserRole } from "@/hooks/useUserRole";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { user, signInWithGoogle, logout, loading: authLoading } = useAuth();
-  const { isAdmin, loading: adminLoading } = useIsAdmin();
+  const { role, loading: roleLoading } = useUserRole();
 
   const closeMenu = () => setIsOpen(false);
 
-  if (authLoading || adminLoading) return null;
+  if (authLoading || roleLoading) return null;
 
   return (
     <header className="w-full px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-black/60 backdrop-blur">
@@ -28,12 +28,12 @@ export default function Navbar() {
             Home
           </Link>
 
-          {user && (
-            isAdmin ? (
-              <Link href="/admin" className="hover:text-purple-600">Admin</Link>
-            ) : (
-              <Link href="/profile" className="hover:text-purple-600">Profile</Link>
-            )
+          {user && role === "admin" && (
+            <Link href="/admin" className="hover:text-purple-600">Admin</Link>
+          )}
+
+          {user && role === "user" && (
+            <Link href="/profile" className="hover:text-purple-600">Profile</Link>
           )}
 
           {!user ? (
@@ -66,12 +66,12 @@ export default function Navbar() {
           <button onClick={closeMenu} className="self-end hover:text-purple-600" aria-label="Close menu">✕</button>
           <Link href="/" onClick={closeMenu} className="hover:text-purple-600">Home</Link>
 
-          {user && (
-            isAdmin ? (
-              <Link href="/admin" onClick={closeMenu} className="hover:text-purple-600">Admin</Link>
-            ) : (
-              <Link href="/profile" onClick={closeMenu} className="hover:text-purple-600">Profile</Link>
-            )
+          {user && role === "admin" && (
+            <Link href="/admin" onClick={closeMenu} className="hover:text-purple-600">Admin</Link>
+          )}
+
+          {user && role === "user" && (
+            <Link href="/profile" onClick={closeMenu} className="hover:text-purple-600">Profile</Link>
           )}
 
           {!user ? (
