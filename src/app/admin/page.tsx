@@ -12,10 +12,9 @@ import {
 } from "@/app/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { useUserRole } from "@/hooks/useUserRole"; 
 import EventSearchBar from "@/app/components/EventSearchBar";
 import { Event } from "@/app/types/event";
-
 
 const CATEGORIES = [
   "EDM", "Indie", "Pop", "Rock", "Jazz", "Classical",
@@ -42,16 +41,16 @@ export default function AdminPage() {
   const RESET_DELAY = 3000; 
 
   const { user, loading: authLoading } = useAuth();
-  const { isAdmin, loading: adminLoading } = useIsAdmin();
+  const { role, loading: roleLoading } = useUserRole(); 
   const router = useRouter();
 
   useEffect(() => {
-    if (!authLoading && !adminLoading) {
-      if (!user || !isAdmin) {
+    if (!authLoading && !roleLoading) {
+      if (!user || role !== "admin") {
         router.push("/");
       }
     }
-  }, [user, isAdmin, authLoading, adminLoading, router]);
+  }, [user, role, authLoading, roleLoading, router]);
 
   useEffect(() => {
     setFilteredEvents(events);
@@ -120,10 +119,12 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    if (user && isAdmin) fetchEvents();
-  }, [user, isAdmin]);
+    if (user && role === "admin") fetchEvents(); 
+  }, [user, role]);
 
-  if (authLoading || adminLoading || !user) return <p className="text-center py-12">Loading...</p>;
+  if (authLoading || roleLoading || !user) {
+    return <p className="text-center py-12">Loading...</p>; 
+  }
 
   return (
     <main className="min-h-screen px-6 py-24 max-w-3xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10">

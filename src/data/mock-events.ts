@@ -368,7 +368,7 @@ const mockEvents = [
   // Festivals
   {
     title: "Summer Sound Festival",
-    date: "2025-08-10",
+    date: ["2025-08-10", "2025-09-10","2025-10-10"],
     time: "16:00",
     location: "Dubai Marina",
     image: "https://images.unsplash.com/photo-1603350902363-3141f62b7dba?w=800&auto=format&fit=crop&q=60",
