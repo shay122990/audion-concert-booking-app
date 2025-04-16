@@ -8,13 +8,11 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Event } from "@/app/types/event";
 
-
 export default function EventDetailsPage() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const router = useRouter();
   const [event, setEvent] = useState<Event | null>(null);
-
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
   useEffect(() => {
     if (!id || typeof id !== "string") return;
@@ -24,13 +22,13 @@ export default function EventDetailsPage() {
       const eventSnap = await getDoc(eventRef);
 
       if (!eventSnap.exists()) {
-        notFound(); 
+        notFound();
         return;
       }
 
       const data = eventSnap.data();
       setEvent(data as Event);
-      setSelectedDate(data.date);
+      setSelectedDate(data.dates[0]); 
     };
 
     fetchEvent();
@@ -56,10 +54,28 @@ export default function EventDetailsPage() {
 
       <h1 className="text-3xl font-bold mb-2">{event.title}</h1>
       <p className="text-gray-600 dark:text-gray-400 mb-2">
-        📍 {event.location} • 📅 {format(new Date(event.date), "MMMM d, yyyy")}
+        📍 {event.location}
       </p>
-      <p className="text-gray-600 dark:text-gray-400 mb-2">
-        ⏰ {event.time}
+      <div className="mb-4">
+        <h3 className="font-semibold text-lg text-purple-600">Available Dates</h3>
+        <div className="flex gap-4">
+          {event.dates.map((date, index) => (
+            <button
+              key={index}
+              onClick={() => setSelectedDate(date)}
+              className={`px-4 py-2 rounded-full text-sm ${
+                selectedDate === date
+                  ? "bg-purple-600 text-white"
+                  : "bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
+              }`}
+            >
+              {format(new Date(date), "MMMM d, yyyy")}
+            </button>
+          ))}
+        </div>
+      </div>
+      <p className="text-sm text-gray-500">
+        ⏰ {event.startTime} - {event.endTime}
       </p>
 
       <p className="text-md text-gray-800 dark:text-gray-300 mb-6">
@@ -76,6 +92,7 @@ export default function EventDetailsPage() {
           </ul>
         </div>
       )}
+      
       <button
         onClick={handleBooking}
         disabled={!selectedDate}
