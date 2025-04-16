@@ -12,7 +12,7 @@ import {
 } from "@/app/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useUserRole } from "@/hooks/useUserRole"; 
+import { useUserRole } from "@/hooks/useUserRole";
 import EventSearchBar from "@/app/components/EventSearchBar";
 import { Event } from "@/app/types/event";
 
@@ -26,8 +26,10 @@ export default function AdminPage() {
   const [editingEventId, setEditingEventId] = useState<string | null>(null);
   const [editFormData, setEditFormData] = useState({
     title: "",
-    date: "",
-    time: "",
+    dates: "",
+    doorsOpenTime: "",
+    startTime: "",
+    endTime: "",
     location: "",
     image: "",
     category: "EDM",
@@ -38,10 +40,10 @@ export default function AdminPage() {
 
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "uploaded" | "exists" | "error">("idle");
   const [deleteStatus, setDeleteStatus] = useState<"idle" | "deleting" | "deleted" | "error">("idle");
-  const RESET_DELAY = 3000; 
+  const RESET_DELAY = 3000;
 
   const { user, loading: authLoading } = useAuth();
-  const { role, loading: roleLoading } = useUserRole(); 
+  const { role, loading: roleLoading } = useUserRole();
   const router = useRouter();
 
   useEffect(() => {
@@ -63,8 +65,10 @@ export default function AdminPage() {
       return {
         id: doc.id,
         title: rawData.title || "",
-        date: rawData.date || "",
-        time: rawData.time || "",
+        dates: rawData.dates ?? [],
+        doorsOpenTime: rawData.doorsOpenTime || "",
+        startTime: rawData.startTime || "",
+        endTime: rawData.endTime || "",
         location: rawData.location || "",
         image: rawData.image || "",
         category: rawData.category || "",
@@ -86,8 +90,10 @@ export default function AdminPage() {
     setEditingEventId(event.id);
     setEditFormData({
       title: event.title,
-      date: event.date,
-      time: event.time,
+      dates: event.dates.join(", "),
+      doorsOpenTime: event.doorsOpenTime,
+      startTime: event.startTime,
+      endTime: event.endTime,
       location: event.location,
       image: event.image ?? "",
       category: event.category,
@@ -102,8 +108,10 @@ export default function AdminPage() {
 
     const updated = {
       title: editFormData.title || original.title,
-      date: editFormData.date || original.date,
-      time: editFormData.time || original.time,
+      dates: editFormData.dates.split(",").map((s) => s.trim()),
+      doorsOpenTime: editFormData.doorsOpenTime || original.doorsOpenTime,
+      startTime: editFormData.startTime || original.startTime,
+      endTime: editFormData.endTime || original.endTime,
       location: editFormData.location || original.location,
       image: editFormData.image || original.image,
       category: editFormData.category || original.category,
@@ -118,18 +126,49 @@ export default function AdminPage() {
     await fetchEvents();
   };
 
+  const handleAddNewEvent = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+
+    const newEvent: Event = {
+      id: "", // Firestore will generate the ID
+      title: formData.get("title") as string,
+      dates: (formData.get("dates") as string).split(",").map((s) => s.trim()),
+      doorsOpenTime: formData.get("doorsOpenTime") as string,
+      startTime: formData.get("startTime") as string,
+      endTime: formData.get("endTime") as string,
+      location: formData.get("location") as string,
+      image: formData.get("image") as string,
+      category: formData.get("category") as string,
+      description: formData.get("description") as string,
+      lineup: (formData.get("lineup") as string).split(",").map((s) => s.trim()),
+    };
+
+    try {
+      await addEvent(newEvent);
+      alert("✅ Event added!");
+      form.reset();
+      await fetchEvents();
+    } catch (err) {
+      alert("❌ Failed to add event");
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
-    if (user && role === "admin") fetchEvents(); 
+    if (user && role === "admin") fetchEvents();
   }, [user, role]);
 
   if (authLoading || roleLoading || !user) {
-    return <p className="text-center py-12">Loading...</p>; 
+    return <p className="text-center py-12">Loading...</p>;
   }
 
   return (
     <main className="min-h-screen px-6 py-24 max-w-3xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10">
       <h1 className="text-3xl font-bold text-purple-600">Audion Admin</h1>
-      {/* add all events from file or delete all events */}
+
+      {/* Upload & Delete Buttons */}
       <div className="flex gap-4 flex-wrap justify-center">
         <button
           onClick={async () => {
@@ -201,41 +240,16 @@ export default function AdminPage() {
             : "Delete All Events"}
         </button>
       </div>
-      {/* add new event */}
+
+      {/* Add New Event Form */}
       <section className="w-full mt-12">
         <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const form = e.currentTarget;
-            const formData = new FormData(form);
-
-            const newEvent = {
-              title: formData.get("title") as string,
-              date: formData.get("date") as string,
-              time: formData.get("time") as string,
-              location: formData.get("location") as string,
-              image: formData.get("image") as string,
-              category: formData.get("category") as string,
-              description: formData.get("description") as string,
-              lineup: (formData.get("lineup") as string).split(",").map((s) => s.trim()),
-            };
-
-            try {
-              await addEvent(newEvent);
-              alert("✅ Event added!");
-              form.reset();
-              await fetchEvents();
-            } catch (err) {
-              alert("❌ Failed to add event");
-              console.error(err);
-            }
-          }}
-          className="grid gap-4"
-        >
+        <form onSubmit={handleAddNewEvent} className="grid gap-4">
           <input name="title" placeholder="Title" required className="px-4 py-2 rounded border" />
-          <input name="date" type="date" required className="px-4 py-2 rounded border" />
-          <input name="time" placeholder="Time (e.g. 19:00)" required className="px-4 py-2 rounded border" />
+          <input name="dates" placeholder="Dates (comma-separated)" required className="px-4 py-2 rounded border" />
+          <input name="doorsOpenTime" placeholder="Doors Open Time" required className="px-4 py-2 rounded border" />
+          <input name="startTime" placeholder="Start Time" required className="px-4 py-2 rounded border" />
+          <input name="endTime" placeholder="End Time" required className="px-4 py-2 rounded border" />
           <input name="location" placeholder="Location" required className="px-4 py-2 rounded border" />
           <input name="image" placeholder="Image URL" required className="px-4 py-2 rounded border" />
           <select name="category" defaultValue={CATEGORIES[0]} required className="px-4 py-2 rounded border">
@@ -254,8 +268,7 @@ export default function AdminPage() {
         </form>
       </section>
 
-      {/* current events  */}
-
+      {/* Current Events */}
       <section className="w-full mt-12 max-h-[600px] overflow-y-auto pr-2">
         <h2 className="text-xl font-semibold mb-4 sticky top-0 bg-white dark:bg-black z-10">Current Events</h2>
         <EventSearchBar
@@ -288,40 +301,33 @@ export default function AdminPage() {
                       placeholder="Title"
                     />
                     <input
-                      type="date"
-                      value={editFormData.date}
-                      onChange={(e) => setEditFormData({ ...editFormData, date: e.target.value })}
+                      type="text"
+                      value={editFormData.dates}
+                      onChange={(e) => setEditFormData({ ...editFormData, dates: e.target.value })}
                       className="px-2 py-1 border rounded"
-                    />
-                    <input
-                      type="time"
-                      value={editFormData.time}
-                      onChange={(e) => setEditFormData({ ...editFormData, time: e.target.value })}
-                      className="px-2 py-1 border rounded"
+                      placeholder="Dates"
                     />
                     <input
                       type="text"
-                      value={editFormData.location}
-                      onChange={(e) => setEditFormData({ ...editFormData, location: e.target.value })}
+                      value={editFormData.doorsOpenTime}
+                      onChange={(e) => setEditFormData({ ...editFormData, doorsOpenTime: e.target.value })}
                       className="px-2 py-1 border rounded"
-                      placeholder="Location"
+                      placeholder="Doors Open Time"
                     />
                     <input
                       type="text"
-                      value={editFormData.image}
-                      onChange={(e) => setEditFormData({ ...editFormData, image: e.target.value })}
+                      value={editFormData.startTime}
+                      onChange={(e) => setEditFormData({ ...editFormData, startTime: e.target.value })}
                       className="px-2 py-1 border rounded"
-                      placeholder="Image URL"
+                      placeholder="Start Time"
                     />
-                    <select
-                      value={editFormData.category}
-                      onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
+                    <input
+                      type="text"
+                      value={editFormData.endTime}
+                      onChange={(e) => setEditFormData({ ...editFormData, endTime: e.target.value })}
                       className="px-2 py-1 border rounded"
-                    >
-                      {CATEGORIES.map((cat) => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </select>
+                      placeholder="End Time"
+                    />
                     <textarea
                       value={editFormData.description}
                       onChange={(e) => setEditFormData({ ...editFormData, description: e.target.value })}
@@ -333,7 +339,7 @@ export default function AdminPage() {
                       value={editFormData.lineup}
                       onChange={(e) => setEditFormData({ ...editFormData, lineup: e.target.value })}
                       className="px-2 py-1 border rounded"
-                      placeholder="Lineup (comma-separated)"
+                      placeholder="Lineup"
                     />
                     <div className="flex gap-2 mt-2">
                       <button type="submit" className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">
@@ -353,7 +359,7 @@ export default function AdminPage() {
                     <div className="text-left w-full">
                       <p className="font-semibold">{event.title}</p>
                       <p className="text-sm text-gray-500">
-                        {event.date} at {event.time} • {event.location}
+                        {event.dates.join(", ")} at {event.startTime} • {event.location}
                       </p>
                       <p className="text-xs text-gray-600 italic mt-1">{event.description}</p>
                       <p className="text-xs text-purple-600 font-medium mt-1">

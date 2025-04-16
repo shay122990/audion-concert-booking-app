@@ -29,12 +29,14 @@ export const addMockEvents = async (): Promise<"uploaded" | "already-exists" | "
     const snapshot = await getDocs(eventsRef);
 
     const existingTitles = snapshot.docs.map((doc) =>
-      doc.data().title.toLowerCase().trim()
+      String(doc.data().title).toLowerCase().trim()
     );
 
     let addedCount = 0;
 
     for (const event of mockEvents) {
+      if (typeof event.title !== "string") continue;
+
       const titleKey = event.title.toLowerCase().trim();
       if (!existingTitles.includes(titleKey)) {
         await addDoc(eventsRef, event);
@@ -42,21 +44,19 @@ export const addMockEvents = async (): Promise<"uploaded" | "already-exists" | "
       }
     }
 
-    if (addedCount === 0) {
-      return "already-exists";
-    }
-
-    return "uploaded";
+    return addedCount === 0 ? "already-exists" : "uploaded";
   } catch (error) {
-    console.error("❌ Error adding events:", error);
+    console.error("❌ Error adding mock events:", error);
     return "error";
   }
 };
 
 export const addEvent = async (event: {
   title: string;
-  date: string;
-  time: string;
+  dates: string[];
+  doorsOpenTime: string;
+  startTime: string;
+  endTime: string;
   location: string;
   image: string;
   category: string;
@@ -72,6 +72,7 @@ export const addEvent = async (event: {
     throw error;
   }
 };
+
 
 export const deleteAllEvents = async () => {
     try {
@@ -103,13 +104,15 @@ export const updateEventById = async (
   id: string,
   updatedData: Partial<{
     title: string;
-    date: string;
-    time:string;
+    dates: string[];
+    doorsOpenTime: string;
+    startTime: string;
+    endTime: string;
     location: string;
     image: string;
     category: string; 
-    description:string;
-    lineup:string[];
+    description: string;
+    lineup: string[];
   }>
 ) => {
   try {
@@ -121,3 +124,4 @@ export const updateEventById = async (
     throw error;
   }
 };
+
