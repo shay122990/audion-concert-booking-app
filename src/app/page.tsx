@@ -7,13 +7,11 @@ import EventCard from "@/app/components/EventCard";
 import EventSearchBar from "./components/EventSearchBar";
 import { Event } from "@/app/types/event";
 
-
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [categories, setCategories] = useState<string[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
-
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -23,8 +21,10 @@ export default function Home() {
         return {
           id: doc.id,
           title: rawData.title || "",
-          date: rawData.date || "",
-          time: rawData.time || "",
+          dates: Array.isArray(rawData.dates) ? rawData.dates : [],
+          startTime: rawData.startTime || "", 
+          doorsOpenTime: rawData.doorsOpenTime || "", 
+          endTime: rawData.endTime || "", 
           location: rawData.location || "",
           image: rawData.image || "",
           category: rawData.category || "",
@@ -32,17 +32,17 @@ export default function Home() {
           lineup: Array.isArray(rawData.lineup) ? rawData.lineup : [],
         };
       });
-  
+
       setEvents(data);
       setFilteredEvents(data);
-  
+
       const uniqueCategories = Array.from(new Set(data.map((event) => event.category))).sort();
       setCategories(["All", ...uniqueCategories]);
     };
-  
+
     fetchEvents();
   }, []);
-  
+
   const handleCategoryClick = (category: string) => {
     setActiveCategory(category === activeCategory ? "All" : category);
   };
@@ -53,7 +53,6 @@ export default function Home() {
       : filteredEvents.filter((event) => event.category === category);
     return acc;
   }, {});
-  
 
   return (
     <main className="px-6 py-12 max-w-7xl mx-auto">
@@ -77,11 +76,13 @@ export default function Home() {
           </button>
         ))}
       </div>
+      
       <EventSearchBar<Event>
         data={events}
         onFilter={setFilteredEvents}
         keysToSearch={["title", "location", "category", "description", "lineup"]}
       />
+      
       {(activeCategory === "All" ? categories.slice(1) : [activeCategory]).map((category) => (
         groupedEvents[category] && groupedEvents[category].length > 0 && (
           <section key={category} className="mb-12">
@@ -96,4 +97,4 @@ export default function Home() {
       ))}
     </main>
   );
-} 
+}

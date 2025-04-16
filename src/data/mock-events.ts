@@ -14,7 +14,7 @@ const mockEvents = [
   },
   {
     title: "Neon Pulse Festival",
-    dates: ["2025-08-25"],
+    dates: ["2025-08-25","2025-08-26","2025-08-27"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",
@@ -111,7 +111,7 @@ const mockEvents = [
   },
   {
     title: "Vinyl Vibes",
-    dates: ["2025-12-15"],
+    dates: ["2025-12-15","2025-12-16","2025-12-17"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",    
@@ -160,7 +160,7 @@ const mockEvents = [
   },
   {
     title: "Neon Pop Tour",
-    dates: ["2025-09-15"],
+    dates: ["2025-09-15","2025-09-16","2025-09-17"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",    
@@ -257,7 +257,7 @@ const mockEvents = [
   },
   {
     title: "Metal Mayhem",
-    dates: ["2026-03-05"],
+    dates: ["2026-03-05","2026-03-06","2026-03-07"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",    
@@ -330,7 +330,7 @@ const mockEvents = [
   },
   {
     title: ["Smooth Vibes Festival"],
-    dates: "2026-02-14",
+    dates: ["2026-02-14","2026-02-15","2026-02-16"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",    
@@ -342,7 +342,7 @@ const mockEvents = [
   },
   {
     title: ["Jazz & Chill Sessions"],
-    dates: "2026-03-03",
+    dates: ["2026-03-03"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",    
@@ -415,7 +415,7 @@ const mockEvents = [
   },
   {
     title: "Baroque Nights",
-    dates: ["2026-01-21"],
+    dates: ["2026-01-21","2026-01-22","2026-01-23"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",
@@ -440,7 +440,7 @@ const mockEvents = [
   // Festivals
   {
     title: "Summer Sound Festival",
-    dates: ["2025-08-10"],
+    dates: ["2025-08-10","2025-08-11","2025-08-12"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",
@@ -452,7 +452,7 @@ const mockEvents = [
   },
   {
     title: "Neon Nights Carnival",
-    dates: ["2026-01-18"],
+    dates: ["2026-01-18","2026-01-19","2026-01-20"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",
@@ -464,7 +464,7 @@ const mockEvents = [
   },
   {
     title: "Winter Wonderland Bash",
-    dates: ["2025-12-25"],
+    dates: ["2025-12-25","2025-12-26","2025-12-27"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",
@@ -476,7 +476,7 @@ const mockEvents = [
   },
   {
     title: "Glow in the Dark Fest",
-    dates: ["2026-02-20"],
+    dates: ["2026-02-20","2026-02-21","2026-02-22"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",
@@ -488,9 +488,9 @@ const mockEvents = [
   },
   {
     title: "Beach Beats",
-    dates: ["2025-10-28"],
-    doorsOpenTime: "18:00",
-    startTime: "19:00", 
+    dates: ["2025-10-28","2025-10-29","2025-10-30"],
+    doorsOpenTime: "08:00",
+    startTime: "09:00", 
     endTime: "22:00",
     location: "JBR Beach",
     image: "https://images.unsplash.com/photo-1704703336571-4c47c4aa73fe?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzh8fGJlYWNoJTIwZmVzdGl2YWx8ZW58MHx8MHx8fDA%3D",
@@ -500,9 +500,9 @@ const mockEvents = [
   },
   {
     title: "Desert Fest Dubai",
-    dates: ["2026-03-10"],
-    doorsOpenTime: "18:00",
-    startTime: "19:00", 
+    dates: ["2026-03-10","2026-03-11","2026-03-12"],
+    doorsOpenTime: "7:00",
+    startTime: "9:00", 
     endTime: "22:00",
     location: "Al Marmoom Oasis",
     image: "https://images.unsplash.com/photo-1724415057322-12c98a7d4627?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGRlc2VydCUyMGZlc3RpdmFsfGVufDB8fDB8fHww",
@@ -537,7 +537,7 @@ const mockEvents = [
   },
   {
     title: "Groove & Soul",
-    dates: ["2025-11-11"],
+    dates: ["2025-11-11","2025-11-12","2025-11-13"],
     doorsOpenTime: "18:00",
     startTime: "19:00", 
     endTime: "22:00",
