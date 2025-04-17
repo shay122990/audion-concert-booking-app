@@ -6,20 +6,26 @@ interface DatePickerInputProps {
   label?: string;
   value: string;
   onChange: (value: string) => void;
-  min?: string;
-  max?: string;
+  availableDates?: string[];
 }
 
 export default function DatePickerInput({
   label = "Select a date",
   value,
   onChange,
-  min,
-  max,
+  availableDates = [],
 }: DatePickerInputProps) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
+    const newValue = e.target.value;
+    if (availableDates.includes(newValue)) {
+      onChange(newValue);
+    } else {
+      alert("❌ This date is not available for this event.");
+    }
   };
+
+  const min = availableDates[0];
+  const max = availableDates[availableDates.length - 1];
 
   return (
     <div className="mb-6">
@@ -30,7 +36,7 @@ export default function DatePickerInput({
         onChange={handleChange}
         min={min}
         max={max}
-        className="px-4 py-2 rounded border w-full max-w-xs"
+        className="px-4 py-2 rounded border w-full max-w-xs dark:bg-gray-800 dark:text-white"
       />
     </div>
   );
