@@ -8,7 +8,7 @@ import { db } from "@/app/lib/firebase";
 import { Event } from "@/app/types/event";
 import { useAuth } from "@/context/AuthContext";
 import BookingForm from "@/app/components/BookingForm";
-
+import DateSelector from "@/app/components/DateSelector";
 export default function EventDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -66,21 +66,13 @@ export default function EventDetailsPage() {
           <p className="text-sm text-gray-500 dark:text-gray-400">🕗 Doors Open: {event.doorsOpenTime} | Starts: {event.startTime} | Ends: {event.endTime}</p>
           
           <div className="mt-4">
-            <label htmlFor="date-select" className="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Select a date:</label>
-            <select
-              id="date-select"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="border px-4 py-2 rounded-md w-full dark:bg-gray-800 dark:text-white"
-            >
-              {event.dates.map((date) => (
-                <option key={date} value={date}>
-                  {date}
-                </option>
-              ))}
-            </select>
-          </div>
-
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Select a date:</h3>
+          <DateSelector
+            dates={event.dates}
+            selectedDate={selectedDate}
+            onSelect={setSelectedDate}
+          />
+        </div>
           <div className="mt-6">
             {!user ? (
               <div className="bg-yellow-100 border border-yellow-300 p-4 rounded-md text-yellow-800 text-center">
