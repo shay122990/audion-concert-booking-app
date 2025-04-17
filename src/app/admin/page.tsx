@@ -269,13 +269,16 @@ export default function AdminPage() {
       </section>
 
       {/* Current Events */}
-      <section className="w-full mt-12 max-h-[600px] overflow-y-auto pr-2">
-        <h2 className="text-xl font-semibold mb-4 sticky top-0 bg-white dark:bg-black z-10">Current Events</h2>
-        <EventSearchBar
-          data={events}
-          onFilter={setFilteredEvents}
-          keysToSearch={["title", "location", "category", "description", "lineup"]}
-        />
+      <section className="w-full mt-12">
+        <h2 className="text-xl font-semibold mb-4">Current Events</h2>
+        <div className="mb-6">
+          <EventSearchBar
+            data={events}
+            onFilter={setFilteredEvents}
+            keysToSearch={["title", "location", "category", "description", "lineup"]}
+          />
+        </div>
+        <div className="max-h-[600px] overflow-y-auto pr-2">
         <ul className="space-y-4">
           {filteredEvents.length === 0 ? (
             <p className="text-gray-500">No events found.</p>
@@ -387,6 +390,7 @@ export default function AdminPage() {
             ))
           )}
         </ul>
+      </div>  
       </section>
     </main>
   );
