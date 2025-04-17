@@ -1,105 +1,115 @@
 "use client";
 
-import { db } from "@/app/lib/firebase";
-import { collection, doc, getDoc } from "firebase/firestore";
-import { notFound, useRouter, useParams } from "next/navigation";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import { doc, getDoc, collection } from "firebase/firestore";
+import { db } from "@/app/lib/firebase";
 import { Event } from "@/app/types/event";
+import { useAuth } from "@/context/AuthContext";
+import BookingForm from "@/app/components/BookingForm";
 
 export default function EventDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
+  const { user, signInWithGoogle } = useAuth();
+
   const [event, setEvent] = useState<Event | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id || typeof id !== "string") return;
 
     const fetchEvent = async () => {
-      const eventRef = doc(collection(db, "events"), id);
-      const eventSnap = await getDoc(eventRef);
+      try {
+        const eventRef = doc(collection(db, "events"), id);
+        const eventSnap = await getDoc(eventRef);
 
-      if (!eventSnap.exists()) {
-        notFound();
-        return;
+        if (eventSnap.exists()) {
+          const eventData = eventSnap.data() as Event;
+          setEvent({ ...eventData, id: eventSnap.id });
+          if (eventData.dates?.length) {
+            setSelectedDate(eventData.dates[0]);
+          }
+        } else {
+          router.push("/not-found");
+        }
+      } catch (error) {
+        console.error("Failed to fetch event:", error);
+      } finally {
+        setLoading(false);
       }
-
-      const data = eventSnap.data();
-      setEvent(data as Event);
-      setSelectedDate(data.dates[0]); 
     };
 
     fetchEvent();
-  }, [id]);
+  }, [id, router]);
 
-  const handleBooking = () => {
-    router.push(`/confirm/${id}?date=${selectedDate}`);
-  };
+  if (loading) {
+    return <div className="p-8 text-center text-gray-500 dark:text-gray-400">Loading event...</div>;
+  }
 
-  if (!event) return <p className="text-center py-12">Loading...</p>;
+  if (!event) {
+    return <div className="p-8 text-center text-red-500">Event not found.</div>;
+  }
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-16">
-      <div className="mb-8">
-        <Image
-          src={event.image}
-          alt={event.title}
-          width={800}
-          height={400}
-          className="w-full h-64 object-cover rounded-lg"
-        />
-      </div>
-
-      <h1 className="text-3xl font-bold mb-2">{event.title}</h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-2">
-        📍 {event.location}
-      </p>
-      <div className="mb-4">
-        <h3 className="font-semibold text-lg text-purple-600">Available Dates</h3>
-        <div className="flex gap-4">
-          {event.dates.map((date, index) => (
-            <button
-              key={index}
-              onClick={() => setSelectedDate(date)}
-              className={`px-4 py-2 rounded-full text-sm ${
-                selectedDate === date
-                  ? "bg-purple-600 text-white"
-                  : "bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
-              }`}
+    <main className="max-w-5xl mx-auto px-6 py-16">
+      <div className="flex flex-col lg:flex-row gap-10">
+        <div className="relative w-full lg:w-1/2 h-96 rounded-lg overflow-hidden shadow-md">
+          <Image src={event.image} alt={event.title} fill className="object-cover" />
+        </div>
+        <div className="w-full lg:w-1/2">
+          <h1 className="text-3xl font-bold text-purple-600 mb-4">{event.title}</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-2">{event.description}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">📍 {event.location}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">🕗 Doors Open: {event.doorsOpenTime} | Starts: {event.startTime} | Ends: {event.endTime}</p>
+          
+          <div className="mt-4">
+            <label htmlFor="date-select" className="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Select a date:</label>
+            <select
+              id="date-select"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="border px-4 py-2 rounded-md w-full dark:bg-gray-800 dark:text-white"
             >
-              {format(new Date(date), "MMMM d, yyyy")}
-            </button>
-          ))}
+              {event.dates.map((date) => (
+                <option key={date} value={date}>
+                  {date}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mt-6">
+            {!user ? (
+              <div className="bg-yellow-100 border border-yellow-300 p-4 rounded-md text-yellow-800 text-center">
+                Please{" "}
+                <button
+                  onClick={signInWithGoogle}
+                  className="text-purple-600 underline"
+                >
+                  log in
+                </button>{" "}
+                to book this event.
+              </div>
+            ) : (
+              <BookingForm event={event} selectedDate={selectedDate} user={user} />
+            )}
+          </div>
         </div>
       </div>
-      <p className="text-sm text-gray-500">
-        ⏰ {event.startTime} - {event.endTime}
-      </p>
-
-      <p className="text-md text-gray-800 dark:text-gray-300 mb-6">
-        {event.description}
-      </p>
 
       {event.lineup?.length > 0 && (
-        <div className="mb-6">
-          <h3 className="font-semibold mb-2 text-lg text-purple-600">Lineup</h3>
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold mb-4 text-purple-600">🎤 Lineup</h2>
           <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
-            {event.lineup.map((artist, index) => (
-              <li key={index}>{artist}</li>
+            {event.lineup.map((artist, i) => (
+              <li key={i}>{artist}</li>
             ))}
           </ul>
         </div>
       )}
-      
-      <button
-        onClick={handleBooking}
-        disabled={!selectedDate}
-        className="px-6 py-3 bg-purple-600 text-white rounded hover:bg-purple-700 transition disabled:opacity-50"
-      >
-        Continue to Booking
-      </button>
     </main>
   );
 }
