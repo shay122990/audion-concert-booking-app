@@ -125,3 +125,19 @@ export const updateEventById = async (
   }
 };
 
+export const saveBooking = async ({
+  userId,
+  eventId,
+  selectedDate,
+}: {
+  userId: string;
+  eventId: string;
+  selectedDate: string;
+}) => {
+  const userBookingRef = collection(doc(db, "users", userId), "bookings");
+  await addDoc(userBookingRef, {
+    eventId,
+    selectedDate,
+    bookedAt: new Date().toISOString(),
+  });
+};
