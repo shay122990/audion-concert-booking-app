@@ -29,7 +29,7 @@ export default function ConfirmationSummary({
       <p className="text-gray-600 dark:text-gray-400 mb-1">📅 {selectedDate}</p>
       <p className="text-gray-600 dark:text-gray-400 mb-6">⏰ {selectedTime}</p>
 
-      <p className="text-lg text-gray-800 dark:text-gray-300">
+      <p className="text-lg text-white dark:text-gray-300">
         Please confirm your selection and continue to complete the booking.
       </p>
     </div>
