@@ -40,8 +40,8 @@ const ConfirmationPage = () => {
     <div className="px-6 py-16">
       <ConfirmationSummary
         eventTitle={event.title}
-        selectedDate={selectedDate}
-        selectedTime={event.time}
+        // selectedDate={selectedDate}
+        // selectedTime={event.time}
         location={event.location}
         image={event.image}
       />

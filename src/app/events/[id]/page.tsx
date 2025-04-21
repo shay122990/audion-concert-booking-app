@@ -9,6 +9,7 @@ import { Event } from "@/app/types/event";
 import { useAuth } from "@/context/AuthContext";
 import BookingForm from "@/app/components/BookingForm";
 import DateSelector from "@/app/components/DateSelector";
+
 export default function EventDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -54,32 +55,44 @@ export default function EventDetailsPage() {
   }
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-16">
-      <div className="flex flex-col lg:flex-row gap-10">
-        <div className="relative w-full lg:w-1/2 h-96 rounded-lg overflow-hidden shadow-md">
-          <Image src={event.image} alt={event.title} fill className="object-cover" />
-        </div>
-        <div className="w-full lg:w-1/2">
-          <h1 className="text-3xl font-bold text-purple-600 mb-4">{event.title}</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-2">{event.description}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">📍 {event.location}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">🕗 Doors Open: {event.doorsOpenTime} | Starts: {event.startTime} | Ends: {event.endTime}</p>
-          
-          <div className="mt-4">
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Select a date:</h3>
-          <DateSelector
-            dates={event.dates}
-            selectedDate={selectedDate}
-            onSelect={setSelectedDate}
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+      <div className="grid lg:grid-cols-2 gap-10 items-start">
+        <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-800">
+          <Image
+            src={event.image}
+            alt={event.title}
+            fill
+            className="object-cover transition-transform duration-500 hover:scale-105"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            priority
           />
         </div>
+
+        <div className="space-y-6">
+          <h1 className="text-4xl font-extrabold text-purple-600">{event.title}</h1>
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">{event.description}</p>
+
+          <div className="space-y-1 text-sm text-gray-500 dark:text-gray-400">
+            <p>📍 {event.location}</p>
+            <p>🕗 Doors Open: {event.doorsOpenTime} | Starts: {event.startTime} | Ends: {event.endTime}</p>
+          </div>
+
+          <div className="mt-6">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Select a date:</h3>
+            <DateSelector
+              dates={event.dates}
+              selectedDate={selectedDate}
+              onSelect={setSelectedDate}
+            />
+          </div>
+
           <div className="mt-6">
             {!user ? (
-              <div className="bg-yellow-100 border border-yellow-300 p-4 rounded-md text-yellow-800 text-center">
+              <div className="bg-yellow-100 border border-yellow-300 p-4 rounded-lg text-yellow-800 text-center shadow-sm">
                 Please{" "}
                 <button
                   onClick={signInWithGoogle}
-                  className="text-purple-600 underline"
+                  className="text-purple-600 underline font-semibold"
                 >
                   log in
                 </button>{" "}
@@ -93,13 +106,15 @@ export default function EventDetailsPage() {
       </div>
 
       {event.lineup?.length > 0 && (
-        <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-4 text-purple-600">🎤 Lineup</h2>
-          <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
-            {event.lineup.map((artist, i) => (
-              <li key={i}>{artist}</li>
-            ))}
-          </ul>
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold mb-4 text-purple-600">🎤 Lineup</h2>
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-700 dark:text-gray-300 list-disc list-inside">
+              {event.lineup.map((artist, i) => (
+                <li key={i}>{artist}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
     </main>
