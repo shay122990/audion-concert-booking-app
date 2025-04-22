@@ -75,6 +75,9 @@ export default function EventDetailsPage() {
           <div className="space-y-1 text-sm text-gray-500 dark:text-gray-400">
             <p>📍 {event.location}</p>
             <p>🕗 Doors Open: {event.doorsOpenTime} | Starts: {event.startTime} | Ends: {event.endTime}</p>
+            <p className="text-lg font-semibold text-purple-600 mt-4">
+              Ticket Price: ${event.price}
+            </p>
           </div>
 
           <div className="mt-6">

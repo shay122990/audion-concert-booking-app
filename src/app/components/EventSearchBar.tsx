@@ -2,19 +2,14 @@
 
 import { ChangeEvent, useState } from "react";
 
-type EventItem = {
-  [key: string]: string | string[] | undefined;
-};
-
 type EventSearchBarProps<T> = {
   data: T[];
   onFilter: (results: T[]) => void;
-  keysToSearch: (keyof T)[];
+  keysToSearch: (Array<keyof T>);
   placeholder?: string;
 };
 
-
-export default function EventSearchBar<T extends EventItem>({
+export default function EventSearchBar<T>({
   data,
   onFilter,
   keysToSearch,

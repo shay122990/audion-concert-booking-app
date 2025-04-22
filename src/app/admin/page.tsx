@@ -35,6 +35,7 @@ export default function AdminPage() {
     category: "EDM",
     description: "",
     lineup: "",
+    price: ""
   });
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
 
@@ -74,6 +75,7 @@ export default function AdminPage() {
         category: rawData.category || "",
         description: rawData.description || "",
         lineup: Array.isArray(rawData.lineup) ? rawData.lineup : [],
+        price: typeof rawData.price === "number" ? rawData.price : 0,
       };
     });
     setEvents(data);
@@ -99,6 +101,7 @@ export default function AdminPage() {
       category: event.category,
       description: event.description,
       lineup: event.lineup?.join(", ") ?? "",
+      price: event.price.toString()
     });
   };
 
@@ -119,6 +122,7 @@ export default function AdminPage() {
       lineup: editFormData.lineup
         ? editFormData.lineup.split(",").map((s) => s.trim())
         : original.lineup,
+      price: Number(editFormData.price) || original.price
     };
 
     await updateEventById(id, updated);
@@ -132,7 +136,7 @@ export default function AdminPage() {
     const formData = new FormData(form);
 
     const newEvent: Event = {
-      id: "", // Firestore will generate the ID
+      id: "",
       title: formData.get("title") as string,
       dates: (formData.get("dates") as string).split(",").map((s) => s.trim()),
       doorsOpenTime: formData.get("doorsOpenTime") as string,
@@ -143,6 +147,7 @@ export default function AdminPage() {
       category: formData.get("category") as string,
       description: formData.get("description") as string,
       lineup: (formData.get("lineup") as string).split(",").map((s) => s.trim()),
+      price: Number(formData.get("price")) || 0
     };
 
     try {
@@ -163,7 +168,6 @@ export default function AdminPage() {
   if (authLoading || roleLoading || !user) {
     return <p className="text-center py-12">Loading...</p>;
   }
-
   return (
     <main className="min-h-screen px-6 py-24 max-w-3xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10">
       <h1 className="text-3xl font-bold text-purple-600">Audion Admin</h1>
@@ -246,6 +250,7 @@ export default function AdminPage() {
         <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
         <form onSubmit={handleAddNewEvent} className="grid gap-4">
           <input name="title" placeholder="Title" required className="px-4 py-2 rounded border" />
+          <input name="category" placeholder="Category" required className="px-4 py-2 rounded border" />
           <input name="dates" placeholder="Dates (comma-separated)" required className="px-4 py-2 rounded border" />
           <input name="doorsOpenTime" placeholder="Doors Open Time" required className="px-4 py-2 rounded border" />
           <input name="startTime" placeholder="Start Time" required className="px-4 py-2 rounded border" />
@@ -259,6 +264,8 @@ export default function AdminPage() {
           </select>
           <textarea name="description" placeholder="Description" required className="px-4 py-2 rounded border" />
           <input name="lineup" placeholder="Lineup (comma-separated)" required className="px-4 py-2 rounded border" />
+          <input name="price" placeholder="Price (without a period or coma)" required className="px-4 py-2 rounded border" />
+
           <button
             type="submit"
             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
@@ -272,11 +279,11 @@ export default function AdminPage() {
       <section className="w-full mt-12">
         <h2 className="text-xl font-semibold mb-4">Current Events</h2>
         <div className="mb-6">
-          <EventSearchBar
-            data={events}
-            onFilter={setFilteredEvents}
-            keysToSearch={["title", "location", "category", "description", "lineup"]}
-          />
+        <EventSearchBar<Event>
+          data={events}
+          onFilter={setFilteredEvents}
+          keysToSearch={["title", "location", "category", "description", "lineup"]}
+        />
         </div>
         <div className="max-h-[600px] overflow-y-auto pr-2">
         <ul className="space-y-4">
@@ -302,6 +309,13 @@ export default function AdminPage() {
                       onChange={(e) => setEditFormData({ ...editFormData, title: e.target.value })}
                       className="px-2 py-1 border rounded"
                       placeholder="Title"
+                    />
+                    <input
+                      type="text"
+                      value={editFormData.category}
+                      onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
+                      className="px-2 py-1 border rounded"
+                      placeholder="Category"
                     />
                     <input
                       type="text"
@@ -343,6 +357,13 @@ export default function AdminPage() {
                       onChange={(e) => setEditFormData({ ...editFormData, lineup: e.target.value })}
                       className="px-2 py-1 border rounded"
                       placeholder="Lineup"
+                    />
+                     <input
+                      type="text"
+                      value={editFormData.price}
+                      onChange={(e) => setEditFormData({ ...editFormData, price: e.target.value })}
+                      className="px-2 py-1 border rounded"
+                      placeholder="Price"
                     />
                     <div className="flex gap-2 mt-2">
                       <button type="submit" className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">
