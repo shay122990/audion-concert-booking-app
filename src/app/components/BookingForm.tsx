@@ -44,8 +44,8 @@ export default function BookingForm({ event, selectedDate, user }: BookingFormPr
 
   return (
     <div className="mt-6 border p-6 rounded-lg bg-white dark:bg-gray-900 shadow">
-      <h3 className="text-lg font-bold mb-2">Book your spot</h3>
-      <p className="text-gray-600 dark:text-gray-300">
+      <h3 className="text-lg font-bold mb-4">Book your spot</h3>
+      <p className="text-gray-600 dark:text-gray-300 mb-4">
         You&apos;re booking <strong>{event.title}</strong> on <strong>{selectedDate}</strong>.
       </p>
 
@@ -53,17 +53,25 @@ export default function BookingForm({ event, selectedDate, user }: BookingFormPr
         <button
           onClick={handleBooking}
           disabled={loading}
-          className="mt-4 px-6 py-3 bg-purple-600 text-white rounded hover:bg-purple-700 disabled:opacity-50"
+          className="px-6 py-3 bg-purple-600 text-white rounded hover:bg-purple-700 disabled:opacity-50"
         >
           {loading ? "Booking..." : "Book Event"}
         </button>
       ) : (
-        <button
-          onClick={handleProceed}
-          className="mt-4 px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition"
-        >
-          Proceed to Payment
-        </button>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <button
+            disabled
+            className="px-6 py-3 bg-green-500 text-white rounded cursor-not-allowed"
+          >
+            ✅ Booked
+          </button>
+          <button
+            onClick={handleProceed}
+            className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          >
+            Proceed to Payment
+          </button>
+        </div>
       )}
     </div>
   );
