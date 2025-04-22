@@ -4,9 +4,13 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
-  const { eventTitle, userEmail, bookingId, amount } = await req.json();
-
   try {
+    const { eventTitle, userEmail, amount } = await req.json();
+
+    if (!eventTitle || !userEmail || !amount) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
@@ -16,19 +20,19 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency: "usd",
             product_data: { name: eventTitle },
-            unit_amount: amount, 
+            unit_amount: amount,  
           },
           quantity: 1,
         },
       ],
-      metadata: { bookingId },
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (err) {
-    console.error("Stripe Error:", err);
-    return NextResponse.json({ error: "Failed to create checkout session" }, { status: 500 });
+ } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    console.error("❌ Stripe Error:", errorMessage);
+    return NextResponse.json({ error: "Stripe session creation failed" }, { status: 500 });
   }
 }
