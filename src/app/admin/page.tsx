@@ -250,7 +250,6 @@ export default function AdminPage() {
         <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
         <form onSubmit={handleAddNewEvent} className="grid gap-4">
           <input name="title" placeholder="Title" required className="px-4 py-2 rounded border" />
-          <input name="category" placeholder="Category" required className="px-4 py-2 rounded border" />
           <input name="dates" placeholder="Dates (comma-separated)" required className="px-4 py-2 rounded border" />
           <input name="doorsOpenTime" placeholder="Doors Open Time" required className="px-4 py-2 rounded border" />
           <input name="startTime" placeholder="Start Time" required className="px-4 py-2 rounded border" />
@@ -309,13 +308,6 @@ export default function AdminPage() {
                       onChange={(e) => setEditFormData({ ...editFormData, title: e.target.value })}
                       className="px-2 py-1 border rounded"
                       placeholder="Title"
-                    />
-                    <input
-                      type="text"
-                      value={editFormData.category}
-                      onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
-                      className="px-2 py-1 border rounded"
-                      placeholder="Category"
                     />
                     <input
                       type="text"

@@ -30,6 +30,7 @@ export default function Home() {
           category: rawData.category || "",
           description: rawData.description || "",
           lineup: Array.isArray(rawData.lineup) ? rawData.lineup : [],
+          price: typeof rawData.price === "number" ? rawData.price : 0,
         };
       });
 
