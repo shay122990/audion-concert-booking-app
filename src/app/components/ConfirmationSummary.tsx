@@ -6,6 +6,7 @@ type Props = {
   selectedTime: string;
   location: string;
   image: string;
+  price: number
 };
 
 export default function ConfirmationSummary({
@@ -14,6 +15,7 @@ export default function ConfirmationSummary({
   selectedTime,
   location,
   image,
+  price
 }: Props) {
   return (
     <div className="max-w-2xl mx-auto text-center">
@@ -28,7 +30,7 @@ export default function ConfirmationSummary({
       <p className="text-gray-600 dark:text-gray-400 mb-1">📍 {location}</p>
       <p className="text-gray-600 dark:text-gray-400 mb-1">📅 {selectedDate}</p>
       <p className="text-gray-600 dark:text-gray-400 mb-6">⏰ {selectedTime}</p>
-
+      <p className="text-gray-600 dark:text-gray-400 mb-6">${price}</p>
       <p className="text-lg text-white dark:text-gray-300">
         Please confirm your selection and continue to complete the booking.
       </p>

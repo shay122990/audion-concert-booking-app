@@ -14,10 +14,8 @@ export default function ConfirmationPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { user } = useAuth();
-
   const [event, setEvent] = useState<Event | null>(null);
   
-
   useEffect(() => {
     if (!id || typeof id !== "string") return;
 
@@ -78,6 +76,7 @@ export default function ConfirmationPage() {
             selectedTime={selectedTime}
             location={event.location}
             image={event.image}
+            price={event.price}
           />
           <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
             <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Secure Payment</h2>
