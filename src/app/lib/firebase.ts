@@ -62,6 +62,7 @@ export const addEvent = async (event: {
   category: string;
   description: string;
   lineup: string[];
+  price: number
 }) => {
   try {
     const newRef = doc(collection(db, "events"));
@@ -113,6 +114,7 @@ export const updateEventById = async (
     category: string; 
     description: string;
     lineup: string[];
+    price: number
   }>
 ) => {
   try {
