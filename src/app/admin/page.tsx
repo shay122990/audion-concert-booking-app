@@ -9,8 +9,10 @@ import { useUserRole } from "@/hooks/useUserRole";
 import EventSearchBar from "@/app/components/EventSearchBar";
 import { Event } from "@/app/types/event";
 import Image from "next/image";
-import FormInput from "../components/form/FormInput";
-import FormSelect from "../components/form/FormSelect";
+import FormInput from "../components/admin/FormInput";
+import FormSelect from "../components/admin/FormSelect";
+import AdminActions from "../components/admin/AdminActions";
+
 
 const CATEGORIES = [
   "EDM", "Indie", "Pop", "Rock", "Jazz", "Classical",
@@ -50,8 +52,6 @@ export default function AdminPage() {
 
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "uploaded" | "exists" | "error">("idle");
   const [deleteStatus, setDeleteStatus] = useState<"idle" | "deleting" | "deleted" | "error">("idle");
-  
-  const RESET_DELAY = 3000;
 
   const { user, loading: authLoading } = useAuth();
   const { role, loading: roleLoading } = useUserRole();
@@ -198,78 +198,15 @@ export default function AdminPage() {
       </section>
 
       {/* Upload & Delete Buttons */}
-      <div className="flex gap-4 flex-wrap justify-center">
-        <button
-          onClick={async () => {
-            setUploadStatus("uploading");
-            const result = await addMockEvents();
-            await fetchEvents();
-
-            if (result === "uploaded") {
-              setUploadStatus("uploaded");
-              setTimeout(() => setUploadStatus("idle"), RESET_DELAY);
-            } else if (result === "already-exists") {
-              setUploadStatus("exists");
-              setTimeout(() => setUploadStatus("idle"), RESET_DELAY);
-            } else {
-              setUploadStatus("error");
-            }
-          }}
-          className={`px-6 py-3 rounded-lg transition text-white ${
-            uploadStatus === "uploaded"
-              ? "bg-green-600 hover:bg-green-700"
-              : uploadStatus === "exists"
-              ? "bg-gray-500"
-              : uploadStatus === "error"
-              ? "bg-red-600"
-              : "bg-purple-600 hover:bg-purple-700"
-          }`}
-        >
-          {uploadStatus === "uploading"
-            ? "Uploading..."
-            : uploadStatus === "uploaded"
-            ? "✅ Uploaded"
-            : uploadStatus === "exists"
-            ? "✔ Already Exists"
-            : uploadStatus === "error"
-            ? "❌ Upload Failed. Try again or contact dev"
-            : "Upload Events from File"}
-        </button>
-
-        <button
-          onClick={async () => {
-            const confirm = window.confirm("Delete ALL events?");
-            if (!confirm) return;
-
-            try {
-              setDeleteStatus("deleting");
-              await deleteAllEvents();
-              await fetchEvents();
-              setDeleteStatus("deleted");
-              setTimeout(() => setDeleteStatus("idle"), RESET_DELAY);
-            } catch (err) {
-              console.error("❌ Error deleting all events:", err);
-              setDeleteStatus("error");
-            }
-          }}
-          className={`px-6 py-3 rounded-lg transition text-white ${
-            deleteStatus === "deleted"
-              ? "bg-green-600 hover:bg-green-700"
-              : deleteStatus === "error"
-              ? "bg-red-600"
-              : "bg-red-600 hover:bg-red-700"
-          }`}
-        >
-          {deleteStatus === "deleting"
-            ? "Deleting..."
-            : deleteStatus === "deleted"
-            ? "✅ All Deleted"
-            : deleteStatus === "error"
-            ? "❌ Delete Failed. Try again or contact dev"
-            : "Delete All Events"}
-        </button>
-      </div>
-
+        <AdminActions
+          fetchEvents={fetchEvents}
+          setUploadStatus={setUploadStatus}
+          setDeleteStatus={setDeleteStatus}
+          uploadStatus={uploadStatus}
+          deleteStatus={deleteStatus}
+          addMockEvents={addMockEvents}
+          deleteAllEvents={deleteAllEvents}
+        />
       {/* Add New Event Form */}
       <section className="w-full mt-12">
         <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
