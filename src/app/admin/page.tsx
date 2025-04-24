@@ -42,6 +42,7 @@ export default function AdminPage() {
 
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "uploaded" | "exists" | "error">("idle");
   const [deleteStatus, setDeleteStatus] = useState<"idle" | "deleting" | "deleted" | "error">("idle");
+  
   const RESET_DELAY = 3000;
 
   const { user, loading: authLoading } = useAuth();
