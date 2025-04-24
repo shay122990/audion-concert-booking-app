@@ -2,20 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import {
-  db,
-  addMockEvents,
-  deleteAllEvents,
-  deleteEventById,
-  addEvent,
-  updateEventById,
-} from "@/app/lib/firebase";
+import {db,addMockEvents,deleteAllEvents,deleteEventById,addEvent,updateEventById,} from "@/app/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useUserRole } from "@/hooks/useUserRole";
 import EventSearchBar from "@/app/components/EventSearchBar";
 import { Event } from "@/app/types/event";
 import Image from "next/image";
+import FormInput from "../components/form/FormInput";
+import FormSelect from "../components/form/FormSelect";
 
 const CATEGORIES = [
   "EDM", "Indie", "Pop", "Rock", "Jazz", "Classical",
@@ -38,6 +33,19 @@ export default function AdminPage() {
     lineup: "",
     price: ""
   });
+  const formFields = [
+    { name: "title", placeholder: "Title" },
+    { name: "dates", placeholder: "Dates (comma-separated)" },
+    { name: "doorsOpenTime", placeholder: "Doors Open Time" },
+    { name: "startTime", placeholder: "Start Time" },
+    { name: "endTime", placeholder: "End Time" },
+    { name: "location", placeholder: "Location" },
+    { name: "image", placeholder: "Image URL" },
+    { name: "description", placeholder: "Description", isTextArea: true },
+    { name: "lineup", placeholder: "Lineup (comma-separated)" },
+    { name: "price", placeholder: "Price (without a period or comma)" }
+  ];
+  
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
 
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "uploaded" | "exists" | "error">("idle");
@@ -266,26 +274,16 @@ export default function AdminPage() {
       <section className="w-full mt-12">
         <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
         <form onSubmit={handleAddNewEvent} className="grid gap-4">
-          <input name="title" placeholder="Title" required className="px-4 py-2 rounded border" />
-          <input name="dates" placeholder="Dates (comma-separated)" required className="px-4 py-2 rounded border" />
-          <input name="doorsOpenTime" placeholder="Doors Open Time" required className="px-4 py-2 rounded border" />
-          <input name="startTime" placeholder="Start Time" required className="px-4 py-2 rounded border" />
-          <input name="endTime" placeholder="End Time" required className="px-4 py-2 rounded border" />
-          <input name="location" placeholder="Location" required className="px-4 py-2 rounded border" />
-          <input name="image" placeholder="Image URL" required className="px-4 py-2 rounded border" />
-          <select name="category" defaultValue={CATEGORIES[0]} required className="px-4 py-2 rounded border">
-            {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-          <textarea name="description" placeholder="Description" required className="px-4 py-2 rounded border" />
-          <input name="lineup" placeholder="Lineup (comma-separated)" required className="px-4 py-2 rounded border" />
-          <input name="price" placeholder="Price (without a period or coma)" required className="px-4 py-2 rounded border" />
-
-          <button
-            type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          >
+          {formFields.map((field) => (
+            <FormInput
+              key={field.name}
+              name={field.name}
+              placeholder={field.placeholder}
+              isTextArea={field.isTextArea}
+            />
+          ))}
+          <FormSelect name="category" options={CATEGORIES} />
+          <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
             Add Event
           </button>
         </form>
@@ -319,61 +317,23 @@ export default function AdminPage() {
                     }}
                     className="w-full grid gap-2"
                   >
-                    <input
-                      type="text"
-                      value={editFormData.title}
+                    <FormInput name="title" value={editFormData.title} placeholder="Title"
                       onChange={(e) => setEditFormData({ ...editFormData, title: e.target.value })}
-                      className="px-2 py-1 border rounded"
-                      placeholder="Title"
                     />
-                    <input
-                      type="text"
-                      value={editFormData.dates}
+                    <FormInput name="dates" value={editFormData.dates} placeholder="Dates"
                       onChange={(e) => setEditFormData({ ...editFormData, dates: e.target.value })}
-                      className="px-2 py-1 border rounded"
-                      placeholder="Dates"
                     />
-                    <input
-                      type="text"
-                      value={editFormData.doorsOpenTime}
-                      onChange={(e) => setEditFormData({ ...editFormData, doorsOpenTime: e.target.value })}
-                      className="px-2 py-1 border rounded"
-                      placeholder="Doors Open Time"
+                    <FormSelect
+                      name="category"
+                      options={CATEGORIES}
+                      value={editFormData.category}
+                      onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
                     />
-                    <input
-                      type="text"
-                      value={editFormData.startTime}
-                      onChange={(e) => setEditFormData({ ...editFormData, startTime: e.target.value })}
-                      className="px-2 py-1 border rounded"
-                      placeholder="Start Time"
-                    />
-                    <input
-                      type="text"
-                      value={editFormData.endTime}
-                      onChange={(e) => setEditFormData({ ...editFormData, endTime: e.target.value })}
-                      className="px-2 py-1 border rounded"
-                      placeholder="End Time"
-                    />
-                    <textarea
-                      value={editFormData.description}
+                    <FormInput name="description" value={editFormData.description} placeholder="Description"
                       onChange={(e) => setEditFormData({ ...editFormData, description: e.target.value })}
-                      className="px-2 py-1 border rounded"
-                      placeholder="Description"
+                      isTextArea
                     />
-                    <input
-                      type="text"
-                      value={editFormData.lineup}
-                      onChange={(e) => setEditFormData({ ...editFormData, lineup: e.target.value })}
-                      className="px-2 py-1 border rounded"
-                      placeholder="Lineup"
-                    />
-                     <input
-                      type="text"
-                      value={editFormData.price}
-                      onChange={(e) => setEditFormData({ ...editFormData, price: e.target.value })}
-                      className="px-2 py-1 border rounded"
-                      placeholder="Price"
-                    />
+                    {/* Add other fields as needed */}
                     <div className="flex gap-2 mt-2">
                       <button type="submit" className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">
                         Save
@@ -416,6 +376,7 @@ export default function AdminPage() {
                     </div>
                   </>
                 )}
+
               </li>
             ))
           )}
