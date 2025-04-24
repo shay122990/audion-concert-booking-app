@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useUserRole } from "@/hooks/useUserRole";
 import EventSearchBar from "@/app/components/EventSearchBar";
 import { Event } from "@/app/types/event";
+import Image from "next/image";
 
 const CATEGORIES = [
   "EDM", "Indie", "Pop", "Rock", "Jazz", "Classical",
@@ -171,6 +172,21 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen px-6 py-24 max-w-3xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10">
       <h1 className="text-3xl font-bold text-purple-600">Audion Admin</h1>
+      <section className="flex flex-col sm:flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-2xl">
+        <div className="w-28 h-28 relative rounded-full overflow-hidden">
+          <Image
+            src={user?.photoURL || "/shay250.png"}
+            alt="Admin Profile Picture"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="text-center sm:text-left">
+          <h2 className="text-2xl font-semibold">{user?.displayName || "Admin User"}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</p>
+          <p className="text-xs text-purple-600 font-medium mt-2">Role: Administrator</p>
+        </div>
+      </section>
 
       {/* Upload & Delete Buttons */}
       <div className="flex gap-4 flex-wrap justify-center">
