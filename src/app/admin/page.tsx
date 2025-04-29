@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db, addMockEvents, deleteAllEvents, deleteEventById, addEvent, updateEventById } from "@/app/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
@@ -14,6 +14,7 @@ import FormSelect from "../components/admin/FormSelect";
 import AdminActions from "../components/admin/AdminActions";
 import ActionButton from "../components/admin/ActionButton";
 import { buildEventFromFormData, parseCommaSeparatedString } from "@/app/utils/eventDataUtils";
+import Modal from "../components/Modal";
 
 const CATEGORIES = [
   "EDM", "Indie", "Pop", "Rock", "Jazz", "Classical",
@@ -28,10 +29,13 @@ export default function AdminPage() {
     title: "", dates: "", doorsOpenTime: "", startTime: "", endTime: "",
     location: "", image: "", category: "EDM", description: "", lineup: "", price: ""
   });
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+  const [modalFooter, setModalFooter] = useState<React.ReactNode>(null);
+  const onConfirmRef = useRef<(() => void) | null>(null);
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "uploaded" | "exists" | "error">("idle");
   const [deleteStatus, setDeleteStatus] = useState<"idle" | "deleting" | "deleted" | "error">("idle");
-
   const { user, loading: authLoading } = useAuth();
   const { role, loading: roleLoading } = useUserRole();
   const router = useRouter();
@@ -89,12 +93,39 @@ export default function AdminPage() {
     setEditFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Delete this event?")) {
+  const handleDelete = (id: string) => {
+    onConfirmRef.current = async () => {
       await deleteEventById(id);
       await fetchEvents();
-    }
+    };
+  
+    setModalTitle("Confirm Deletion");
+    setModalContent(<p>Are you sure you want to delete this event?</p>);
+    setModalFooter(
+      <>
+        <button
+          onClick={async () => {
+            if (onConfirmRef.current) {
+              await onConfirmRef.current();
+            }
+            setIsModalOpen(false);
+          }}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Confirm
+        </button>
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+      </>
+    );
+  
+    setIsModalOpen(true);
   };
+  
 
   const handleEdit = (event: Event) => {
     setEditingEventId(event.id);
@@ -114,39 +145,88 @@ export default function AdminPage() {
   };
 
   const handleSave = async (id: string) => {
-    const original = events.find((e) => e.id === id);
-    if (!original) return;
-
-    const updated = {
-      ...original,
-      ...editFormData,
-      dates: parseCommaSeparatedString(editFormData.dates),
-      lineup: parseCommaSeparatedString(editFormData.lineup),
-      price: Number(editFormData.price) || original.price
-    };
-
-    await updateEventById(id, updated);
-    setEditingEventId(null);
-    await fetchEvents();
+    try {
+      const original = events.find((e) => e.id === id);
+      if (!original) return;
+  
+      const updated = {
+        ...original,
+        ...editFormData,
+        dates: parseCommaSeparatedString(editFormData.dates),
+        lineup: parseCommaSeparatedString(editFormData.lineup),
+        price: Number(editFormData.price) || original.price
+      };
+  
+      await updateEventById(id, updated);
+      setEditingEventId(null);
+      await fetchEvents();
+  
+      setModalTitle("Success");
+      setModalContent(<p>✅ Event successfully updated!</p>);
+      setModalFooter(
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+          OK
+        </button>
+      );
+      setIsModalOpen(true);
+    } catch{
+      setModalTitle("Error");
+      setModalContent(<p>❌ Failed to update event. Please try again.</p>);
+      setModalFooter(
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Retry
+        </button>
+      );
+      setIsModalOpen(true);
+    }
   };
+  
 
   const handleAddNewEvent = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
-
+  
     const newEvent = buildEventFromFormData(formData);
-
+  
     try {
       await addEvent(newEvent);
-      alert("✅ Event added!");
       form.reset();
       await fetchEvents();
+  
+      setModalTitle("Success");
+      setModalContent(<p>✅ Event successfully created!</p>);
+      setModalFooter(
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+          OK
+        </button>
+      );
+      setIsModalOpen(true);
     } catch (err) {
-      alert("❌ Failed to add event");
       console.error(err);
+      setModalTitle("Error");
+      setModalContent(<p>❌ Failed to create event. Please retry.</p>);
+      setModalFooter(
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Retry
+        </button>
+      );
+      setIsModalOpen(true);
     }
   };
+  
 
   if (authLoading || roleLoading || !user) {
     return <p className="text-center py-12">Loading...</p>;
@@ -262,6 +342,14 @@ export default function AdminPage() {
           </div>
         </div>
       </section>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={modalTitle}
+        footer={modalFooter}
+      >
+        {modalContent}
+      </Modal>
     </main>
   );  
 }
