@@ -57,11 +57,17 @@ export default function Home() {
 
   return (
     <main className="px-6 py-12 max-w-7xl mx-auto">
-      <section className="text-center mb-16 py-20 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-xl shadow-lg">
-        <h1 className="text-4xl sm:text-6xl font-extrabold mb-4">Feel the Music. Live the Experience.</h1>
-        <p className="text-lg sm:text-xl max-w-2xl mx-auto">Discover and book tickets to the hottest concerts around you, all in one place.</p>
+      <section className="relative text-center mb-20 py-32 sm:py-40 px-4 bg-gradient-to-r from-purple-700 via-pink-500 to-red-400 text-white rounded-3xl shadow-2xl overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 via-white/5 to-transparent opacity-30"></div>
+        <div className="relative z-10">
+          <h1 className="text-5xl sm:text-7xl font-extrabold mb-6 drop-shadow-lg leading-tight">
+            Feel the Music.<br className="hidden sm:block" />Live the Experience.
+          </h1>
+          <p className="text-lg sm:text-2xl max-w-3xl mx-auto font-light drop-shadow-md">
+            Discover and book tickets to the hottest concerts around you – electrify your nights, all in one place.
+          </p>
+        </div>
       </section>
-
       <div className="flex flex-wrap justify-center gap-2 mb-8">
         {categories.map((category) => (
           <button
