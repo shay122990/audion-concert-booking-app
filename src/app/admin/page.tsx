@@ -153,8 +153,9 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen px-6 py-24 max-w-3xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10">
+    <main className="min-h-screen px-6 py-24 max-w-7xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10">
       <h1 className="text-3xl font-bold text-purple-600">Audion Admin</h1>
+  
       {/* Admin Profile */}
       <section className="flex flex-col sm:flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-2xl">
         <div className="w-28 h-28 relative rounded-full overflow-hidden">
@@ -166,7 +167,7 @@ export default function AdminPage() {
           <p className="text-xs text-purple-600 font-medium mt-2">Role: Administrator</p>
         </div>
       </section>
-
+  
       {/* Upload & Delete */}
       <AdminActions
         fetchEvents={fetchEvents}
@@ -177,87 +178,90 @@ export default function AdminPage() {
         addMockEvents={addMockEvents}
         deleteAllEvents={deleteAllEvents}
       />
-
-      {/* Add New Event */}
-      <section className="w-full mt-12">
-        <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
-        <form onSubmit={handleAddNewEvent} className="grid gap-4">
-          {formFields.map((field) => (
-            <FormInput
-              key={field.name}
-              name={field.name}
-              placeholder={field.placeholder}
-              isTextArea={field.isTextArea}
-            />
-          ))}
-          <FormSelect name="category" options={CATEGORIES} />
-          <ActionButton type="submit" label="Add Event" color="green" />
-        </form>
-      </section>
-
-      {/* Current Events */}
-      <section className="w-full mt-12">
-        <h2 className="text-xl font-semibold mb-4">Current Events</h2>
-        <EventSearchBar<Event>
-          data={events}
-          onFilter={setFilteredEvents}
-          keysToSearch={["title", "location", "category", "description", "lineup"]}
-        />
-        <div className="max-h-[600px] overflow-y-auto pr-2 mt-6">
-          <ul className="space-y-4">
-            {filteredEvents.length === 0 ? (
-              <p className="text-gray-500">No events found.</p>
-            ) : (
-              filteredEvents.map((event) => (
-                <li key={event.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg shadow gap-4 border">
-                  {editingEventId === event.id ? (
-                    <form onSubmit={(e) => { e.preventDefault(); handleSave(event.id); }} className="w-full grid gap-2">
-                      {formFields.map((field) => (
-                        <FormInput
-                          key={field.name}
-                          name={field.name}
-                          value={editFormData[field.name as keyof typeof editFormData]}
-                          placeholder={field.placeholder}
-                          isTextArea={field.isTextArea}
-                          onChange={(e) => handleEditFormChange(field.name, e.target.value)}
+  
+      {/* Main Content Area: Add Event and Current Events side-by-side on desktop */}
+      <section className="w-full flex flex-col lg:flex-row gap-12 mt-12">
+        {/* Add New Event */}
+        <div className="w-full lg:w-1/2">
+          <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
+          <form onSubmit={handleAddNewEvent} className="grid gap-4">
+            {formFields.map((field) => (
+              <FormInput
+                key={field.name}
+                name={field.name}
+                placeholder={field.placeholder}
+                isTextArea={field.isTextArea}
+              />
+            ))}
+            <FormSelect name="category" options={CATEGORIES} />
+            <ActionButton type="submit" label="Add Event" color="green" />
+          </form>
+        </div>
+  
+        {/* Current Events */}
+        <div className="w-full lg:w-1/2">
+          <h2 className="text-xl font-semibold mb-4">Current Events</h2>
+          <EventSearchBar<Event>
+            data={events}
+            onFilter={setFilteredEvents}
+            keysToSearch={["title", "location", "category", "description", "lineup"]}
+          />
+          <div className="max-h-[600px] overflow-y-auto pr-2 mt-6">
+            <ul className="space-y-4">
+              {filteredEvents.length === 0 ? (
+                <p className="text-gray-500">No events found.</p>
+              ) : (
+                filteredEvents.map((event) => (
+                  <li key={event.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg shadow gap-4 border">
+                    {editingEventId === event.id ? (
+                      <form onSubmit={(e) => { e.preventDefault(); handleSave(event.id); }} className="w-full grid gap-2">
+                        {formFields.map((field) => (
+                          <FormInput
+                            key={field.name}
+                            name={field.name}
+                            value={editFormData[field.name as keyof typeof editFormData]}
+                            placeholder={field.placeholder}
+                            isTextArea={field.isTextArea}
+                            onChange={(e) => handleEditFormChange(field.name, e.target.value)}
+                          />
+                        ))}
+                        <FormSelect
+                          name="category"
+                          options={CATEGORIES}
+                          value={editFormData.category}
+                          onChange={(e) => handleEditFormChange("category", e.target.value)}
                         />
-                      ))}
-                      <FormSelect
-                        name="category"
-                        options={CATEGORIES}
-                        value={editFormData.category}
-                        onChange={(e) => handleEditFormChange("category", e.target.value)}
-                      />
-                      <div className="flex gap-2 mt-2">
-                        <ActionButton type="submit" label="Save" color="green" />
-                        <ActionButton label="Cancel" onClick={() => setEditingEventId(null)} color="gray" />
-                      </div>
-                    </form>
-                  ) : (
-                    <>
-                      <div className="text-left w-full">
-                        <p className="font-semibold">{event.title}</p>
-                        <p className="text-sm text-gray-500">
-                          {event.dates.join(", ")} at {event.startTime} • {event.location}
-                        </p>
-                        <p className="text-xs text-gray-600 italic mt-1">{event.description}</p>
-                        <p className="text-xs text-purple-600 font-medium mt-1">
-                          Lineup: {event.lineup?.join(", ") || "No lineup provided"}
-                        </p>
-                        <p className="text-xs text-purple-600 font-medium mt-1">Category: {event.category}</p>
-                      </div>
-                      <div className="flex gap-2 justify-end sm:w-auto">
-                        <ActionButton label="Edit" onClick={() => handleEdit(event)} color="blue" />
-                        <ActionButton label="Delete" onClick={() => handleDelete(event.id)} color="red" />
-                      </div>
-                    </>
-                  )}
-                </li>
-              ))
-            )}
-          </ul>
+                        <div className="flex gap-2 mt-2">
+                          <ActionButton type="submit" label="Save" color="green" />
+                          <ActionButton label="Cancel" onClick={() => setEditingEventId(null)} color="gray" />
+                        </div>
+                      </form>
+                    ) : (
+                      <>
+                        <div className="text-left w-full">
+                          <p className="font-semibold">{event.title}</p>
+                          <p className="text-sm text-gray-500">
+                            {event.dates.join(", ")} at {event.startTime} • {event.location}
+                          </p>
+                          <p className="text-xs text-gray-600 italic mt-1">{event.description}</p>
+                          <p className="text-xs text-purple-600 font-medium mt-1">
+                            Lineup: {event.lineup?.join(", ") || "No lineup provided"}
+                          </p>
+                          <p className="text-xs text-purple-600 font-medium mt-1">Category: {event.category}</p>
+                        </div>
+                        <div className="flex gap-2 justify-end sm:w-auto">
+                          <ActionButton label="Edit" onClick={() => handleEdit(event)} color="blue" />
+                          <ActionButton label="Delete" onClick={() => handleDelete(event.id)} color="red" />
+                        </div>
+                      </>
+                    )}
+                  </li>
+                ))
+              )}
+            </ul>
+          </div>
         </div>
       </section>
     </main>
-  );
+  );  
 }
