@@ -249,15 +249,20 @@ export default function AdminPage() {
       </section>
   
       {/* Upload & Delete */}
-      <AdminActions
-        fetchEvents={fetchEvents}
-        setUploadStatus={setUploadStatus}
-        setDeleteStatus={setDeleteStatus}
-        uploadStatus={uploadStatus}
-        deleteStatus={deleteStatus}
-        addMockEvents={addMockEvents}
-        deleteAllEvents={deleteAllEvents}
-      />
+        <AdminActions
+          fetchEvents={fetchEvents}
+          setUploadStatus={setUploadStatus}
+          setDeleteStatus={setDeleteStatus}
+          uploadStatus={uploadStatus}
+          deleteStatus={deleteStatus}
+          addMockEvents={addMockEvents}
+          deleteAllEvents={deleteAllEvents}
+          setModalTitle={setModalTitle}
+          setModalContent={setModalContent}
+          setModalFooter={setModalFooter}
+          setIsModalOpen={setIsModalOpen}
+        />
+
   
       {/* Main Content Area: Add Event and Current Events side-by-side on desktop */}
       <section className="w-full flex flex-col lg:flex-row gap-12 mt-12">
