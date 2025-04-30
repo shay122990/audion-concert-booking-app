@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { useSearchParams, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { doc, getDoc, collection } from "firebase/firestore";
@@ -45,6 +44,9 @@ export default function ConfirmationPage() {
 
   const selectedDate = searchParams.get("date") || event.dates[0] || "N/A";
   const selectedTime = event.startTime || "TBD";
+  const ticketQuantity = parseInt(searchParams.get("quantity") || "1", 10); 
+
+  const totalAmount = event.price * ticketQuantity; 
 
   const handleProceedToPayment = async () => {
     const res = await fetch("/api/create-checkout-session", {
@@ -53,16 +55,17 @@ export default function ConfirmationPage() {
       body: JSON.stringify({
         eventTitle: event.title,
         userEmail: user.email,
-        amount: 2000,           
+        ticketQuantity,  
+        pricePerTicket: event.price,  
       }),
     });
   
     const data = await res.json();
+  
     if (data.url) {
       window.location.href = data.url;  
     } else {
       alert("Failed to initiate payment.");
-      
     }
   };
   
@@ -77,6 +80,8 @@ export default function ConfirmationPage() {
             location={event.location}
             image={event.image}
             price={event.price}
+            ticketQuantity={ticketQuantity} 
+            totalAmount={totalAmount}
           />
           <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
             <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Secure Payment</h2>

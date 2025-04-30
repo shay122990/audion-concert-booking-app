@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
@@ -17,6 +16,7 @@ export default function EventDetailsPage() {
 
   const [event, setEvent] = useState<Event | null>(null);
   const [selectedDate, setSelectedDate] = useState("");
+  const [ticketQuantity, setTicketQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -54,6 +54,11 @@ export default function EventDetailsPage() {
     return <div className="p-8 text-center text-red-500">Event not found.</div>;
   }
 
+  const handleTicketQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const quantity = Math.max(1, parseInt(event.target.value)); 
+    setTicketQuantity(quantity);
+  };
+
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
       <div className="grid lg:grid-cols-2 gap-10 items-start">
@@ -90,6 +95,18 @@ export default function EventDetailsPage() {
           </div>
 
           <div className="mt-6">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Select Ticket Quantity:</h3>
+            <input
+              type="number"
+              min="1"
+              value={ticketQuantity}
+              onChange={handleTicketQuantityChange}
+              className="w-24 p-2 border border-gray-300 dark:border-gray-700 rounded-lg"
+            />
+            <span className="ml-2 text-sm text-gray-500">Tickets</span>
+          </div>
+
+          <div className="mt-6">
             {!user ? (
               <div className="bg-yellow-100 border border-yellow-300 p-4 rounded-lg text-yellow-800 text-center shadow-sm">
                 Please{" "}
@@ -102,7 +119,12 @@ export default function EventDetailsPage() {
                 to book this event.
               </div>
             ) : (
-              <BookingForm event={event} selectedDate={selectedDate} user={user} />
+              <BookingForm
+                event={event}
+                selectedDate={selectedDate}
+                user={user}
+                ticketQuantity={ticketQuantity} 
+              />
             )}
           </div>
         </div>

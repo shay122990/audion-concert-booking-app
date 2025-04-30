@@ -5,10 +5,18 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
   try {
-    const { eventTitle, userEmail, amount } = await req.json();
+    const { eventTitle, userEmail, ticketQuantity, pricePerTicket } = await req.json();
 
-    if (!eventTitle || !userEmail || !amount) {
+    console.log("Incoming request data:", { eventTitle, userEmail, ticketQuantity, pricePerTicket });
+
+    if (!eventTitle || !userEmail || ticketQuantity == null || !pricePerTicket) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    const totalAmount = pricePerTicket * ticketQuantity * 100;
+
+    if (totalAmount <= 0) {
+      return NextResponse.json({ error: "Amount must be greater than zero" }, { status: 400 });
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -20,7 +28,7 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency: "usd",
             product_data: { name: eventTitle },
-            unit_amount: amount,  
+            unit_amount: totalAmount, 
           },
           quantity: 1,
         },
@@ -30,7 +38,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ url: session.url });
- } catch (err) {
+  } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     console.error("❌ Stripe Error:", errorMessage);
     return NextResponse.json({ error: "Stripe session creation failed" }, { status: 500 });

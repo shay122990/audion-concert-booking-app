@@ -1,12 +1,13 @@
 import Image from "next/image";
-
 type Props = {
   eventTitle: string;
   selectedDate: string;
   selectedTime: string;
   location: string;
   image: string;
-  price: number
+  price: number;
+  ticketQuantity: number; 
+  totalAmount: number;     
 };
 
 export default function ConfirmationSummary({
@@ -15,25 +16,24 @@ export default function ConfirmationSummary({
   selectedTime,
   location,
   image,
-  price
+  ticketQuantity,
+  totalAmount, 
 }: Props) {
   return (
-    <div className="max-w-2xl mx-auto text-center">
-      <Image
-        src={image}
-        alt={eventTitle}
-        width={800}
-        height={400}
-        className="rounded-lg mb-6 object-cover w-full h-64"
-      />
-      <h1 className="text-3xl font-bold mb-2">{eventTitle}</h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-1">📍 {location}</p>
-      <p className="text-gray-600 dark:text-gray-400 mb-1">📅 {selectedDate}</p>
-      <p className="text-gray-600 dark:text-gray-400 mb-6">⏰ {selectedTime}</p>
-      <p className="text-gray-600 dark:text-gray-400 mb-6">$ {price}</p>
-      <p className="text-lg text-white dark:text-gray-300">
-        Please confirm your selection and continue to complete the booking.
-      </p>
+    <div>
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">{eventTitle}</h2>
+      <div className="flex items-center gap-6">
+        <Image src={image} alt={eventTitle} width={500} height={500} className="rounded-md" />
+        <div>
+          <p className="text-gray-700 dark:text-gray-300">Date: {selectedDate}</p>
+          <p className="text-gray-700 dark:text-gray-300">Time: {selectedTime}</p>
+          <p className="text-gray-700 dark:text-gray-300">Location: {location}</p>
+          <p className="text-gray-700 dark:text-gray-300">Tickets: {ticketQuantity}</p>
+          <p className="text-lg font-semibold text-purple-600 mt-4">
+            Total Price: ${totalAmount.toFixed(2)}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
