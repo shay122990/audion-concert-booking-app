@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveBooking } from "@/app/lib/firebase";
@@ -10,9 +8,10 @@ type BookingFormProps = {
   event: Event;
   selectedDate: string;
   user: User;
+  ticketQuantity: number;  
 };
 
-export default function BookingForm({ event, selectedDate, user }: BookingFormProps) {
+export default function BookingForm({ event, selectedDate, user, ticketQuantity }: BookingFormProps) {
   const [hasBooked, setHasBooked] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -27,6 +26,7 @@ export default function BookingForm({ event, selectedDate, user }: BookingFormPr
         userId: user.uid,
         eventId: event.id,
         selectedDate,
+        ticketQuantity,  
       });
 
       setHasBooked(true);
@@ -39,7 +39,7 @@ export default function BookingForm({ event, selectedDate, user }: BookingFormPr
   };
 
   const handleProceed = () => {
-    router.push(`/confirm/${event.id}?date=${selectedDate}`);
+    router.push(`/confirm/${event.id}?date=${selectedDate}&quantity=${ticketQuantity}`); 
   };
 
   return (
