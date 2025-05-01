@@ -17,7 +17,7 @@ export default function Navbar() {
   if (authLoading || roleLoading) return null;
 
   return (
-    <header className="w-full px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-black/60 backdrop-blur">
+    <header className="fixed top-0 left-0 w-full px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-black/80 backdrop-blur z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold text-purple-600">
           Audion

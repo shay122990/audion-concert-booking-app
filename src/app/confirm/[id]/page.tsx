@@ -71,7 +71,7 @@ export default function ConfirmationPage() {
   
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950 px-4 py-16">
-      <div className="max-w-3xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden">
+      <div className=" flex flex-col max-w-3xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden">
         <div className="p-8 sm:p-10 space-y-10">
           <ConfirmationSummary
             eventTitle={event.title}
