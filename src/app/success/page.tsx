@@ -6,8 +6,8 @@ export default function SuccessPage() {
         <p className="text-gray-700 dark:text-gray-300 mb-6">
           Thank you for your booking! A confirmation email has been sent.
         </p>
-        <Link href="/" className="px-6 py-3 bg-purple-600 text-white rounded hover:bg-purple-700">
-          Back to Home
+        <Link href="/profile" className="px-6 py-3 bg-purple-600 text-white rounded hover:bg-purple-700">
+          View your ticket
         </Link>
       </div>
     );
