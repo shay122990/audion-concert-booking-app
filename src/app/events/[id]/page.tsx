@@ -60,14 +60,14 @@ export default function EventDetailsPage() {
   };
 
   return (
-    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-      <div className="grid lg:grid-cols-2 gap-10 items-start">
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-16 mt-10">
+      <div className="grid lg:grid-cols-2 gap-10 items-center">
         <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-800">
           <Image
             src={event.image}
             alt={event.title}
             fill
-            className="object-cover transition-transform duration-500 hover:scale-105"
+            className="object-cover transition-transform duration-500 hover:scale-105 h-auto"
             sizes="(max-width: 1024px) 100vw, 50vw"
             priority
           />
