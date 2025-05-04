@@ -12,7 +12,7 @@ Audion offers users a **seamless ticket booking experience** while providing **a
 
 - Browse top upcoming events with beautiful banners.
 - Search by event name or category.
-- ✨ _\[Image coming soon]_
+- ![Home Page Screenshot](public/home-screen.jpg)
 
 ### 2. Event Categories
 
@@ -87,7 +87,7 @@ Audion offers users a **seamless ticket booking experience** while providing **a
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/audion.git
+git clone https://github.com/shay122990/audion-concert-booking-app
 ```
 
 2. Install dependencies:
