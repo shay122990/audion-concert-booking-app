@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <main className="px-6 py-12 max-w-7xl mx-auto">
       {/* Hero Section */}
-      <section className="relative text-center mb-20 mt-10 lg:mt-20 sm:mb-40 py-40 sm:py-32 px-6 bg-gradient-to-r from-red-500 via-pink-600 to-purple-800 text-white rounded-3xl shadow-xl overflow-hidden z-0">
+      <section className="relative text-center mt-10 lg:mt-20 mb-4 md:mb-10 py-16 sm:py-32 px-6 bg-gradient-to-r from-red-500 via-pink-600 to-purple-800 text-white rounded-3xl shadow-xl overflow-hidden z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/20 via-black/30 to-transparent opacity-70"></div>
         <div className="relative z-10">
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-yellow-400 to-teal-400 drop-shadow-lg leading-tight">
