@@ -5,6 +5,8 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
+import Image from "next/image";
+import logo from "../../../public/audion-logo.png"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,8 +21,8 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 w-full px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-black/80 backdrop-blur z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-purple-600">
-          Audion
+        <Link href="/">
+          <Image src={logo} alt="audion-logo" width={80} height={80} className="rounded-full shadow-2xl"/>
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm">
@@ -62,7 +64,7 @@ export default function Navbar() {
       <aside
         className={`fixed top-0 right-0 z-50 h-full w-3/4 max-w-xs bg-black/60 shadow-lg transform transition-transform duration-300 ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
-        <div className="p-6 h-dvh flex flex-col text-center gap-6 text-sm bg-black/60 text-white">
+        <div className="p-6 h-dvh flex flex-col text-center gap-6 text-sm bg-black/90 text-white">
           <button onClick={closeMenu} className="self-end hover:text-purple-600" aria-label="Close menu">✕</button>
           <Link href="/" onClick={closeMenu} className="hover:text-purple-600">Home</Link>
 
