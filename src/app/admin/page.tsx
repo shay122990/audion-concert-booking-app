@@ -233,7 +233,7 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen px-6 py-24 max-w-7xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10">
+    <main className="min-h-screen px-6 py-24 max-w-7xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10 mt-30">
       <h1 className="text-3xl font-bold text-purple-600">Audion Admin</h1>
   
       {/* Admin Profile */}
