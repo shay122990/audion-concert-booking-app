@@ -8,7 +8,7 @@ import Image from "next/image";
 import TicketModal from "@/app/components/TicketModal";
 
 type Booking = {
-  id: string;  
+  id: string;
   eventId: string;
   selectedDate: string;
   bookedAt: string;
@@ -89,77 +89,86 @@ export default function ProfilePage() {
     <main className="max-w-5xl mx-auto px-6 py-16">
       <h1 className="text-3xl font-bold text-purple-600 mb-8">My Profile</h1>
 
-      {/* User Info */}
-      <section className="flex flex-col sm:flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-        <div className="w-28 h-28 relative rounded-full overflow-hidden">
-          <Image
-            src={user?.photoURL || "/shay250.png"}
-            alt="Profile Picture"
-            fill
-            className="object-cover"
-          />
-        </div>
-        <div className="text-center sm:text-left">
-          <h2 className="text-2xl font-semibold">{user?.displayName || "Guest User"}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</p>
-        </div>
-      </section>
+      {user ? (
+        <>
+          <section className="flex flex-col sm:flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            <div className="w-28 h-28 relative rounded-full overflow-hidden">
+              <Image
+                src={user.photoURL || "/shay250.png"}
+                alt="Profile Picture"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="text-center sm:text-left">
+              <h2 className="text-2xl font-semibold">{user.displayName || "Guest User"}</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+            </div>
+          </section>
 
-      {/* Bookings */}
-      <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Your Bookings</h2>
+          <section className="mb-12">
+            <h2 className="text-xl font-semibold mb-4">Your Bookings</h2>
 
-        {loading ? (
-          <p className="text-gray-500 dark:text-gray-400">Loading your bookings...</p>
-        ) : bookings.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-400">You have no bookings yet.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {bookings.map((booking) => (
-              <div key={booking.id} className="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-900">
-                <h3 className="text-lg font-bold text-purple-600">{booking.title}</h3>
+            {loading ? (
+              <p className="text-gray-500 dark:text-gray-400">Loading your bookings...</p>
+            ) : bookings.length === 0 ? (
+              <p className="text-gray-500 dark:text-gray-400">You have no bookings yet.</p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {bookings.map((booking) => (
+                  <div key={booking.id} className="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-900">
+                    <h3 className="text-lg font-bold text-purple-600">{booking.title}</h3>
 
-                {booking.title === "Event Not Found" ? (
-                  <>
-                    <p className="text-sm text-red-500 mt-2">
-                      This event no longer exists. Please re-book.
-                    </p>
-                    <button
-                      onClick={() => handleDeleteBooking(booking.id)}
-                      className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                    >
-                      Delete Booking
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">📅 {booking.selectedDate}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">📍 {booking.location}</p>
-                    <button
-                      onClick={() => {
-                        setSelectedBooking(booking);
-                        setShowTicketModal(true);
-                      }}
-                      className="mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-                    >
-                      View Ticket
-                    </button>
-                  </>
-                )}
+                    {booking.title === "Event Not Found" ? (
+                      <>
+                        <p className="text-sm text-red-500 mt-2">
+                          This event no longer exists. Please re-book.
+                        </p>
+                        <button
+                          onClick={() => handleDeleteBooking(booking.id)}
+                          className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                        >
+                          Delete Booking
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">📅 {booking.selectedDate}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">📍 {booking.location}</p>
+                        <button
+                          onClick={() => {
+                            setSelectedBooking(booking);
+                            setShowTicketModal(true);
+                          }}
+                          className="mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                        >
+                          View Ticket
+                        </button>
+                      </>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
-      </section>
+            )}
+          </section>
 
-      {/* Ticket Modal */}
-      {selectedBooking && (
-        <TicketModal
-          isOpen={showTicketModal}
-          onClose={() => setShowTicketModal(false)}
-          booking={selectedBooking}
-        />
+          {selectedBooking && (
+            <TicketModal
+              isOpen={showTicketModal}
+              onClose={() => setShowTicketModal(false)}
+              booking={selectedBooking}
+            />
+          )}
+        </>
+      ) : (
+        <section className="flex flex-col items-center justify-center text-center gap-6 bg-white dark:bg-gray-900 p-8 rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold text-purple-600">Please sign in to view your bookings</h2>
+          <p className="text-gray-500 dark:text-gray-400">
+            You need an account to see your profile and booking history.
+          </p>
+        </section>
       )}
     </main>
   );
 }
+
