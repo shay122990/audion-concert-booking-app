@@ -18,6 +18,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Audion – Book Concert Tickets Instantly",
   description: "Audion lets you book live concert tickets with ease and style.",
+  icons: {
+    icon: "/audion-logo.png", 
+  },
 };
 
 export default function RootLayout({
