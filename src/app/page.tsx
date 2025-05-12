@@ -108,17 +108,6 @@ export default function Home() {
         keysToSearch={["title", "location", "category", "description", "lineup"]}
       />
 
-      {/* Dynamic Section Between Events (Featured Event/Trending Events) */}
-      <section className="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center py-20 rounded-3xl mb-12 shadow-xl">
-        <h2 className="text-3xl font-semibold mb-6">Trending Events</h2>
-        <div className="max-w-5xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {groupedEvents['All'] && groupedEvents['All'].slice(0, 3).map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Event Cards Grid */}
       {(activeCategory === "All" ? categories.slice(1) : [activeCategory]).map((category) => (
@@ -133,6 +122,18 @@ export default function Home() {
           </section>
         )
       ))}
+
+      {/* Dynamic Section Between Events (Featured Event/Trending Events) */}
+      <section className="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center py-20 rounded-3xl mb-12 shadow-xl">
+        <h2 className="text-3xl font-semibold mb-6">Trending Events</h2>
+        <div className="max-w-5xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {groupedEvents['All'] && groupedEvents['All'].slice(0, 3).map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
