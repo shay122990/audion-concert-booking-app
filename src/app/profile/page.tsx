@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { collection, getDocs, doc, getDoc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
@@ -24,7 +30,9 @@ export default function ProfilePage() {
   const { user } = useAuth();
   const [bookings, setBookings] = useState<(Booking & EventDetails)[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedBooking, setSelectedBooking] = useState<(Booking & EventDetails) | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<
+    (Booking & EventDetails) | null
+  >(null);
   const [showTicketModal, setShowTicketModal] = useState(false);
 
   useEffect(() => {
@@ -35,9 +43,9 @@ export default function ProfilePage() {
         const bookingsRef = collection(doc(db, "users", user.uid), "bookings");
         const snapshot = await getDocs(bookingsRef);
 
-        const bookingData: Booking[] = snapshot.docs.map(docSnap => ({
+        const bookingData: Booking[] = snapshot.docs.map((docSnap) => ({
           id: docSnap.id,
-          ...docSnap.data()
+          ...docSnap.data(),
         })) as Booking[];
 
         const detailedBookings = await Promise.all(
@@ -53,7 +61,7 @@ export default function ProfilePage() {
                 ...booking,
                 title: "Event Not Found",
                 location: "Unknown",
-                dates: []
+                dates: [],
               };
             }
           })
@@ -72,12 +80,14 @@ export default function ProfilePage() {
 
   const handleDeleteBooking = async (bookingId: string) => {
     if (!user) return;
-    const confirmDelete = window.confirm("Are you sure you want to delete this booking?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this booking?"
+    );
     if (!confirmDelete) return;
 
     try {
       await deleteDoc(doc(db, "users", user.uid, "bookings", bookingId));
-      setBookings(prev => prev.filter(b => b.id !== bookingId));
+      setBookings((prev) => prev.filter((b) => b.id !== bookingId));
       alert("Booking deleted successfully.");
     } catch (err) {
       console.error("❌ Failed to delete booking:", err);
@@ -86,12 +96,11 @@ export default function ProfilePage() {
   };
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-16">
+    <main className="max-w-5xl mx-auto px-6 mt-22 lg:mt-28 mb-10">
       <h1 className="text-3xl font-bold text-purple-600 mb-8">My Profile</h1>
-
       {user ? (
         <>
-          <section className="flex flex-col sm:flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+          <section className="flex flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
             <div className="w-28 h-28 relative rounded-full overflow-hidden">
               <Image
                 src={user.photoURL || "/shay250.png"}
@@ -101,8 +110,12 @@ export default function ProfilePage() {
               />
             </div>
             <div className="text-center sm:text-left">
-              <h2 className="text-2xl font-semibold">{user.displayName || "Guest User"}</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+              <h2 className="text-2xl font-semibold">
+                {user.displayName || "Guest User"}
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {user.email}
+              </p>
             </div>
           </section>
 
@@ -110,14 +123,23 @@ export default function ProfilePage() {
             <h2 className="text-xl font-semibold mb-4">Your Bookings</h2>
 
             {loading ? (
-              <p className="text-gray-500 dark:text-gray-400">Loading your bookings...</p>
+              <p className="text-gray-500 dark:text-gray-400">
+                Loading your bookings...
+              </p>
             ) : bookings.length === 0 ? (
-              <p className="text-gray-500 dark:text-gray-400">You have no bookings yet.</p>
+              <p className="text-gray-500 dark:text-gray-400">
+                You have no bookings yet.
+              </p>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {bookings.map((booking) => (
-                  <div key={booking.id} className="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-900">
-                    <h3 className="text-lg font-bold text-purple-600">{booking.title}</h3>
+                  <div
+                    key={booking.id}
+                    className="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-900"
+                  >
+                    <h3 className="text-lg font-bold text-purple-600">
+                      {booking.title}
+                    </h3>
 
                     {booking.title === "Event Not Found" ? (
                       <>
@@ -133,8 +155,12 @@ export default function ProfilePage() {
                       </>
                     ) : (
                       <>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">📅 {booking.selectedDate}</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">📍 {booking.location}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          📅 {booking.selectedDate}
+                        </p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          📍 {booking.location}
+                        </p>
                         <button
                           onClick={() => {
                             setSelectedBooking(booking);
@@ -162,7 +188,9 @@ export default function ProfilePage() {
         </>
       ) : (
         <section className="flex flex-col items-center justify-center text-center gap-6 bg-white dark:bg-gray-900 p-8 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-purple-600">Please sign in to view your bookings</h2>
+          <h2 className="text-2xl font-semibold text-purple-600">
+            Please sign in to view your bookings
+          </h2>
           <p className="text-gray-500 dark:text-gray-400">
             You need an account to see your profile and booking history.
           </p>
@@ -171,4 +199,3 @@ export default function ProfilePage() {
     </main>
   );
 }
-
