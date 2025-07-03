@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import Image from "next/image";
-import logo from "../../../public/audion-logo.png"
+import logo from "../../../public/audion-logo.png";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,26 +22,51 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 w-full px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-black/80 backdrop-blur z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/">
-          <Image src={logo} alt="audion-logo" width={80} height={80} className="rounded-full shadow-2xl"/>
+          <Image
+            src={logo}
+            alt="audion-logo"
+            width={70}
+            height={70}
+            className="rounded-full shadow-2xl w-10 h-10 lg:w-14 lg:h-14"
+          />
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          <Link href="/" className={pathname === "/" ? "text-purple-600" : "hover:text-purple-600"}>
+          <Link
+            href="/"
+            className={
+              pathname === "/" ? "text-purple-600" : "hover:text-purple-600"
+            }
+          >
             Home
           </Link>
 
           {user && role === "admin" && (
-            <Link href="/admin" className="hover:text-purple-600">Admin</Link>
+            <Link href="/admin" className="hover:text-purple-600">
+              Admin
+            </Link>
           )}
 
           {user && role === "user" && (
-            <Link href="/profile" className="hover:text-purple-600">Profile</Link>
+            <Link href="/profile" className="hover:text-purple-600">
+              Profile
+            </Link>
           )}
 
           {!user ? (
-            <button onClick={signInWithGoogle} className="text-sm text-purple-600 hover:underline">Login</button>
+            <button
+              onClick={signInWithGoogle}
+              className="text-sm text-purple-600 hover:underline"
+            >
+              Login
+            </button>
           ) : (
-            <button onClick={logout} className="text-sm text-gray-600 hover:text-purple-600">Logout</button>
+            <button
+              onClick={logout}
+              className="text-sm text-gray-600 hover:text-purple-600"
+            >
+              Logout
+            </button>
           )}
         </nav>
 
@@ -50,36 +75,80 @@ export default function Navbar() {
           onClick={() => setIsOpen(true)}
           aria-label="Open menu"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
         </button>
       </div>
 
       <div
-        className={`fixed inset-0 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        className={`fixed inset-0 z-50 transition-opacity duration-300 ${
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
         onClick={closeMenu}
       />
 
       <aside
-        className={`fixed top-0 right-0 z-50 h-full w-3/4 max-w-xs bg-black/60 shadow-lg transform transition-transform duration-300 ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 right-0 z-50 h-full w-3/4 max-w-xs bg-black/60 shadow-lg transform transition-transform duration-300 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <div className="p-6 h-dvh flex flex-col text-center gap-6 text-sm bg-black/90 text-white">
-          <button onClick={closeMenu} className="self-end hover:text-purple-600" aria-label="Close menu">✕</button>
-          <Link href="/" onClick={closeMenu} className="hover:text-purple-600">Home</Link>
+          <button
+            onClick={closeMenu}
+            className="self-end hover:text-purple-600"
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
+          <Link href="/" onClick={closeMenu} className="hover:text-purple-600">
+            Home
+          </Link>
 
           {user && role === "admin" && (
-            <Link href="/admin" onClick={closeMenu} className="hover:text-purple-600">Admin</Link>
+            <Link
+              href="/admin"
+              onClick={closeMenu}
+              className="hover:text-purple-600"
+            >
+              Admin
+            </Link>
           )}
 
           {user && role === "user" && (
-            <Link href="/profile" onClick={closeMenu} className="hover:text-purple-600">Profile</Link>
+            <Link
+              href="/profile"
+              onClick={closeMenu}
+              className="hover:text-purple-600"
+            >
+              Profile
+            </Link>
           )}
 
           {!user ? (
-            <button onClick={signInWithGoogle} className="text-sm text-purple-400">Login</button>
+            <button
+              onClick={signInWithGoogle}
+              className="text-sm text-purple-400"
+            >
+              Login
+            </button>
           ) : (
-            <button onClick={logout} className="text-sm text-white hover:text-purple-400">Logout</button>
+            <button
+              onClick={logout}
+              className="text-sm text-white hover:text-purple-400"
+            >
+              Logout
+            </button>
           )}
         </div>
       </aside>
