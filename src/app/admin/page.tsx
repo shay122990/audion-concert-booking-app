@@ -24,7 +24,7 @@ import {
   buildEventFromFormData,
   parseCommaSeparatedString,
 } from "@/app/utils/eventDataUtils";
-import AdminModal from "./components/AdminModal";
+import Modal from "../components/Modal";
 
 const CATEGORIES = [
   "EDM",
@@ -431,14 +431,14 @@ export default function AdminPage() {
           </div>
         </div>
       </section>
-      <AdminModal
+      <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={modalTitle}
         footer={modalFooter}
       >
         {modalContent}
-      </AdminModal>
+      </Modal>
     </main>
   );
 }

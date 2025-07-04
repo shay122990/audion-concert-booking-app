@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   collection,
   getDocs,
@@ -12,6 +12,7 @@ import { db } from "@/app/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import TicketModal from "@/app/components/TicketModal";
+import Modal from "@/app/components/Modal";
 
 type Booking = {
   id: string;
@@ -34,6 +35,12 @@ export default function ProfilePage() {
     (Booking & EventDetails) | null
   >(null);
   const [showTicketModal, setShowTicketModal] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+  const [modalFooter, setModalFooter] = useState<React.ReactNode>(null);
+  const onConfirmRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -78,26 +85,70 @@ export default function ProfilePage() {
     fetchBookings();
   }, [user]);
 
-  const handleDeleteBooking = async (bookingId: string) => {
+  const handleDeleteBooking = (bookingId: string) => {
     if (!user) return;
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this booking?"
-    );
-    if (!confirmDelete) return;
 
-    try {
-      await deleteDoc(doc(db, "users", user.uid, "bookings", bookingId));
-      setBookings((prev) => prev.filter((b) => b.id !== bookingId));
-      alert("Booking deleted successfully.");
-    } catch (err) {
-      console.error("❌ Failed to delete booking:", err);
-      alert("Failed to delete booking. Please try again.");
-    }
+    onConfirmRef.current = async () => {
+      try {
+        await deleteDoc(doc(db, "users", user.uid, "bookings", bookingId));
+        setBookings((prev) => prev.filter((b) => b.id !== bookingId));
+
+        setModalTitle("Success");
+        setModalContent(<p>✅ Booking deleted successfully.</p>);
+        setModalFooter(
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            OK
+          </button>
+        );
+      } catch (err) {
+        console.error("❌ Failed to delete booking:", err);
+        setModalTitle("Error");
+        setModalContent(
+          <p>❌ Failed to delete booking. Please try again later.</p>
+        );
+        setModalFooter(
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          >
+            Close
+          </button>
+        );
+      } finally {
+        setIsModalOpen(true);
+      }
+    };
+
+    setModalTitle("Confirm Deletion");
+    setModalContent(<p>Are you sure you want to delete this booking?</p>);
+    setModalFooter(
+      <>
+        <button
+          onClick={async () => {
+            if (onConfirmRef.current) await onConfirmRef.current();
+          }}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        >
+          Confirm
+        </button>
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+      </>
+    );
+    setIsModalOpen(true);
   };
 
   return (
     <main className="max-w-5xl mx-auto px-6 mt-22 lg:mt-28 mb-10">
       <h1 className="text-3xl font-bold text-purple-600 mb-8">My Profile</h1>
+
       {user ? (
         <>
           <section className="flex flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
@@ -185,6 +236,15 @@ export default function ProfilePage() {
               booking={selectedBooking}
             />
           )}
+
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            title={modalTitle}
+            footer={modalFooter}
+          >
+            {modalContent}
+          </Modal>
         </>
       ) : (
         <section className="flex flex-col items-center justify-center text-center gap-6 bg-white dark:bg-gray-900 p-8 rounded-lg shadow-md">
