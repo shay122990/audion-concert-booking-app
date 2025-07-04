@@ -16,15 +16,15 @@ import { useUserRole } from "@/hooks/useUserRole";
 import EventSearchBar from "@/app/components/EventSearchBar";
 import { Event } from "@/app/types/event";
 import Image from "next/image";
-import FormInput from "../components/admin/FormInput";
-import FormSelect from "../components/admin/FormSelect";
-import AdminActions from "../components/admin/AdminActions";
-import ActionButton from "../components/admin/ActionButton";
+import FormInput from "./components/FormInput";
+import FormSelect from "./components/FormSelect";
+import AdminActions from "./components/AdminActions";
+import ActionButton from "./components/ActionButton";
 import {
   buildEventFromFormData,
   parseCommaSeparatedString,
 } from "@/app/utils/eventDataUtils";
-import Modal from "../components/Modal";
+import AdminModal from "./components/AdminModal";
 
 const CATEGORIES = [
   "EDM",
@@ -431,14 +431,14 @@ export default function AdminPage() {
           </div>
         </div>
       </section>
-      <Modal
+      <AdminModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={modalTitle}
         footer={modalFooter}
       >
         {modalContent}
-      </Modal>
+      </AdminModal>
     </main>
   );
 }

@@ -10,7 +10,13 @@ type ModalProps = {
   footer?: React.ReactNode;
 };
 
-export default function Modal({ isOpen, onClose, title, children, footer }: ModalProps) {
+export default function AdminModal({
+  isOpen,
+  onClose,
+  title,
+  children,
+  footer,
+}: ModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -22,7 +28,9 @@ export default function Modal({ isOpen, onClose, title, children, footer }: Moda
         >
           ✖
         </button>
-        {title && <h3 className="text-xl font-bold text-center mb-4">{title}</h3>}
+        {title && (
+          <h3 className="text-xl font-bold text-center mb-4">{title}</h3>
+        )}
         <div className="mb-4">{children}</div>
         {footer && <div className="flex justify-end gap-2">{footer}</div>}
       </div>
