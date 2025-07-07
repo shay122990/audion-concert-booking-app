@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { useUserRole } from "@/hooks/useUserRole";
 import Navbar from "@/app/components/Navbar";
 
 export default function LayoutWrapper({
@@ -10,7 +9,7 @@ export default function LayoutWrapper({
   children: React.ReactNode;
 }) {
   const { loading: authLoading } = useAuth();
-  const { loading: roleLoading } = useUserRole();
+  const { loading: roleLoading } = useAuth();
 
   const isLoading = authLoading || roleLoading;
 

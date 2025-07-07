@@ -12,7 +12,6 @@ import {
 } from "@/app/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useUserRole } from "@/hooks/useUserRole";
 import EventSearchBar from "@/app/components/EventSearchBar";
 import { Event } from "@/app/types/event";
 import Image from "next/image";
@@ -69,7 +68,7 @@ export default function AdminPage() {
     "idle" | "deleting" | "deleted" | "error"
   >("idle");
   const { user, loading: authLoading } = useAuth();
-  const { role, loading: roleLoading } = useUserRole();
+  const { role, loading: roleLoading } = useAuth();
   const router = useRouter();
 
   const formFields = [
@@ -264,7 +263,13 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen px-6 py-8 lg:py-24 max-w-7xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10 mt-20 lg:mt-30">
       <h1 className="text-3xl font-bold text-purple-600">Audion Admin</h1>
-      <button>Go to profile</button>
+      <button
+        onClick={() => router.push("/profile")}
+        className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
+      >
+        Go to Profile
+      </button>
+
       {/* Admin Profile */}
       <section className="flex flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-2xl">
         <div className="w-28 h-28 relative rounded-full overflow-hidden">

@@ -11,7 +11,6 @@ import {
 } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
-import { useUserRole } from "@/hooks/useUserRole";
 import Image from "next/image";
 import TicketModal from "@/app/components/TicketModal";
 import Modal from "@/app/components/Modal";
@@ -35,7 +34,7 @@ type FullBooking = Booking & EventDetails;
 
 export default function ProfilePage() {
   const { user } = useAuth();
-  const { role, loading: roleLoading } = useUserRole();
+  const { role, loading: roleLoading } = useAuth();
   const [myBookings, setMyBookings] = useState<FullBooking[]>([]);
   const [otherBookings, setOtherBookings] = useState<FullBooking[]>([]);
   const [loading, setLoading] = useState(true);

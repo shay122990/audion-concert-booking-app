@@ -3,26 +3,22 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { useUserRole } from "@/hooks/useUserRole";
 
 export default function SuccessPage() {
-  const { user, loading: authLoading } = useAuth();
-  const { role, loading: roleLoading } = useUserRole();
+  const { user, loading, role, roleLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (authLoading || roleLoading) return;
+    if (loading || roleLoading) return;
 
-    if (user) {
-      if (role === "admin") {
-        router.push("/admin");
-      } else {
-        router.push("/profile");
-      }
-    } else {
+    if (!user) {
       router.push("/login");
+    } else if (role === "admin") {
+      router.push("/admin");
+    } else {
+      router.push("/profile");
     }
-  }, [user, role, authLoading, roleLoading, router]);
+  }, [user, role, loading, roleLoading, router]);
 
   return (
     <main className="min-h-screen flex items-center justify-center">

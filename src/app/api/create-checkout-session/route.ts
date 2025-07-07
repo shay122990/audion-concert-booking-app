@@ -18,6 +18,11 @@ export async function POST(req: NextRequest) {
     if (totalAmount <= 0) {
       return NextResponse.json({ error: "Amount must be greater than zero" }, { status: 400 });
     }
+    
+    const baseUrl =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : process.env.NEXT_PUBLIC_BASE_URL;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -28,14 +33,15 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency: "usd",
             product_data: { name: eventTitle },
-            unit_amount: totalAmount, 
+            unit_amount: totalAmount,
           },
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/cancel`,
     });
+
 
     return NextResponse.json({ url: session.url });
   } catch (err) {
