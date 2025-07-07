@@ -1,15 +1,34 @@
-import Link from "next/link";
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { useUserRole } from "@/hooks/useUserRole";
+
 export default function SuccessPage() {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-center px-4">
-        <h1 className="text-3xl font-bold text-green-600 mb-4">🎉 Payment Successful!</h1>
-        <p className="text-gray-700 dark:text-gray-300 mb-6">
-          Thank you for your booking! A confirmation email has been sent.
-        </p>
-        <Link href="/profile" className="px-6 py-3 bg-purple-600 text-white rounded hover:bg-purple-700">
-          View your ticket
-        </Link>
-      </div>
-    );
-  }
-  
+  const { user, loading: authLoading } = useAuth();
+  const { role, loading: roleLoading } = useUserRole();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (authLoading || roleLoading) return;
+
+    if (user) {
+      if (role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/profile");
+      }
+    } else {
+      router.push("/login");
+    }
+  }, [user, role, authLoading, roleLoading, router]);
+
+  return (
+    <main className="min-h-screen flex items-center justify-center">
+      <p className="text-gray-700 dark:text-gray-300">
+        Processing your ticket...
+      </p>
+    </main>
+  );
+}
