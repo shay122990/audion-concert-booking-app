@@ -264,7 +264,7 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen px-6 py-8 lg:py-24 max-w-7xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10 mt-20 lg:mt-30">
       <h1 className="text-3xl font-bold text-purple-600">Audion Admin</h1>
-
+      <button>Go to profile</button>
       {/* Admin Profile */}
       <section className="flex flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-2xl">
         <div className="w-28 h-28 relative rounded-full overflow-hidden">
@@ -303,9 +303,7 @@ export default function AdminPage() {
         setIsModalOpen={setIsModalOpen}
       />
 
-      {/* Main Content Area: Add Event and Current Events side-by-side on desktop */}
       <section className="w-full flex flex-col lg:flex-row gap-12 mt-12">
-        {/* Add New Event */}
         <div className="w-full lg:w-1/2">
           <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
           <form onSubmit={handleAddNewEvent} className="grid gap-4">
