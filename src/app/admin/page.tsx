@@ -24,6 +24,7 @@ import {
   parseCommaSeparatedString,
 } from "@/app/utils/eventDataUtils";
 import Modal from "../components/Modal";
+import { CiUser } from "react-icons/ci";
 
 const CATEGORIES = [
   "EDM",
@@ -38,6 +39,31 @@ const CATEGORIES = [
   "Underground",
   "Other",
 ];
+
+const formFields = [
+  { name: "title", placeholder: "Title", type: "text" },
+  { name: "dates", placeholder: "Date", type: "date" },
+  { name: "doorsOpenTime", placeholder: "Doors Open Time" },
+  { name: "startTime", placeholder: "Start Time" },
+  { name: "endTime", placeholder: "End Time" },
+  { name: "location", placeholder: "Location", type: "text" },
+  { name: "image", placeholder: "Image URL", type: "text" },
+  { name: "description", placeholder: "Description", isTextArea: true },
+  { name: "lineup", placeholder: "Lineup (comma-separated)", type: "text" },
+  { name: "price", placeholder: "Price", type: "number" },
+];
+
+const isTimeField = (name: string) =>
+  name === "doorsOpenTime" || name === "startTime" || name === "endTime";
+
+// 15-minute time slots for 24h
+const TIME_OPTIONS: string[] = Array.from({ length: 24 * 4 }, (_, i) => {
+  const hour = Math.floor(i / 4)
+    .toString()
+    .padStart(2, "0");
+  const minute = ((i % 4) * 15).toString().padStart(2, "0");
+  return `${hour}:${minute}`;
+});
 
 export default function AdminPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -70,19 +96,6 @@ export default function AdminPage() {
   const { user, loading: authLoading } = useAuth();
   const { role, loading: roleLoading } = useAuth();
   const router = useRouter();
-
-  const formFields = [
-    { name: "title", placeholder: "Title" },
-    { name: "dates", placeholder: "Dates (comma-separated)" },
-    { name: "doorsOpenTime", placeholder: "Doors Open Time" },
-    { name: "startTime", placeholder: "Start Time" },
-    { name: "endTime", placeholder: "End Time" },
-    { name: "location", placeholder: "Location" },
-    { name: "image", placeholder: "Image URL" },
-    { name: "description", placeholder: "Description", isTextArea: true },
-    { name: "lineup", placeholder: "Lineup (comma-separated)" },
-    { name: "price", placeholder: "Price" },
-  ];
 
   useEffect(() => {
     if (!authLoading && !roleLoading && (!user || role !== "admin")) {
@@ -161,7 +174,7 @@ export default function AdminPage() {
     setEditingEventId(event.id);
     setEditFormData({
       title: event.title,
-      dates: event.dates.join(", "),
+      dates: event.dates[0] ?? "",
       doorsOpenTime: event.doorsOpenTime,
       startTime: event.startTime,
       endTime: event.endTime,
@@ -272,13 +285,17 @@ export default function AdminPage() {
 
       {/* Admin Profile */}
       <section className="flex flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-2xl">
-        <div className="w-28 h-28 relative rounded-full overflow-hidden">
-          <Image
-            src={user?.photoURL || "/shay250.png"}
-            alt="Admin Profile Picture"
-            fill
-            className="object-cover"
-          />
+        <div className="w-28 h-28 relative rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+          {user?.photoURL ? (
+            <Image
+              src={user.photoURL}
+              alt="Admin Profile Picture"
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <CiUser className="text-6xl text-purple-500" />
+          )}
         </div>
         <div className="text-center sm:text-left">
           <h2 className="text-2xl font-semibold">
@@ -309,17 +326,30 @@ export default function AdminPage() {
       />
 
       <section className="w-full flex flex-col lg:flex-row gap-12 mt-12">
+        {/* Add New Event */}
         <div className="w-full lg:w-1/2">
           <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
           <form onSubmit={handleAddNewEvent} className="grid gap-4">
-            {formFields.map((field) => (
-              <FormInput
-                key={field.name}
-                name={field.name}
-                placeholder={field.placeholder}
-                isTextArea={field.isTextArea}
-              />
-            ))}
+            {formFields.map((field) => {
+              if (isTimeField(field.name)) {
+                return (
+                  <FormSelect
+                    key={field.name}
+                    name={field.name}
+                    options={TIME_OPTIONS}
+                  />
+                );
+              }
+              return (
+                <FormInput
+                  key={field.name}
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  isTextArea={field.isTextArea}
+                  type={field.type}
+                />
+              );
+            })}
             <FormSelect name="category" options={CATEGORIES} />
             <ActionButton type="submit" label="Add Event" color="green" />
           </form>
@@ -357,22 +387,46 @@ export default function AdminPage() {
                         }}
                         className="w-full grid gap-2"
                       >
-                        {formFields.map((field) => (
-                          <FormInput
-                            key={field.name}
-                            name={field.name}
-                            value={
-                              editFormData[
-                                field.name as keyof typeof editFormData
-                              ]
-                            }
-                            placeholder={field.placeholder}
-                            isTextArea={field.isTextArea}
-                            onChange={(e) =>
-                              handleEditFormChange(field.name, e.target.value)
-                            }
-                          />
-                        ))}
+                        {formFields.map((field) => {
+                          if (isTimeField(field.name)) {
+                            return (
+                              <FormSelect
+                                key={field.name}
+                                name={field.name}
+                                options={TIME_OPTIONS}
+                                value={
+                                  editFormData[
+                                    field.name as keyof typeof editFormData
+                                  ]
+                                }
+                                onChange={(e) =>
+                                  handleEditFormChange(
+                                    field.name,
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            );
+                          }
+
+                          return (
+                            <FormInput
+                              key={field.name}
+                              name={field.name}
+                              type={field.type}
+                              value={
+                                editFormData[
+                                  field.name as keyof typeof editFormData
+                                ]
+                              }
+                              placeholder={field.placeholder}
+                              isTextArea={field.isTextArea}
+                              onChange={(e) =>
+                                handleEditFormChange(field.name, e.target.value)
+                              }
+                            />
+                          );
+                        })}
                         <FormSelect
                           name="category"
                           options={CATEGORIES}
