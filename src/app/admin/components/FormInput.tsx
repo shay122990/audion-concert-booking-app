@@ -4,7 +4,7 @@ type FormInputProps = {
   type?: string;
   name: string;
   value?: string;
-  placeholder: string;
+  placeholder?: string;
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
