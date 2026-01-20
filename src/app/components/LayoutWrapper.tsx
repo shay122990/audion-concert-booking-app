@@ -16,15 +16,15 @@ export default function LayoutWrapper({
   if (isLoading) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-white dark:bg-black">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-purple-600"></div>
+        <div className="animate-spin rounded-full h-10 w-10  border-t-4 border-purple-600"></div>
       </div>
     );
   }
 
   return (
-    <>
+    <div>
       <Navbar />
       {children}
-    </>
+    </div>
   );
 }

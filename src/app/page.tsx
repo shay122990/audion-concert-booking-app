@@ -38,7 +38,7 @@ export default function Home() {
       setFilteredEvents(data);
 
       const uniqueCategories = Array.from(
-        new Set(data.map((event) => event.category))
+        new Set(data.map((event) => event.category)),
       ).sort();
       setCategories(["All", ...uniqueCategories]);
     };
@@ -58,7 +58,7 @@ export default function Home() {
           : filteredEvents.filter((event) => event.category === category);
       return acc;
     },
-    {}
+    {},
   );
 
   return (
@@ -88,13 +88,13 @@ export default function Home() {
 
           <div className="mt-8 flex justify-center gap-6">
             <button
-              className="px-8 py-4 bg-gradient-to-r from-teal-500 to-purple-600 text-lg font-semibold text-white rounded-full hover:from-teal-600 hover:to-purple-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+              className="px-4 md:px-8 md:py-4 bg-gradient-to-r from-teal-500 to-purple-600 md:text-lg font-semibold text-white rounded-full hover:from-teal-600 hover:to-purple-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
               onClick={() => window.scrollTo(0, window.innerHeight)}
             >
               Discover Events
             </button>
             <button
-              className="px-8 py-4 bg-transparent border-2 border-white text-lg font-semibold text-white rounded-full hover:bg-white hover:text-gray-800 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md"
+              className="px-4 py-4 md:px-8 md:py-4 bg-transparent border-2 border-white md:text-lg font-semibold text-white rounded-full hover:bg-white hover:text-gray-800 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md"
               onClick={() => window.scrollTo(0, window.innerHeight)}
             >
               Learn More
@@ -150,7 +150,7 @@ export default function Home() {
                   ))}
                 </div>
               </section>
-            )
+            ),
         )}
 
         {/* Dynamic Section Between Events (Featured Event/Trending Events) */}

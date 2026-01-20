@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   collection,
   collectionGroup,
@@ -9,11 +9,13 @@ import {
   getDoc,
   deleteDoc,
 } from "firebase/firestore";
+import Image from "next/image";
+
 import { db } from "@/app/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
-import Image from "next/image";
 import TicketModal from "@/app/components/TicketModal";
 import Modal from "@/app/components/Modal";
+import BookingCard, { type FullBooking } from "./components/BookingCard";
 
 type Booking = {
   id: string;
@@ -30,16 +32,15 @@ type EventDetails = {
   dates: string[];
 };
 
-type FullBooking = Booking & EventDetails;
-
 export default function ProfilePage() {
-  const { user } = useAuth();
-  const { role, loading: roleLoading } = useAuth();
+  const { user, role, loading: roleLoading } = useAuth();
+
   const [myBookings, setMyBookings] = useState<FullBooking[]>([]);
   const [otherBookings, setOtherBookings] = useState<FullBooking[]>([]);
   const [loading, setLoading] = useState(true);
+
   const [selectedBooking, setSelectedBooking] = useState<FullBooking | null>(
-    null
+    null,
   );
   const [showTicketModal, setShowTicketModal] = useState(false);
 
@@ -55,13 +56,15 @@ export default function ProfilePage() {
 
       try {
         const userSnapshot = await getDocs(
-          collection(doc(db, "users", user.uid), "bookings")
+          collection(doc(db, "users", user.uid), "bookings"),
         );
-        const myDetailed = await Promise.all(
+
+        const myDetailed: FullBooking[] = await Promise.all(
           userSnapshot.docs.map(async (docSnap) => {
-            const data = docSnap.data();
+            const data = docSnap.data() as Omit<Booking, "id">;
+
             const eventSnap = await getDoc(doc(db, "events", data.eventId));
-            const eventData = eventSnap.exists()
+            const eventData: EventDetails = eventSnap.exists()
               ? (eventSnap.data() as EventDetails)
               : { title: "Event Not Found", location: "Unknown", dates: [] };
 
@@ -74,25 +77,29 @@ export default function ProfilePage() {
               userEmail: user.email ?? "",
               ...eventData,
             };
-          })
+          }),
         );
+
         setMyBookings(myDetailed);
 
         if (role === "admin") {
           const all = await getDocs(collectionGroup(db, "bookings"));
-          const otherDetailed = await Promise.all(
+
+          const otherDetailed: FullBooking[] = await Promise.all(
             all.docs
               .filter((d) => d.ref.parent.parent?.id !== user.uid)
               .map(async (docSnap) => {
-                const data = docSnap.data();
+                const data = docSnap.data() as Omit<Booking, "id">;
+
                 const userId = docSnap.ref.parent.parent?.id;
+
                 const userDoc = await getDoc(doc(db, "users", userId!));
                 const userEmail = userDoc.exists()
-                  ? userDoc.data().email ?? ""
+                  ? ((userDoc.data() as { email?: string })?.email ?? "")
                   : "Unknown";
 
                 const eventSnap = await getDoc(doc(db, "events", data.eventId));
-                const eventData = eventSnap.exists()
+                const eventData: EventDetails = eventSnap.exists()
                   ? (eventSnap.data() as EventDetails)
                   : {
                       title: "Event Not Found",
@@ -109,8 +116,9 @@ export default function ProfilePage() {
                   userEmail,
                   ...eventData,
                 };
-              })
+              }),
           );
+
           setOtherBookings(otherDetailed);
         }
       } catch (err) {
@@ -127,19 +135,23 @@ export default function ProfilePage() {
     onConfirmRef.current = async () => {
       try {
         await deleteDoc(
-          doc(db, "users", booking.userId!, "bookings", booking.id)
+          doc(db, "users", booking.userId!, "bookings", booking.id),
         );
+
         setMyBookings((prev) => prev.filter((b) => b.id !== booking.id));
+        // Optional: if you ever allow deleting others, also update otherBookings
+        setOtherBookings((prev) => prev.filter((b) => b.id !== booking.id));
 
         setModalTitle("Success");
         setModalContent(<p>✅ Booking deleted successfully.</p>);
         setModalFooter(
           <button
+            type="button"
             onClick={() => setIsModalOpen(false)}
             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
           >
             OK
-          </button>
+          </button>,
         );
       } catch (err) {
         console.error("❌ Failed to delete booking:", err);
@@ -147,11 +159,12 @@ export default function ProfilePage() {
         setModalContent(<p>❌ Could not delete booking. Try again later.</p>);
         setModalFooter(
           <button
+            type="button"
             onClick={() => setIsModalOpen(false)}
             className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
           >
             Close
-          </button>
+          </button>,
         );
       } finally {
         setIsModalOpen(true);
@@ -163,6 +176,7 @@ export default function ProfilePage() {
     setModalFooter(
       <>
         <button
+          type="button"
           onClick={async () => {
             if (onConfirmRef.current) await onConfirmRef.current();
           }}
@@ -171,57 +185,16 @@ export default function ProfilePage() {
           Confirm
         </button>
         <button
+          type="button"
           onClick={() => setIsModalOpen(false)}
           className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
         >
           Cancel
         </button>
-      </>
+      </>,
     );
     setIsModalOpen(true);
   };
-
-  const renderBookingCard = (booking: FullBooking, isEditable: boolean) => (
-    <div
-      key={booking.id}
-      className="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-900"
-    >
-      <h3 className="text-lg font-bold text-purple-600">{booking.title}</h3>
-      {role === "admin" && !isEditable && (
-        <p className="text-sm text-gray-500">👤 {booking.userEmail}</p>
-      )}
-      <p className="text-sm text-gray-600 dark:text-gray-400">
-        📅 {booking.selectedDate}
-      </p>
-      <p className="text-sm text-gray-600 dark:text-gray-400">
-        📍 {booking.location}
-      </p>
-
-      {booking.title === "Event Not Found" && (
-        <p className="text-sm text-red-500 mt-2">Event no longer exists.</p>
-      )}
-
-      {isEditable && (
-        <div className="flex flex-col gap-2 mt-4">
-          <button
-            onClick={() => {
-              setSelectedBooking(booking);
-              setShowTicketModal(true);
-            }}
-            className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-          >
-            View Ticket
-          </button>
-          <button
-            onClick={() => handleDeleteBooking(booking)}
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-          >
-            Delete Booking
-          </button>
-        </div>
-      )}
-    </div>
-  );
 
   if (!user && !roleLoading) {
     return (
@@ -239,7 +212,7 @@ export default function ProfilePage() {
   }
 
   if (loading || roleLoading) {
-    return <p className="text-center py-16">Loading...</p>;
+    return <p className="text-center py-16 mt-10">Loading...</p>;
   }
 
   return (
@@ -255,6 +228,7 @@ export default function ProfilePage() {
             className="object-cover"
           />
         </div>
+
         <div className="text-center sm:text-left">
           <h2 className="text-2xl font-semibold">
             {user?.displayName || "Guest User"}
@@ -272,13 +246,26 @@ export default function ProfilePage() {
 
       <section className="mb-12">
         <h2 className="text-xl font-semibold mb-4">My Bookings</h2>
+
         {myBookings.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-400">
             You have no bookings yet.
           </p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {myBookings.map((b) => renderBookingCard(b, true))}
+            {myBookings.map((booking) => (
+              <BookingCard
+                key={booking.id}
+                booking={booking}
+                isEditable
+                isAdmin={role === "admin"}
+                onViewTicket={(b) => {
+                  setSelectedBooking(b);
+                  setShowTicketModal(true);
+                }}
+                onDelete={handleDeleteBooking}
+              />
+            ))}
           </div>
         )}
       </section>
@@ -288,13 +275,21 @@ export default function ProfilePage() {
           <h2 className="text-xl font-semibold mb-4">
             All Other Users’ Bookings
           </h2>
+
           {otherBookings.length === 0 ? (
             <p className="text-gray-500 dark:text-gray-400">
               No other bookings found.
             </p>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {otherBookings.map((b) => renderBookingCard(b, false))}
+              {otherBookings.map((booking) => (
+                <BookingCard
+                  key={booking.id}
+                  booking={booking}
+                  isEditable={false}
+                  isAdmin={role === "admin"}
+                />
+              ))}
             </div>
           )}
         </section>
