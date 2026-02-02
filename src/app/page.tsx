@@ -95,7 +95,7 @@ export default function Home() {
 
           <div className="mt-8 flex justify-center gap-6">
             <button
-              className="px-4 md:px-8 md:py-4 bg-gradient-to-r from-teal-500 to-purple-600 md:text-lg font-semibold text-white rounded-full hover:from-teal-600 hover:to-purple-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+              className="px-4 md:px-8 md:py-4 bg-linear-to-r from-teal-500 to-purple-600 md:text-lg font-semibold text-white rounded-full hover:from-teal-600 hover:to-purple-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
               onClick={() => window.scrollTo(0, window.innerHeight)}
             >
               Discover Events
@@ -164,7 +164,7 @@ export default function Home() {
         {/* Dynamic (Featured Event/Trending Events) */}
         <section
           id="trending"
-          className="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center py-20 rounded-3xl mb-12 shadow-xl"
+          className="bg-linear-to-r from-purple-600 to-pink-600 text-white text-center py-20 rounded-3xl mb-12 shadow-xl"
         >
           <h2 className="text-3xl font-semibold mb-6">Trending Events</h2>
           <div className="max-w-5xl mx-auto">
