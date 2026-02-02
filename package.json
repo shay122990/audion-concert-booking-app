@@ -13,10 +13,10 @@
     "@stripe/stripe-js": "^6.1.0",
     "firebase": "^11.6.0",
     "html2canvas": "^1.4.1",
-    "next": "15.2.4",
-    "react": "^19.0.0",
+    "next": "^16.1.4",
+    "react": "^19.2.3",
     "react-datepicker": "^8.2.1",
-    "react-dom": "^19.0.0",
+    "react-dom": "^19.2.3",
     "react-icons": "^5.5.0",
     "stripe": "^18.0.0"
   },
@@ -27,7 +27,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.2.4",
+    "eslint-config-next": "^16.1.4",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

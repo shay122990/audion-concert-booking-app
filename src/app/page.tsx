@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import EventCard from "@/app/components/EventCard";
@@ -61,6 +61,13 @@ export default function Home() {
     {},
   );
 
+  const goTrending = useCallback(() => {
+    const el = document.getElementById("trending");
+    if (!el) return;
+    el.scrollIntoView({ block: "start", behavior: "auto" });
+    history.replaceState(null, "", "#trending");
+  }, []);
+
   return (
     <main className="px-6 mt-30  mx-auto">
       {/* Hero Section */}
@@ -94,10 +101,11 @@ export default function Home() {
               Discover Events
             </button>
             <button
+              type="button"
+              onClick={goTrending}
               className="px-4 py-4 md:px-8 md:py-4 bg-transparent border-2 border-white md:text-lg font-semibold text-white rounded-full hover:bg-white hover:text-gray-800 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md"
-              onClick={() => window.scrollTo(0, window.innerHeight)}
             >
-              Learn More
+              Trending Events
             </button>
           </div>
         </div>
@@ -153,8 +161,11 @@ export default function Home() {
             ),
         )}
 
-        {/* Dynamic Section Between Events (Featured Event/Trending Events) */}
-        <section className="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center py-20 rounded-3xl mb-12 shadow-xl">
+        {/* Dynamic (Featured Event/Trending Events) */}
+        <section
+          id="trending"
+          className="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center py-20 rounded-3xl mb-12 shadow-xl"
+        >
           <h2 className="text-3xl font-semibold mb-6">Trending Events</h2>
           <div className="max-w-5xl mx-auto">
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
