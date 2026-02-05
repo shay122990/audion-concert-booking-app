@@ -13,13 +13,8 @@
     "@stripe/stripe-js": "^6.1.0",
     "firebase": "^11.6.0",
     "html2canvas": "^1.4.1",
-<<<<<<< HEAD
     "next": "^16.1.4",
     "react": "^19.2.3",
-=======
-    "next": "15.2.8",
-    "react": "^19.0.0",
->>>>>>> origin/main
     "react-datepicker": "^8.2.1",
     "react-dom": "^19.2.3",
     "react-icons": "^5.5.0",
