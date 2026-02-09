@@ -190,7 +190,7 @@ export default function AdminPage() {
         >
           Cancel
         </button>
-      </>
+      </>,
     );
     setIsModalOpen(true);
   };
@@ -239,7 +239,7 @@ export default function AdminPage() {
           onClick={() => setIsModalOpen(false)}
         >
           OK
-        </button>
+        </button>,
       );
       setIsModalOpen(true);
     } catch {
@@ -251,7 +251,7 @@ export default function AdminPage() {
           onClick={() => setIsModalOpen(false)}
         >
           Retry
-        </button>
+        </button>,
       );
       setIsModalOpen(true);
     }
@@ -278,7 +278,7 @@ export default function AdminPage() {
           onClick={() => setIsModalOpen(false)}
         >
           OK
-        </button>
+        </button>,
       );
       setIsModalOpen(true);
     } catch {
@@ -290,7 +290,7 @@ export default function AdminPage() {
           onClick={() => setIsModalOpen(false)}
         >
           Retry
-        </button>
+        </button>,
       );
       setIsModalOpen(true);
     }
@@ -315,7 +315,7 @@ export default function AdminPage() {
 
       {/* Admin Header Card */}
       <section className="flex flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-2xl">
-        <div className="w-28 h-28 relative rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+        <div className="w-28 h-20 relative  bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
           {user?.photoURL ? (
             <Image
               src={user.photoURL}
@@ -466,7 +466,7 @@ export default function AdminPage() {
                                 onChange={(e) =>
                                   handleEditFormChange(
                                     field.name,
-                                    e.target.value
+                                    e.target.value,
                                   )
                                 }
                               />
