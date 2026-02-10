@@ -9,13 +9,12 @@ import {
   getDoc,
   deleteDoc,
 } from "firebase/firestore";
-import Image from "next/image";
-
 import { db } from "@/app/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import TicketModal from "@/app/components/TicketModal";
 import Modal from "@/app/components/Modal";
 import BookingCard, { type FullBooking } from "./components/BookingCard";
+import UserCard from "../components/UserCard";
 
 type Booking = {
   id: string;
@@ -218,32 +217,7 @@ export default function ProfilePage() {
   return (
     <main className="max-w-5xl mx-auto px-6 mt-22 lg:mt-28 mb-10">
       <h1 className="text-3xl font-bold text-purple-600 mb-8">My Profile</h1>
-
-      <section className="flex flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-        <div className="w-28 h-28 relative rounded-full overflow-hidden">
-          <Image
-            src={user?.photoURL || "/shay250.png"}
-            alt="Profile Picture"
-            fill
-            className="object-cover"
-          />
-        </div>
-
-        <div className="text-center sm:text-left">
-          <h2 className="text-2xl font-semibold">
-            {user?.displayName || "Guest User"}
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {user?.email}
-          </p>
-          {role === "admin" && (
-            <p className="text-xs text-purple-600 font-medium mt-1">
-              Role: Admin
-            </p>
-          )}
-        </div>
-      </section>
-
+      <UserCard />
       <section className="mb-12">
         <h2 className="text-xl font-semibold mb-4">My Bookings</h2>
 

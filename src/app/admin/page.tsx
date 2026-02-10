@@ -11,7 +11,6 @@
 */
 
 import { useEffect, useState, useRef } from "react";
-import Image from "next/image";
 import { collection, getDocs } from "firebase/firestore";
 import {
   db,
@@ -34,7 +33,7 @@ import {
   parseCommaSeparatedString,
 } from "@/app/utils/eventDataUtils";
 import Modal from "../components/Modal";
-import { CiUser } from "react-icons/ci";
+import UserCard from "@/app/components/UserCard";
 
 /* Categories used for dropdown */
 const CATEGORIES = [
@@ -314,31 +313,13 @@ export default function AdminPage() {
       </button>
 
       {/* Admin Header Card */}
-      <section className="flex flex-row items-center gap-6 mb-12 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-2xl">
-        <div className="w-28 h-20 relative  bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-          {user?.photoURL ? (
-            <Image
-              src={user.photoURL}
-              alt="Admin Profile Picture"
-              fill
-              className="object-cover"
-            />
-          ) : (
-            <CiUser className="text-6xl text-purple-500" />
-          )}
-        </div>
-        <div className="text-center sm:text-left">
-          <h2 className="text-2xl font-semibold">
-            {user?.displayName || "Admin User"}
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {user?.email}
-          </p>
-          <p className="text-xs text-purple-600 font-medium mt-2">
-            Role: Administrator
-          </p>
-        </div>
-      </section>
+      <UserCard
+        variant="admin"
+        displayName={user?.displayName}
+        email={user?.email}
+        photoURL={user?.photoURL}
+        roleLabel="Administrator"
+      />
 
       {/* Quick Upload / Delete buttons */}
       <AdminActions
