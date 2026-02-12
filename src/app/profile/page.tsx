@@ -217,7 +217,13 @@ export default function ProfilePage() {
   return (
     <main className="max-w-5xl mx-auto px-6 mt-22 lg:mt-28 mb-10">
       <h1 className="text-3xl font-bold text-purple-600 mb-8">My Profile</h1>
-      <UserCard />
+      <UserCard
+        displayName={user?.displayName}
+        email={user?.email}
+        photoURL={user?.photoURL}
+        roleLabel={role ?? undefined}
+        variant={role === "admin" ? "admin" : "profile"}
+      />
       <section className="mb-12">
         <h2 className="text-xl font-semibold mb-4">My Bookings</h2>
 

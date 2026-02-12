@@ -300,7 +300,6 @@ export default function AdminPage() {
     return <p className="text-center py-12">Loading...</p>;
   }
 
-  /* MAIN RENDER */
   return (
     <main className="min-h-screen px-6 py-8 max-w-7xl mx-auto flex flex-col items-center text-center gap-6 border rounded my-10 mt-24">
       {/* Admin Title + Back Button */}
@@ -313,13 +312,7 @@ export default function AdminPage() {
       </button>
 
       {/* Admin Header Card */}
-      <UserCard
-        variant="admin"
-        displayName={user?.displayName}
-        email={user?.email}
-        photoURL={user?.photoURL}
-        roleLabel="Administrator"
-      />
+      <UserCard />
 
       {/* Quick Upload / Delete buttons */}
       <AdminActions
@@ -408,7 +401,7 @@ export default function AdminPage() {
             ]}
           />
 
-          <div className="max-h-[750px] overflow-y-auto pr-2 mt-6">
+          <div className="max-h-187.5 overflow-y-auto pr-2 mt-6">
             <ul className="space-y-4">
               {filteredEvents.length === 0 && (
                 <p className="text-gray-500">No events found.</p>
